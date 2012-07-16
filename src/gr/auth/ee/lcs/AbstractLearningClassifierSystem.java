@@ -23,6 +23,7 @@
  * 
  */
 package gr.auth.ee.lcs;
+//comment
 
 import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
