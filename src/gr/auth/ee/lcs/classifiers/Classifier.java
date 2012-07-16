@@ -213,7 +213,7 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 	 */
 	public void buildMatches() {
 		this.matchInstances = new byte[myLcs.instances.length];
-		Arrays.fill(this.matchInstances, (byte) -1);
+		Arrays.fill(this.matchInstances, (byte) -1); // gemise to me -1
 	}
 
 	/**
@@ -301,6 +301,14 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 		return checked;
 	}
 
+	public int getCoveredInstances() {
+		return covered;
+	}
+	
+	public AbstractLearningClassifierSystem getLCS() {
+		return myLcs;
+	}
+	
 	/**
 	 * Returns a numeric value for comparing the classifier.
 	 * 
@@ -388,6 +396,13 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 			this.matchInstances[instanceIndex] = (byte) ((transformBridge.isMatch(myLcs.instances[instanceIndex], this)) ? 1 : 0);
 			this.checked++; // ok o kanonas exei apofan9ei gia to instance (to exei dei) 
 			this.covered += this.matchInstances[instanceIndex];
+			
+			/* would be kodikas
+			 * 
+			 * final boolean zeroCoverage = (this.getCheckedInstances() >= myLcs.instances.length) && (this.getCoverage() == 0);
+			if(zeroCoverage) {
+				//TODO
+			}*/
 		}
 
 		return this.matchInstances[instanceIndex] == 1;

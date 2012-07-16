@@ -80,4 +80,32 @@ public final class InstancesUtility {
 	 */
 	private InstancesUtility() {
 	}
+	
+	
+	public double getLabelCardinality (double[][] instances) { 
+		
+		final ClassifierTransformBridge bridge = this.getClassifierTransformBridge();
+		
+		double sumOfLabels = 0;
+		
+		for (int i = 0; i < instances.length; i++) {
+			
+			final int[] classification = bridge.getDataInstanceLabels(instances[i]); // px: [1,3,4]. to instance katigoriopoieitai(trainset) sta labels 1,3 kai 4
+			//System.out.println(Arrays.toString(classification));
+			
+			sumOfLabels += classification.length;
+			
+		}
+		
+		System.out.println("sumOfLabels:" + sumOfLabels);
+		System.out.println("instances.length:" + instances.length);
+
+		
+		if (instances.length != 0) {
+			System.out.println("labelCardinality:" + (double) (sumOfLabels / instances.length));
+
+			return (double) (sumOfLabels / instances.length); 
+		}
+	}
+	
 }

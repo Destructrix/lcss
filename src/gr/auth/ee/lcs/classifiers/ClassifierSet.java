@@ -306,9 +306,19 @@ public class ClassifierSet implements Serializable {
 			// apo tous macroclassifiers pou sun9etoun ton plh9usmo pairno autous pou einai match me to vision vector
 			// getClassifier(i) <--- this.myMacroclassifiers.elementAt(index).myClassifier;
 			
+
+			
+
+			
 			if (this.getClassifier(i).isMatch(dataInstanceIndex)) { 
 				
 				matchSet.addClassifier(this.getMacroclassifier(i), false); // ton pros9eto. prepei na elegkso oti den exo fugei pano apo to megisto ari9mo classifiers (mono ston population xreiazetai logika)
+			}
+			
+			boolean zeroCoverage = (this.getClassifier(i).getCheckedInstances() >= this.getClassifier(i).getLCS().instances.length) && (this.getClassifier(i).getCoverage() == 0);
+			
+			if(zeroCoverage) {
+				this.deleteMacroclassifier(i);
 			}
 		}
 		return matchSet;
