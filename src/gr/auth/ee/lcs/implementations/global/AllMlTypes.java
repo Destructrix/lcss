@@ -45,7 +45,7 @@ public class AllMlTypes {
 				   IllegalAccessException,
 				   ClassNotFoundException {
 		
-		System.out.println(Class.forName(name));
+		//System.out.println(Class.forName(name));
 		return (AbstractLearningClassifierSystem) (Class.forName(name).newInstance());
 
 	}
