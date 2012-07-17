@@ -286,7 +286,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 
 				if (classificationAbility == 0) // an proekupse apo adiaforia
 					data.tp += .9;
-				else if (classificationAbility > 0) { // an proekupse apo 9etiki apofasi (uper)
+				else if (classificationAbility > 0) { // an proekupse apo 9etiki apofasi (yper)
 					
 					data.tp += 1;
 					final int labelNs = labelCorrectSets[l].getTotalNumerosity();

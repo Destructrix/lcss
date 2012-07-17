@@ -57,7 +57,9 @@ public class RouletteWheelSelector implements IRuleSelector {
 	 *            whether the selector selects min or max fitness (when max,
 	 *            max=true)
 	 */
-	public RouletteWheelSelector(final int comparisonMode, final boolean max) {
+	public RouletteWheelSelector(final int comparisonMode, 
+								  final boolean max) {
+		
 		mode = comparisonMode;
 		this.max = max;
 	}
@@ -75,18 +77,17 @@ public class RouletteWheelSelector implements IRuleSelector {
 	 */
 	@Override
 	public final void select(final int howManyToSelect,
-			final ClassifierSet fromPopulation, final ClassifierSet toPopulation) {
+							   final ClassifierSet fromPopulation, // to correctSet i o population
+							   final ClassifierSet toPopulation) {
+		
 		// Find total sum
 		double fitnessSum = 0;
-		final int numberOfMacroclassifiers = fromPopulation
-				.getNumberOfMacroclassifiers();
+		final int numberOfMacroclassifiers = fromPopulation.getNumberOfMacroclassifiers();
 
 		for (int i = 0; i < numberOfMacroclassifiers; i++) {
-			final double fitnessValue = fromPopulation
-					.getClassifierNumerosity(i)
+			final double fitnessValue = fromPopulation.getClassifierNumerosity(i)
 					* fromPopulation.getClassifier(i).getComparisonValue(mode);
-			fitnessSum += max ? fitnessValue
-					: 1 / (fitnessValue + Double.MIN_NORMAL);
+			fitnessSum += max ? fitnessValue : 1 / (fitnessValue + Double.MIN_NORMAL);
 		}
 
 		// Repeat roulette for howManyToSelect times
@@ -97,17 +98,13 @@ public class RouletteWheelSelector implements IRuleSelector {
 			int selectedIndex = -1;
 			do {
 				selectedIndex++;
-				final double tempValue = fromPopulation
-						.getClassifierNumerosity(selectedIndex)
-						* fromPopulation.getClassifier(selectedIndex)
-								.getComparisonValue(mode);
-				tempSum += max ? tempValue
-						: 1 / (tempValue + Double.MIN_NORMAL);
+				final double tempValue = fromPopulation.getClassifierNumerosity(selectedIndex)
+						* fromPopulation.getClassifier(selectedIndex).getComparisonValue(mode);
+				tempSum += max ? tempValue : 1 / (tempValue + Double.MIN_NORMAL);
 			} while (tempSum < rand);
 			// Add selectedIndex
 			toPopulation.addClassifier(
-					new Macroclassifier(fromPopulation
-							.getClassifier(selectedIndex), 1), false);
+					new Macroclassifier(fromPopulation.getClassifier(selectedIndex), 1), false);
 		} // next roulette
 
 	}

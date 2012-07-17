@@ -72,7 +72,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 											 final IRuleSelector selector) {
 		
 		this.populationSize = maxPopulationSize;
-		mySelector = selector;
+		mySelector = selector; // roulette wheel gia ton GMlASLCS3
 
 		zeroCoverageRemoval = new InadequeteClassifierDeletionStrategy(lcs);
 	}
@@ -86,8 +86,10 @@ public class FixedSizeSetWorstFitnessDeletion implements
 	public final void controlPopulation(final ClassifierSet aSet) {
 
 		final ClassifierSet toBeDeleted = new ClassifierSet(null);
+		
 		if (aSet.getTotalNumerosity() > populationSize)
 			zeroCoverageRemoval.controlPopulation(aSet);
+		
 		while (aSet.getTotalNumerosity() > populationSize) {
 			mySelector.select(1, aSet, toBeDeleted);
 			aSet.deleteClassifier(toBeDeleted.getClassifier(0));

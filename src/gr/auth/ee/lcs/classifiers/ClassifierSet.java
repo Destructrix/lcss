@@ -156,7 +156,7 @@ public class ClassifierSet implements Serializable {
 	 *            the macroclassifier to add to the set
 	 */
 	public final void addClassifier(final Macroclassifier macro,
-									final boolean 		  thoroughAdd) {
+									  final boolean thoroughAdd) {
 
 		final int numerosity = macro.numerosity;
 		// Add numerosity to the Set
@@ -166,8 +166,7 @@ public class ClassifierSet implements Serializable {
 		if (thoroughAdd) {
 			final Classifier aClassifier = macro.myClassifier;
 			for (int i = 0; i < myMacroclassifiers.size(); i++) {
-				final Classifier theClassifier = myMacroclassifiers
-						.elementAt(i).myClassifier;
+				final Classifier theClassifier = myMacroclassifiers.elementAt(i).myClassifier;
 				if (theClassifier.canSubsume()) {
 					if (theClassifier.isMoreGeneral(aClassifier)) {
 						// Subsume and control size...

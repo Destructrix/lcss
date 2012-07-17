@@ -133,7 +133,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	 */
 	@Override
 	public final void evolveSet(final ClassifierSet evolveSet,
-			final ClassifierSet population) {
+								  final ClassifierSet population) {
 
 		timestamp++;
 
@@ -149,7 +149,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		final ClassifierSet parents = new ClassifierSet(null);
 
 		// Select parents
-		gaSelector.select(1, evolveSet, parents);
+		gaSelector.select(1, evolveSet, parents); // dialegei enan ikano apogono kai ton topo9etei sto sunolo parents
 		final Classifier parentA = parents.getClassifier(0);
 		parents.deleteClassifier(0);
 		gaSelector.select(1, evolveSet, parents);
@@ -173,7 +173,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 			child = mutationOp.operate(child);
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
-			population.addClassifier(new Macroclassifier(child, 1), true);
+			population.addClassifier(new Macroclassifier(child, 1), true); // elegxei gia subsumption tautoxrona (true orisma)
 
 		}
 
