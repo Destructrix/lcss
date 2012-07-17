@@ -23,6 +23,7 @@ package gr.auth.ee.lcs;
 
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.statistics.bundles.SetStatisticsBundle;
+import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.evaluators.TestFileClassification;
 import gr.auth.ee.lcs.utilities.InstancesUtility;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
@@ -181,8 +182,8 @@ public class ArffTrainTestLoader {
 		trainSet = set;
 
 		myLcs.instances = InstancesUtility.convertIntancesToDouble(trainSet); // to trainSet se double pinaka
-		//myLcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
-		myLcs.getLabelCardinality();
+		myLcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
+		//myLcs.getLabelCardinality(myLcs.instances);
 		testSet = InstancesUtility.openInstance(testFile);
 
 	}

@@ -193,16 +193,16 @@ public abstract class AbstractLearningClassifierSystem {
 	 * */
 	
 	
-	public void getLabelCardinality () { 
+	public void getLabelCardinality (double[][] Instances) { 
 		
 		
 		final ClassifierTransformBridge bridge = this.getClassifierTransformBridge();
 		
 		double sumOfLabels = 0;
 		
-		for (int i = 0; i < this.instances.length; i++) {
+		for (int i = 0; i < Instances.length; i++) {
 			
-			final int[] classification = bridge.getDataInstanceLabels(instances[i]); // px: [1,3,4]. to instance katigoriopoieitai(trainset) sta labels 1,3 kai 4
+			final int[] classification = bridge.getDataInstanceLabels(Instances[i]); // px: [1,3,4]. to instance katigoriopoieitai(trainset) sta labels 1,3 kai 4
 			//System.out.println(Arrays.toString(classification));
 			
 			sumOfLabels += classification.length;
@@ -210,11 +210,11 @@ public abstract class AbstractLearningClassifierSystem {
 		}
 		
 		System.out.println("sumOfLabels:" + sumOfLabels);
-		System.out.println("instances.length:" + instances.length);
+		System.out.println("Instances.length:" + Instances.length);
 
 		
-		if (this.instances.length != 0) {
-			this.labelCardinality = (double) (sumOfLabels / instances.length); 
+		if (Instances.length != 0) {
+			this.labelCardinality = (double) (sumOfLabels / Instances.length); 
 			System.out.println("labelCardinality:" + this.labelCardinality);
 
 		}

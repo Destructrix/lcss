@@ -82,30 +82,29 @@ public final class InstancesUtility {
 	}
 	
 	
-	public double getLabelCardinality (double[][] instances) { 
+	public static double getLabelCardinality (final Instances set) { 
+		if (set == null) return -1;
 		
-		final ClassifierTransformBridge bridge = this.getClassifierTransformBridge();
-		
+		int numberOfLabels = (int) SettingsLoader.getNumericSetting("numberOfLabels", 1);
 		double sumOfLabels = 0;
 		
-		for (int i = 0; i < instances.length; i++) {
-			
-			final int[] classification = bridge.getDataInstanceLabels(instances[i]); // px: [1,3,4]. to instance katigoriopoieitai(trainset) sta labels 1,3 kai 4
-			//System.out.println(Arrays.toString(classification));
-			
-			sumOfLabels += classification.length;
-			
+		for (int i = 0; i < set.numInstances(); i++) {
+			for (int j = set.numAttributes() - numberOfLabels; j < set.numAttributes(); j++) {
+				sumOfLabels += set.instance(i).value(j);
+			}
 		}
 		
 		System.out.println("sumOfLabels:" + sumOfLabels);
-		System.out.println("instances.length:" + instances.length);
+		System.out.println("instances.length:" + set.numInstances());
 
 		
-		if (instances.length != 0) {
-			System.out.println("labelCardinality:" + (double) (sumOfLabels / instances.length));
+		if (set.numInstances()!= 0) {
+			System.out.println("labelCardinality:" + (double) (sumOfLabels / set.numInstances()));
 
-			return (double) (sumOfLabels / instances.length); 
+			return (double) (sumOfLabels / set.numInstances()); 
 		}
+		return 0;
 	}
-	
 }
+		
+
