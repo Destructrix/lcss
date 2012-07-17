@@ -49,6 +49,8 @@ public class Macroclassifier implements Serializable {
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
 	public Classifier myClassifier;
+	
+	public int numberOfSubsumptions;
 
 	/**
 	 * The Macroclassifier object constructor.

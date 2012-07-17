@@ -40,5 +40,7 @@ public interface IGeneticAlgorithmStrategy {
 	 *            The population to add new classifiers
 	 */
 	void evolveSet(ClassifierSet evolveSet, ClassifierSet population);
+	
+	int getTimestamp(); // @author alek
 
 }

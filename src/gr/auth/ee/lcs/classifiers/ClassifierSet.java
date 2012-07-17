@@ -171,6 +171,8 @@ public class ClassifierSet implements Serializable {
 					if (theClassifier.isMoreGeneral(aClassifier)) {
 						// Subsume and control size...
 						myMacroclassifiers.elementAt(i).numerosity += numerosity;
+						myMacroclassifiers.elementAt(i).numberOfSubsumptions++;
+						
 						if (myISizeControlStrategy != null) {
 							myISizeControlStrategy.controlPopulation(this);
 						}
@@ -180,6 +182,8 @@ public class ClassifierSet implements Serializable {
 																// subsume but
 																// it is equal
 					myMacroclassifiers.elementAt(i).numerosity += numerosity;
+					myMacroclassifiers.elementAt(i).numberOfSubsumptions++;
+
 					if (myISizeControlStrategy != null) {
 						myISizeControlStrategy.controlPopulation(this);
 					}
@@ -455,19 +459,47 @@ public class ClassifierSet implements Serializable {
 	@Override
 	public String toString() {
 		final StringBuffer response = new StringBuffer();
+		
+		int numOfCover = 0;
+		int numOfGA = 0;
+		int numOfSubsumptions = 0;
+		
 		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
 			response.append(this.getClassifier(i).toString()
 					+ " fit:"
-					+ this.getClassifier(i)
-							.getComparisonValue(
-									AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)
-					+ " exp:" + this.getClassifier(i).experience + " num:"
-					+ this.getClassifierNumerosity(i) + "cov:"
-					+ this.getClassifier(i).getCoverage()
+					+ this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)
+					+ " exp:" + this.getClassifier(i).experience 
+					+ " num:" + this.getClassifierNumerosity(i) 
+					+ " cov:" + this.getClassifier(i).getCoverage()
 					+ System.getProperty("line.separator"));
+			
 			response.append(this.getClassifier(i).getUpdateSpecificData()
 					+ System.getProperty("line.separator"));
+			
+			if (this.getClassifier(i).getClassifierOrigin() == "cover") {
+				numOfCover++;
+				response.append(" origin: cover "); }
+			else if (this.getClassifier(i).getClassifierOrigin() == "ga") {
+				numOfGA++;
+				response.append("origin: ga"); 
+			}
+			
+			numOfSubsumptions += this.getMacroclassifier(i).numberOfSubsumptions;
+
+
+			response.append(" created: " + this.getClassifier(i).timestamp + " ");
+			
 		}
+		System.out.println("Population size:" + this.getNumberOfMacroclassifiers());
+		System.out.println("Number of classifiers covered:" + numOfCover);
+		System.out.println("Number of classifiers ga-ed:" + numOfGA);
+		
+		System.out.println("% covered:" + 100 * (numOfCover / this.getNumberOfMacroclassifiers()) + "%");
+		System.out.println("% ga-ed:" + 100 * (numOfGA / this.getNumberOfMacroclassifiers()) + "%");
+		
+		System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
+		System.out.println("Total number of subsumptions:" + numOfSubsumptions);
+
 		return response.toString();
 	}
 

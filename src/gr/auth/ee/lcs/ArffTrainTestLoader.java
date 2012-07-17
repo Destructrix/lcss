@@ -22,6 +22,8 @@
 package gr.auth.ee.lcs;
 
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
+import gr.auth.ee.lcs.classifiers.Classifier;
+import gr.auth.ee.lcs.classifiers.Macroclassifier;
 import gr.auth.ee.lcs.classifiers.statistics.bundles.SetStatisticsBundle;
 import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.evaluators.TestFileClassification;
@@ -86,7 +88,6 @@ public class ArffTrainTestLoader {
 																	myLcs);
 
 		myLcs.train();
-		
 		/*
 		 * oi duo parakato pinakes exoun ton idio ari9mo 9eseon (12). ka9e evaluation name(names[i]) antistoixei, me seira, se ena evaluation, evals[i]
 		 * */
@@ -101,9 +102,10 @@ public class ArffTrainTestLoader {
 			try {
 				final TestFileClassification classificationModule = new TestFileClassification(
 						InstancesUtility.convertIntancesToDouble(testSet),
-						classificationFile, myLcs,
-						(int) SettingsLoader.getNumericSetting(
-								"numberOfLabels", 1));
+						classificationFile, 
+						myLcs,
+						(int) SettingsLoader.getNumericSetting("numberOfLabels", 1));
+				
 				classificationModule.produceClassification();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -115,14 +117,17 @@ public class ArffTrainTestLoader {
 
 		if (!rulesSaveFile.isEmpty())
 			ClassifierSet.saveClassifierSet(myLcs.rulePopulation, rulesSaveFile);
-
+		
 		for (int i = 0; i < evals.length; i++) {
 			System.out.println(names[i] + ": " + evals[i]);
 		}
-
-		SetStatisticsBundle bundle = new SetStatisticsBundle(myLcs,
-				(int) SettingsLoader.getNumericSetting("numberOfLabels", 1));
+		
+		SetStatisticsBundle bundle = new SetStatisticsBundle(myLcs, (int) SettingsLoader.getNumericSetting("numberOfLabels", 1));
 		System.out.println(bundle);
+	
+
+		
+		
 	}
 
 	/**

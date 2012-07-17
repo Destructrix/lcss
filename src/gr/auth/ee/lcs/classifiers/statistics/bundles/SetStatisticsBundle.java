@@ -49,19 +49,15 @@ public class SetStatisticsBundle extends LCSMetricBundle {
 	public SetStatisticsBundle(AbstractLearningClassifierSystem lcs,
 			final int numberOfLabels) {
 		super(lcs, new Vector<ILCSMetric>());
+		System.out.println("\nSetStatisticsBundle:\n");
 
-		addMetric(new MeanFitnessStatistic(
-				AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
+		addMetric(new MeanFitnessStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
 		addMetric(new MeanCoverageStatistic());
-		addMetric(new WeightedMeanCoverageStatistic(
-				AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
+		addMetric(new WeightedMeanCoverageStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
 		addMetric(new MeanAttributeSpecificityStatistic());
-		addMetric(new WeightedMeanAttributeSpecificityStatistic(
-				AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
-
+		addMetric(new WeightedMeanAttributeSpecificityStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
 		addMetric(new MeanLabelSpecificity(numberOfLabels));
-		addMetric(new WeightedMeanLabelSpecificity(numberOfLabels,
-				AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
+		addMetric(new WeightedMeanLabelSpecificity(numberOfLabels, AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION));
 	}
 
 }

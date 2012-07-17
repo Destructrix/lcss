@@ -91,6 +91,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
 	private final AbstractLearningClassifierSystem myLcs;
+	
 
 	/**
 	 * Default constructor.
@@ -173,6 +174,9 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 			child = mutationOp.operate(child);
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
+			child.setClassifierOrigin("ga");
+			child.timestamp = timestamp;
+			//child.setDateCreated(timestamp);
 			population.addClassifier(new Macroclassifier(child, 1), true); // elegxei gia subsumption tautoxrona (true orisma)
 
 		}
@@ -210,4 +214,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		this.gaActivationAge = age;
 	}
 
+	
+	public int getTimestamp() {
+		return this.timestamp;
+	}
 }

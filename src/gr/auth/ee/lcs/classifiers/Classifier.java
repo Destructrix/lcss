@@ -161,7 +161,9 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 	 * @uml.property  name="transformData"
 	 */
 	public Serializable transformData;
-
+	
+	private String origin;
+	
 	/**
 	 * The default constructor. Creates a chromosome of the given size
 	 * 
@@ -309,6 +311,21 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 		return myLcs;
 	}
 	
+	public void setClassifierOrigin(String origin) {
+		this.origin = origin;
+	}
+	
+	public String getClassifierOrigin(){
+		return this.origin;
+	}
+	
+/*	public void setDateCreated(int dateCreated) {
+		this.timestamp = dateCreated;
+	}
+	
+	public int getDateCreated() {
+		return timestamp;
+	}*/
 	/**
 	 * Returns a numeric value for comparing the classifier.
 	 * 

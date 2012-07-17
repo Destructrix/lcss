@@ -262,7 +262,6 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		 * |accuracy|recall|hammingDist|exactMatch|accuracy|recall|hammingDist|exactMatch|accuracy|recall|hammingDist|exactMatch|
 		 * 
 		 * */
-
 		return results;
 	}
 

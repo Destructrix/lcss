@@ -1047,6 +1047,8 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 		for (int i = 0; i < attributeList.length; i++) {
 			attributeList[i].randomCoveringValue((float) visionVector[i], generatedClassifier);
 		}
+		
+		generatedClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
 
 		return generatedClassifier;
 	}

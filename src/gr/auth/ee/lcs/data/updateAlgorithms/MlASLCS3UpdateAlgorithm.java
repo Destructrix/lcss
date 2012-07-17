@@ -157,14 +157,15 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 */
 	@Override
 	public void cover(ClassifierSet population, 
-					  int instanceIndex) {
+					    int instanceIndex) {
 		
 		final Classifier coveringClassifier = myLcs
-				.getClassifierTransformBridge().createRandomCoveringClassifier(
-						myLcs.instances[instanceIndex]);
+											  .getClassifierTransformBridge()
+											  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
 		
-		population.addClassifier(new Macroclassifier(coveringClassifier, 1),
-				false);
+		coveringClassifier.timestamp = ga.getTimestamp();
+		
+		population.addClassifier(new Macroclassifier(coveringClassifier, 1), false);
 	}
 
 	/*
