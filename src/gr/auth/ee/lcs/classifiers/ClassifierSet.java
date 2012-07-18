@@ -47,6 +47,8 @@ public class ClassifierSet implements Serializable {
 	 * Serialization id for versioning.
 	 */
 	private static final long serialVersionUID = 2664983888922912954L;
+	
+	public int totalGAInvocations = 0;
 
 	/**
 	 * Open a saved (and serialized) ClassifierSet.
@@ -497,7 +499,9 @@ public class ClassifierSet implements Serializable {
 		System.out.println("% covered:" + 100 * (numOfCover / this.getNumberOfMacroclassifiers()) + "%");
 		System.out.println("% ga-ed:" + 100 * (numOfGA / this.getNumberOfMacroclassifiers()) + "%");
 		
-		System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
+		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
+		System.out.println("Total number of epochs:" + this.totalGAInvocations);
+
 		System.out.println("Total number of subsumptions:" + numOfSubsumptions);
 
 		return response.toString();

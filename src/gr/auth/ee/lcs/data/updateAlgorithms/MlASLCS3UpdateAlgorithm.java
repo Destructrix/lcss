@@ -325,6 +325,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			for (int l = 0; l < numberOfLabels; l++) {
 				if (labelCorrectSets[l].getNumberOfMacroclassifiers() > 0) {
 					ga.evolveSet(labelCorrectSets[l], population);
+					population.totalGAInvocations = ga.getTimestamp();
 				} else {
 					this.cover(population, instanceIndex);
 				}
