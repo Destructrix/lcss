@@ -74,9 +74,12 @@ public class SequentialGUCS extends AbstractLearningClassifierSystem {
 		 * loader.evaluate();
 		 */
 
-		final BAMEvaluator eval = new BAMEvaluator(sgucs, file,
-				BAMEvaluator.TYPE_POSITION, 7,
-				PositionBAMEvaluator.GENERIC_REPRESENTATION, "sgucs");
+		final BAMEvaluator eval = new BAMEvaluator(sgucs, 
+													file,
+													BAMEvaluator.TYPE_POSITION, 
+													7,
+													PositionBAMEvaluator.GENERIC_REPRESENTATION, 
+													"sgucs");
 		eval.evaluate();
 
 	}

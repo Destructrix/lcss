@@ -243,8 +243,7 @@ public class FoldEvaluator {
 	 */
 	public void evaluate() {
 		final int metricOptimizationIndex = (int) SettingsLoader.getNumericSetting("metricOptimizationIndex", 0);
-		final int numOfFoldRepetitions = (int) SettingsLoader
-				.getNumericSetting("numOfFoldRepetitions", 1); // den einai i epanalipseis. sto defaultLCSproperties einai commented i metabliti
+		final int numOfFoldRepetitions = (int) SettingsLoader.getNumericSetting("numOfFoldRepetitions", 1); // den einai i epanalipseis. sto defaultLCSproperties einai commented i metabliti
 
 		for (int currentRun = 0; currentRun < runs; currentRun++) {
 			Runnable foldEval = new FoldRunnable(metricOptimizationIndex, currentRun, numOfFoldRepetitions);

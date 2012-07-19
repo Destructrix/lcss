@@ -211,26 +211,23 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 
 	@Override
 	public double[] getEvaluations(Instances testSet) {
+		
 
 		final double[] results = new double[12];
 		Arrays.fill(results, 0);
 
 		proportionalCutCalibration();
 
-		final AccuracyRecallEvaluator accEval = new AccuracyRecallEvaluator(
-				testSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
+		final AccuracyRecallEvaluator accEval = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		results[0] = accEval.getMetric(this);
 
-		final AccuracyRecallEvaluator recEval = new AccuracyRecallEvaluator(
-				testSet, false, this, AccuracyRecallEvaluator.TYPE_RECALL);
+		final AccuracyRecallEvaluator recEval = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_RECALL);
 		results[1] = recEval.getMetric(this);
 
-		final HammingLossEvaluator hamEval = new HammingLossEvaluator(
-				testSet, false, numberOfLabels, this);
+		final HammingLossEvaluator hamEval = new HammingLossEvaluator(testSet, false, numberOfLabels, this);
 		results[2] = hamEval.getMetric(this);
 
-		final ExactMatchEvalutor testEval = new ExactMatchEvalutor(
-				testSet, false, this);
+		final ExactMatchEvalutor testEval = new ExactMatchEvalutor(testSet, false, this);
 		results[3] = testEval.getMetric(this);
 		
 		
@@ -238,8 +235,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		/*
 		 * oi proigoumenes metrikes anaferontan sto testSet. apo edo kai pera milame gia olo to dataset (instances)
 		 * */
-		final AccuracyRecallEvaluator selfAcc = new AccuracyRecallEvaluator(
-				instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
+		final AccuracyRecallEvaluator selfAcc = new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		
 		internalValidationCalibration(selfAcc);
 
@@ -265,6 +261,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		return results;
 	}
 
+	
 	public void internalValidationCalibration(ILCSMetric selfAcc) {
 		/*
 		final VotingClassificationStrategy str = rep.new VotingClassificationStrategy(

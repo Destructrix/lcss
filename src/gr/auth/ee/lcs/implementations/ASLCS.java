@@ -167,28 +167,33 @@ public final class ASLCS extends AbstractLearningClassifierSystem {
 		populationSize = (int) SettingsLoader.getNumericSetting("populationSize", 1500);
 
 		final IGeneticAlgorithmStrategy ga = new SteadyStateGeneticAlgorithm(
-				new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, true), 
-				new SinglePointCrossover(this), 
-				CROSSOVER_RATE,
-				new UniformBitMutation(MUTATION_RATE), THETA_GA, this);
+																				new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, true), 
+																				new SinglePointCrossover(this), 
+																				CROSSOVER_RATE,
+																				new UniformBitMutation(MUTATION_RATE), 
+																				THETA_GA, 
+																				this);
 
 		rep = new SingleClassRepresentation(inputFile, PRECISION_BITS, ATTRIBUTE_GENERALIZATION_RATE, this);
 		
 		rep.setClassificationStrategy(rep.new VotingClassificationStrategy());
 
 		final ASLCSUpdateAlgorithm strategy = new ASLCSUpdateAlgorithm(ASLCS_N,
-				ASLCS_ACC0, ASLCS_EXPERIENCE_THRESHOLD,
-				MATCHSET_GA_RUN_PROBABILITY, ga, this);
+																		ASLCS_ACC0, 
+																		ASLCS_EXPERIENCE_THRESHOLD,
+																		MATCHSET_GA_RUN_PROBABILITY, 
+																		ga, 
+																		this);
 
 		this.setElements(rep, strategy);
 
 		rulePopulation = new ClassifierSet(
-				new FixedSizeSetWorstFitnessDeletion(
-						this,
-						populationSize,
-						new RouletteWheelSelector(
-								AbstractUpdateStrategy.COMPARISON_MODE_DELETION,
-								true)));
+											new FixedSizeSetWorstFitnessDeletion(
+																					this,
+																					populationSize,
+																					new RouletteWheelSelector(
+																												AbstractUpdateStrategy.COMPARISON_MODE_DELETION,
+																												true)));
 	}
 
 	@Override

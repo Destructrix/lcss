@@ -373,6 +373,7 @@ public abstract class AbstractLearningClassifierSystem {
 				trainsBeforeHook++;
 
 			}
+//			System.out.println("HOOKS:" + hooks.size()); == 0
 			executeCallbacks(population); // endiamesa briskei metrikes? mallon einai gia na parakolou9isoume tin proodo --> diagrammata
 			trainsBeforeHook = 0;
 

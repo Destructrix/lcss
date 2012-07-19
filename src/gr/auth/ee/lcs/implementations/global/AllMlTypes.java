@@ -27,6 +27,10 @@ package gr.auth.ee.lcs.implementations.global;
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.ArffTrainTestLoader;
 import gr.auth.ee.lcs.FoldEvaluator;
+import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
+import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
+import gr.auth.ee.lcs.evaluators.FileLogger;
+import gr.auth.ee.lcs.evaluators.HammingLossEvaluator;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.IOException;
@@ -67,6 +71,7 @@ public class AllMlTypes {
 
 		final String file = SettingsLoader.getStringSetting("filename", ""); // to trainSet.arff
 		final String testFile = SettingsLoader.getStringSetting("testFile", ""); // to testSet.arff
+		final int numberOfLabels = (int) SettingsLoader.getNumericSetting("numberOfLabels", 1); 
 
 		if (testFile.equals("")) {
 			final FoldEvaluator loader = new FoldEvaluator(10, lcs, file);
@@ -74,6 +79,26 @@ public class AllMlTypes {
 		} else {
 			final ArffTrainTestLoader loader = new ArffTrainTestLoader(lcs);
 			loader.loadInstancesWithTest(file, testFile); // dimiourgei to trainSet kai to testSet, tupou instances kai to myLcs.instances = (double) trainSet
+			
+			
+			
+			lcs.registerHook(new FileLogger(
+					"_accuracy",
+					new AccuracyRecallEvaluator(lcs.instances, false, lcs, AccuracyRecallEvaluator.TYPE_ACCURACY)));
+			
+			lcs.registerHook(new FileLogger(
+					"_recall",
+					new AccuracyRecallEvaluator(lcs.instances, false, lcs, AccuracyRecallEvaluator.TYPE_RECALL)));
+			
+			lcs.registerHook(new FileLogger(
+					"_exactMatch", 
+					new ExactMatchEvalutor(lcs.instances, false, lcs)));
+			
+			lcs.registerHook(new FileLogger(
+					"_hamming", 
+					new HammingLossEvaluator(lcs.instances, false, numberOfLabels, lcs)));
+			
+			
 			loader.evaluate(); // edo einai ola ta lefta
 
 		}

@@ -24,7 +24,9 @@ package gr.auth.ee.lcs;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.Macroclassifier;
+import gr.auth.ee.lcs.classifiers.populationcontrol.SortPopulationControl;
 import gr.auth.ee.lcs.classifiers.statistics.bundles.SetStatisticsBundle;
+import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.evaluators.TestFileClassification;
 import gr.auth.ee.lcs.utilities.InstancesUtility;
@@ -94,8 +96,18 @@ public class ArffTrainTestLoader {
 		final double[] evals = myLcs.getEvaluations(testSet);
 		final String[] names = myLcs.getEvaluationNames();
 		
-		System.out.println(myLcs.rulePopulation);
+		//System.out.println(myLcs.rulePopulation);
+		
+		// added the following 4 lines instead of the above statement
+		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
+		srt.controlPopulation(myLcs.rulePopulation);
+		myLcs.rulePopulation.print();
 
+		
+		
+		
+		
+		
 		final String classificationFile = SettingsLoader.getStringSetting("testClassificationFile", "");
 		
 		if (!classificationFile.equals("")) {

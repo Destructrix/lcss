@@ -32,7 +32,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Vector;
-
+import java.text.*;
 /**
  * Implement set of Classifiers, counting numerosity for classifiers. This
  * object is serializable.
@@ -528,7 +528,7 @@ public class ClassifierSet implements Serializable {
 	}*/
 	
 	
-	@Override
+/*	@Override
 	public String toString() {
 		final StringBuffer response = new StringBuffer();
 		
@@ -573,6 +573,64 @@ public class ClassifierSet implements Serializable {
 
 			response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.timestamp + " ");
 			
+		}
+		
+		
+		System.out.println("Population size:" + this.getNumberOfMacroclassifiers());
+		System.out.println("Number of classifiers covered:" + (int) numOfCover);
+		System.out.println("Number of classifiers ga-ed:" + (int) numOfGA);
+		
+		System.out.println("% covered:" + 100 * (numOfCover / this.getNumberOfMacroclassifiers()) + " %");
+		System.out.println("% ga-ed:" + 100 * (numOfGA / this.getNumberOfMacroclassifiers()) + " %");
+		
+		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
+		System.out.println("Total number of epochs:" + this.totalGAInvocations);
+
+		System.out.println("Total number of subsumptions:" + numOfSubsumptions);
+
+		return response.toString();
+	}*/
+	
+	@Override
+	public String toString() {
+		final StringBuffer response = new StringBuffer();
+		
+		double numOfCover = 0;
+		double numOfGA = 0;
+		int numOfSubsumptions = 0;
+		
+		
+		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
+			myMacroclassifiers.elementAt(i).totalFitness = this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;
+		}
+		
+        DecimalFormat df = new DecimalFormat("#.####");
+
+		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
+			
+			//response.append(this.getClassifier(i).toString()
+			response.append(myMacroclassifiers.elementAt(i).myClassifier.toString()
+					+ " total fitness: " + df.format(myMacroclassifiers.elementAt(i).totalFitness)
+					+ " fit:" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION))
+					+ " num:" + myMacroclassifiers.elementAt(i).numerosity
+					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
+					+ " exp:" + myMacroclassifiers.elementAt(i).myClassifier.experience 
+					+ " cov:" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getCoverage()));
+			
+			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
+			
+			if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "cover") {
+				numOfCover++;
+				response.append(" origin: cover "); 
+			}
+			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "ga") {
+				numOfGA++;
+				response.append(" origin: ga "); 
+			}
+			
+			numOfSubsumptions += myMacroclassifiers.elementAt(i).numberOfSubsumptions;
+			response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.timestamp + " ");
+			response.append(System.getProperty("line.separator"));
 		}
 		
 		

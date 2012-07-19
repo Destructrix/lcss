@@ -75,8 +75,12 @@ public class BAMEvaluator {
 	 * @param name
 	 */
 	public BAMEvaluator(final AbstractLearningClassifierSystem myLcs,
-			final String filename, final int type, final int size,
-			final int representationType, final String name) {
+						 final String filename, 
+						 final int type, 
+						 final int size,
+						 final int representationType, 
+						 final String name) {
+		
 		lcs = myLcs;
 		final ArffTrainTestLoader loader = new ArffTrainTestLoader(myLcs);
 		try {
@@ -86,10 +90,16 @@ public class BAMEvaluator {
 		}
 
 		lcs.registerHook(new FileLogger(name + "_acc",
-				new AccuracyRecallEvaluator(lcs.instances, false, lcs,
-						AccuracyRecallEvaluator.TYPE_ACCURACY)));
-		lcs.registerHook(new FileLogger(name + "_ex", new ExactMatchEvalutor(
-				lcs.instances, false, lcs)));
+											new AccuracyRecallEvaluator(lcs.instances, 
+											false, 
+											lcs,
+											AccuracyRecallEvaluator.TYPE_ACCURACY)));
+		
+		lcs.registerHook(new FileLogger(name + "_ex", 
+											new ExactMatchEvalutor(
+											lcs.instances, 
+											false, 
+											lcs)));
 
 		if (type == TYPE_IDENTITY) {
 			lcs.registerHook(new FileLogger(name + "_bam",
@@ -105,8 +115,7 @@ public class BAMEvaluator {
 	 */
 	public void evaluate() {
 		lcs.train();
-		final SortPopulationControl srt = new SortPopulationControl(
-				AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
+		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 		srt.controlPopulation(lcs.getRulePopulation());
 		lcs.getRulePopulation().print();
 	}

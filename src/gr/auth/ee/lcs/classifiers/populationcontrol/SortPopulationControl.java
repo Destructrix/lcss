@@ -60,11 +60,10 @@ public class SortPopulationControl implements IPopulationControlStrategy {
 	@Override
 	public final void controlPopulation(final ClassifierSet aSet) {
 		// Create an array to place Classifiers
-		final Macroclassifier[] list = new Macroclassifier[aSet
-				.getNumberOfMacroclassifiers()];
+		final Macroclassifier[] list = new Macroclassifier[aSet.getNumberOfMacroclassifiers()];
 
 		// Copy Macroclassifiers to list. 
-		// to list stin ousia einai to classifierSet (px matchSet)opos itan ti stigmi pou kli9ike i sunartisi.
+		// to list stin ousia einai to classifierSet (px matchSet) opos itan ti stigmi pou kli9ike i sunartisi.
 		for (int i = 0; i < list.length; i++) {
 			list[i] = aSet.getMacroclassifier(i);
 		}
@@ -76,12 +75,10 @@ public class SortPopulationControl implements IPopulationControlStrategy {
 
 			@Override
 			public final int compare(final Macroclassifier macroA,
-					final Macroclassifier macroB) {
+									   final Macroclassifier macroB) {
 
-				final double fitnessA = macroA.myClassifier
-						.getComparisonValue(comparisonMode) * macroA.numerosity;
-				final double fitnessB = macroB.myClassifier
-						.getComparisonValue(comparisonMode) * macroB.numerosity;
+				final double fitnessA = macroA.myClassifier.getComparisonValue(comparisonMode) * macroA.numerosity;
+				final double fitnessB = macroB.myClassifier.getComparisonValue(comparisonMode) * macroB.numerosity;
 
 				final int experienceA = macroA.myClassifier.experience;
 				final int experienceB = macroB.myClassifier.experience;
@@ -91,10 +88,8 @@ public class SortPopulationControl implements IPopulationControlStrategy {
 
 				final int experienceThreshold = 10;
 
-				final double expFitA = (experienceA < experienceThreshold) ? 0
-						: fitnessA;
-				final double expFitB = (experienceB < experienceThreshold) ? 0
-						: fitnessB;
+				final double expFitA = (experienceA < experienceThreshold) ? 0 : fitnessA;
+				final double expFitB = (experienceB < experienceThreshold) ? 0 : fitnessB;
 
 				if (expFitA > expFitB) {
 					return -1;

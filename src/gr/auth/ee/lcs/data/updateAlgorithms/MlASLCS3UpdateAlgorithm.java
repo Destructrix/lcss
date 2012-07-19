@@ -33,6 +33,7 @@ import gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 /**
  * An alternative MlASLCS update algorithm.
@@ -214,10 +215,14 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 */
 	@Override
 	public String getData(Classifier aClassifier) {
-		final MlASLCSClassifierData data = ((MlASLCSClassifierData) aClassifier
-				.getUpdateDataObject());
-		return "internalFitness:" + data.fitness + "tp:" + data.tp + "msa:"
-				+ data.msa + "ns:" + data.ns;
+		final MlASLCSClassifierData data = ((MlASLCSClassifierData) aClassifier.getUpdateDataObject());
+		
+        DecimalFormat df = new DecimalFormat("#.####");
+
+		return " internalFitness: " + df.format(data.fitness) 
+				+ " tp: " + df.format(data.tp) 
+				+ " msa: " + df.format(data.msa) + 
+				" ns: " + df.format(data.ns);
 	}
 
 	/*
