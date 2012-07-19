@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @has 1 - 1 Classifier
  * @author Miltos Allamanis
  */
-public class Macroclassifier implements Serializable {
+public class Macroclassifier implements Serializable, Comparable<Macroclassifier> {
 
 	/**
 	 * Serialization id for versioning.
@@ -51,6 +51,8 @@ public class Macroclassifier implements Serializable {
 	public Classifier myClassifier;
 	
 	public int numberOfSubsumptions;
+	
+	public double totalFitness;
 
 	/**
 	 * The Macroclassifier object constructor.
@@ -106,5 +108,10 @@ public class Macroclassifier implements Serializable {
 	public final String toString() {
 		return this.myClassifier.toString() + "numerosity: " + this.numerosity;
 	}
+	
+	public int compareTo(Macroclassifier anotherMacro) {
+        return (int) (1000 * (this.totalFitness - anotherMacro.totalFitness)); // 1000 giati ta fitness kumainontai stin taksi mege9ous 10^-2, 
+        																		 //etsi oste na borei na ta ksexorizei
+    }
 
 }

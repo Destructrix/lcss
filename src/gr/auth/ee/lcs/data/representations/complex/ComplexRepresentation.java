@@ -1182,8 +1182,9 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 		for (int i = 0; i < (attributeList.length - numberOfLabels); i++) {
 			final String attributeString = attributeList[i]
 					.toString(aClassifier);
-			if (!attributeString.contains("#"))
-				nlRule.append(attributeString + " AND ");
+/*			if (!attributeString.contains("#"))
+				nlRule.append(attributeString + " AND ");*/
+			nlRule.append(attributeString); // to ekana etsi gia na fainetai kai to antecedent kommati
 		}
 
 		// Add consequence

@@ -164,6 +164,7 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 	
 	private String origin;
 	
+	
 	/**
 	 * The default constructor. Creates a chromosome of the given size
 	 * 

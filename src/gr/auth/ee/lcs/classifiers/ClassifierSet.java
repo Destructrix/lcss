@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Vector;
 
 /**
@@ -458,18 +459,35 @@ public class ClassifierSet implements Serializable {
 		}
 	}
 
-	@Override
+	/*
+	 * tou miltou, peiragmenos mexri enos simeiou
+	 * 
+	 * @Override
 	public String toString() {
 		final StringBuffer response = new StringBuffer();
 		
-		int numOfCover = 0;
-		int numOfGA = 0;
+		double numOfCover = 0;
+		double numOfGA = 0;
 		int numOfSubsumptions = 0;
 		
+		//Macroclassifier sortedMacroClassifiers [] = new Macroclassifier [this.getNumberOfMacroclassifiers()];
+		
 		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
-			response.append(this.getClassifier(i).toString()
-					+ " fit:"
-					+ this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)
+			
+			myMacroclassifiers.elementAt(i).totalFitness = this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;
+			System.out.println("AAAAAA"+myMacroclassifiers.elementAt(i).totalFitness);
+		}
+		
+		Collections.sort(myMacroclassifiers);
+
+			
+		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
+			
+			//response.append(this.getClassifier(i).toString()
+			response.append(myMacroclassifiers.elementAt(i).myClassifier.toString()
+					+ " fit:" + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)
+					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
+					+ " total fitness: " + myMacroclassifiers.elementAt(i).totalFitness
 					+ " exp:" + this.getClassifier(i).experience 
 					+ " num:" + this.getClassifierNumerosity(i) 
 					+ " cov:" + this.getClassifier(i).getCoverage()
@@ -483,7 +501,7 @@ public class ClassifierSet implements Serializable {
 				response.append(" origin: cover "); }
 			else if (this.getClassifier(i).getClassifierOrigin() == "ga") {
 				numOfGA++;
-				response.append("origin: ga"); 
+				response.append(" origin: ga "); 
 			}
 			
 			numOfSubsumptions += this.getMacroclassifier(i).numberOfSubsumptions;
@@ -492,12 +510,78 @@ public class ClassifierSet implements Serializable {
 			response.append(" created: " + this.getClassifier(i).timestamp + " ");
 			
 		}
-		System.out.println("Population size:" + this.getNumberOfMacroclassifiers());
-		System.out.println("Number of classifiers covered:" + numOfCover);
-		System.out.println("Number of classifiers ga-ed:" + numOfGA);
 		
-		System.out.println("% covered:" + 100 * (numOfCover / this.getNumberOfMacroclassifiers()) + "%");
-		System.out.println("% ga-ed:" + 100 * (numOfGA / this.getNumberOfMacroclassifiers()) + "%");
+		
+		System.out.println("Population size:" + this.getNumberOfMacroclassifiers());
+		System.out.println("Number of classifiers covered:" + (int) numOfCover);
+		System.out.println("Number of classifiers ga-ed:" + (int) numOfGA);
+		
+		System.out.println("% covered:" + 100 * (numOfCover / this.getNumberOfMacroclassifiers()) + " %");
+		System.out.println("% ga-ed:" + 100 * (numOfGA / this.getNumberOfMacroclassifiers()) + " %");
+		
+		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
+		System.out.println("Total number of epochs:" + this.totalGAInvocations);
+
+		System.out.println("Total number of subsumptions:" + numOfSubsumptions);
+
+		return response.toString();
+	}*/
+	
+	
+	@Override
+	public String toString() {
+		final StringBuffer response = new StringBuffer();
+		
+		double numOfCover = 0;
+		double numOfGA = 0;
+		int numOfSubsumptions = 0;
+		
+		//Macroclassifier sortedMacroClassifiers [] = new Macroclassifier [this.getNumberOfMacroclassifiers()];
+		
+		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
+			myMacroclassifiers.elementAt(i).totalFitness = this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;
+		}
+		
+		Collections.sort(myMacroclassifiers);
+
+			
+		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
+			
+			//response.append(this.getClassifier(i).toString()
+			response.append(myMacroclassifiers.elementAt(i).myClassifier.toString()
+					+ " fit:" + myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)
+					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
+					+ " total fitness: " + myMacroclassifiers.elementAt(i).totalFitness
+					+ " exp:" + myMacroclassifiers.elementAt(i).myClassifier.experience 
+					+ " num:" + myMacroclassifiers.elementAt(i).numerosity
+					+ " cov:" + myMacroclassifiers.elementAt(i).myClassifier.getCoverage()
+					+ System.getProperty("line.separator"));
+			
+			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData()
+					+ System.getProperty("line.separator"));
+			
+			if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "cover") {
+				numOfCover++;
+				response.append(" origin: cover "); }
+			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "ga") {
+				numOfGA++;
+				response.append(" origin: ga "); 
+			}
+			
+			numOfSubsumptions += myMacroclassifiers.elementAt(i).numberOfSubsumptions;
+
+
+			response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.timestamp + " ");
+			
+		}
+		
+		
+		System.out.println("Population size:" + this.getNumberOfMacroclassifiers());
+		System.out.println("Number of classifiers covered:" + (int) numOfCover);
+		System.out.println("Number of classifiers ga-ed:" + (int) numOfGA);
+		
+		System.out.println("% covered:" + 100 * (numOfCover / this.getNumberOfMacroclassifiers()) + " %");
+		System.out.println("% ga-ed:" + 100 * (numOfGA / this.getNumberOfMacroclassifiers()) + " %");
 		
 		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
 		System.out.println("Total number of epochs:" + this.totalGAInvocations);
