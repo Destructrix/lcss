@@ -90,6 +90,8 @@ public class ArffTrainTestLoader {
 																	myLcs);
 
 		myLcs.train();
+		
+		
 		/*
 		 * oi duo parakato pinakes exoun ton idio ari9mo 9eseon (12). ka9e evaluation name(names[i]) antistoixei, me seira, se ena evaluation, evals[i]
 		 * */
@@ -97,8 +99,8 @@ public class ArffTrainTestLoader {
 		final String[] names = myLcs.getEvaluationNames();
 		
 		//System.out.println(myLcs.rulePopulation);
-		
-		// added the following 4 lines instead of the above statement
+
+		// added the following 3 lines instead of the above statement
 		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 		srt.controlPopulation(myLcs.rulePopulation);
 		myLcs.rulePopulation.print();

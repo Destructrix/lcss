@@ -47,7 +47,8 @@ import java.util.Vector;
 public class SetStatisticsBundle extends LCSMetricBundle {
 
 	public SetStatisticsBundle(AbstractLearningClassifierSystem lcs,
-			final int numberOfLabels) {
+								final int numberOfLabels) {
+		
 		super(lcs, new Vector<ILCSMetric>());
 		System.out.println("\nSetStatisticsBundle:\n");
 

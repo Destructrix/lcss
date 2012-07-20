@@ -28,6 +28,7 @@ import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.data.ILCSMetric;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -61,11 +62,23 @@ public class FileLogger implements ILCSMetric {
 	 * @param evaluator
 	 *            the evaluator which we are going to output.
 	 */
-	public FileLogger(final String filename, final ILCSMetric evaluator) {
+	public FileLogger(final String filename, 
+					   final ILCSMetric evaluator) {
+		
 		final Calendar cal = Calendar.getInstance();
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-		file = filename + sdf.format(cal.getTime()) + ".txt";
+		
+		
+		String str = sdf.format(cal.getTime());
+		
+		
+		File dir = new File("hookedMetrics/" + str);
+		if (!dir.exists()) {
+		  dir.mkdir();
+		}
+		file = "hookedMetrics/" + str + "/" + filename + ".txt"; // gia na grafontai sto fakelo lcss/hookedMetrics
 		actualEvaluator = evaluator;
+		
 		try {
 			final FileWriter fstream = new FileWriter(file, false);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
@@ -80,11 +93,14 @@ public class FileLogger implements ILCSMetric {
 
 	@Override
 	public final double getMetric(final AbstractLearningClassifierSystem lcs) {
+		
 		final double evalResult = actualEvaluator.getMetric(lcs);
+		
 		try {
+			
 			final FileWriter fstream = new FileWriter(file, true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
-			buffer.write(String.valueOf(evalResult)
+			buffer.write(String.valueOf(lcs.repetition) + ":" +String.valueOf(evalResult)
 					+ System.getProperty("line.separator"));
 			buffer.flush();
 			buffer.close();

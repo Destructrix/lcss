@@ -51,7 +51,8 @@ public class LCSMetricBundle {
 	private final AbstractLearningClassifierSystem myLcs;
 
 	public LCSMetricBundle(AbstractLearningClassifierSystem lcs,
-			final Vector<ILCSMetric> initialMetrics) {
+							final Vector<ILCSMetric> initialMetrics) {
+		
 		metrics = initialMetrics;
 		myLcs = lcs;
 	}

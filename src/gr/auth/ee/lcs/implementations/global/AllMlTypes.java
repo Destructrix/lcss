@@ -27,10 +27,6 @@ package gr.auth.ee.lcs.implementations.global;
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.ArffTrainTestLoader;
 import gr.auth.ee.lcs.FoldEvaluator;
-import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
-import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
-import gr.auth.ee.lcs.evaluators.FileLogger;
-import gr.auth.ee.lcs.evaluators.HammingLossEvaluator;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.IOException;

@@ -27,6 +27,13 @@ package gr.auth.ee.lcs;
 
 import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
+import gr.auth.ee.lcs.classifiers.statistics.MeanAttributeSpecificityStatistic;
+import gr.auth.ee.lcs.classifiers.statistics.MeanCoverageStatistic;
+import gr.auth.ee.lcs.classifiers.statistics.MeanFitnessStatistic;
+import gr.auth.ee.lcs.classifiers.statistics.MeanLabelSpecificity;
+import gr.auth.ee.lcs.classifiers.statistics.WeightedMeanAttributeSpecificityStatistic;
+import gr.auth.ee.lcs.classifiers.statistics.WeightedMeanCoverageStatistic;
+import gr.auth.ee.lcs.classifiers.statistics.WeightedMeanLabelSpecificity;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.data.ILCSMetric;
@@ -36,11 +43,9 @@ import gr.auth.ee.lcs.evaluators.FileLogger;
 import gr.auth.ee.lcs.evaluators.HammingLossEvaluator;
 import gr.auth.ee.lcs.utilities.ExtendedBitSet;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
-import gr.auth.ee.lcs.utilities.InstancesUtility;
 
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Vector;
 
 import weka.core.Instances;
@@ -96,6 +101,9 @@ public abstract class AbstractLearningClassifierSystem {
 	 * @uml.property  name="hookCallbackRate"
 	 */
 	private int hookCallbackRate;
+	
+	
+	public int repetition;
 
 	/**
 	 * Constructor.
@@ -284,6 +292,54 @@ public abstract class AbstractLearningClassifierSystem {
 	}
 
 	/**
+	 * Registration of hooks to perform periodical inspection using metrics.
+	 * 
+	 * @param numberOfLabels 
+	 *				the dataset's number of labels
+	 *
+	 * @author alexandros filotheou
+	 * 
+	 * 
+	 * */
+	public void registerMultilabelHooks(int numberOfLabels) {
+				
+		this.registerHook(new FileLogger("_accuracy",
+				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
+		
+		this.registerHook(new FileLogger("_recall",
+				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_RECALL)));
+		
+		this.registerHook(new FileLogger("_exactMatch", 
+				new ExactMatchEvalutor(this.instances, false, this)));
+		
+		this.registerHook(new FileLogger("_hamming", 
+				new HammingLossEvaluator(this.instances, false, numberOfLabels, this)));
+		
+		this.registerHook(new FileLogger("_meanFitness",
+				new MeanFitnessStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		this.registerHook(new FileLogger("_meanCoverage",
+				new MeanCoverageStatistic()));
+		
+		this.registerHook(new FileLogger("_weightedMeanCoverage",
+				new WeightedMeanCoverageStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		this.registerHook(new FileLogger("_meanAttributeSpecificity",
+				new MeanAttributeSpecificityStatistic()));
+		
+		this.registerHook(new FileLogger("_weightedMeanAttributeSpecificity",
+				new WeightedMeanAttributeSpecificityStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		this.registerHook(new FileLogger("_meanLabelSpecificity",
+				new MeanLabelSpecificity(numberOfLabels)));
+		
+		this.registerHook(new FileLogger("_weightedMeanLabelSpecificity",
+				new WeightedMeanLabelSpecificity(numberOfLabels, AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+	}
+	
+	
+	
+	/**
 	 * Save the rules to the given filename.
 	 * 
 	 * @param filename
@@ -353,6 +409,10 @@ public abstract class AbstractLearningClassifierSystem {
 	 *            the population of the classifiers to train.
 	 * @param evolve
 	 *            set true to evolve population, false to only update it
+	 *            
+	 *            
+	 *            ekteleitai gia iterations fores me evolve = true
+	 *            kai (int) 0.1 * iterations fores me evolve = false
 	 */
 	public final void trainSet(final int iterations,
 							     final ClassifierSet population, 
@@ -360,14 +420,14 @@ public abstract class AbstractLearningClassifierSystem {
 
 		final int numInstances = instances.length;
 
-		int repetition = 0;
+		repetition = 0;
+		
 		int trainsBeforeHook = 0;
 		final double instanceProb = (1. / (numInstances));
-		while (repetition < iterations) { // train  me olo to trainset gia {iterations} fores
-			while ((trainsBeforeHook < hookCallbackRate)
-					&& (repetition < iterations)) { // ap! allios 9a ksefeuge kai anti na ekteleito gia iterations
-				System.out.print('.');				// 9a ekteleito gia iterations * hookCallBackRate
 
+		while (repetition < iterations) { 												  // train  me olo to trainset gia {iterations} fores
+			while ((trainsBeforeHook < hookCallbackRate) && (repetition < iterations)) { // ap! allios 9a ksefeuge kai anti na ekteleito gia iterations
+				System.out.print('.');													  // 9a ekteleito gia iterations * hookCallBackRate
 				for (int i = 0; i < numInstances; i++) {
 					trainWithInstance(population, i, evolve); // i pio kato sunartisi
 					if (Math.random() < instanceProb) // 1/numInstances. ka9e pote prepei na ginetai? skepsou
@@ -375,12 +435,9 @@ public abstract class AbstractLearningClassifierSystem {
 				}
 				repetition++;
 				trainsBeforeHook++;
-
 			}
-//			System.out.println("HOOKS:" + hooks.size()); == 0
 			executeCallbacks(population); // endiamesa briskei metrikes? mallon einai gia na parakolou9isoume tin proodo --> diagrammata
 			trainsBeforeHook = 0;
-
 		}
 
 	}
@@ -433,32 +490,5 @@ public abstract class AbstractLearningClassifierSystem {
 	
 	
 	
-	/**
-	 * Registration of hooks to perform periodical inspection of metrics.
-	 * 
-	 * @param numberOfLabels 
-	 *				the dataset's number of labels
-	 *
-	 * @author alexandros filotheou
-	 * 
-	 * 
-	 * */
-	public void registerMultilabelHooks(int numberOfLabels) {
-		
-		this.registerHook(new FileLogger(
-				"_accuracy",
-				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
-		
-		this.registerHook(new FileLogger(
-				"_recall",
-				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_RECALL)));
-		
-		this.registerHook(new FileLogger(
-				"_exactMatch", 
-				new ExactMatchEvalutor(this.instances, false, this)));
-		
-		this.registerHook(new FileLogger(
-				"_hamming", 
-				new HammingLossEvaluator(this.instances, false, numberOfLabels, this)));
-	}
+
 }

@@ -169,13 +169,15 @@ public class ClassifierSet implements Serializable {
 		if (thoroughAdd) {
 			final Classifier aClassifier = macro.myClassifier;
 			for (int i = 0; i < myMacroclassifiers.size(); i++) {
+				
 				final Classifier theClassifier = myMacroclassifiers.elementAt(i).myClassifier;
+				
 				if (theClassifier.canSubsume()) {
 					if (theClassifier.isMoreGeneral(aClassifier)) {
 						// Subsume and control size...
 						myMacroclassifiers.elementAt(i).numerosity += numerosity;
 						myMacroclassifiers.elementAt(i).numberOfSubsumptions++;
-						
+
 						if (myISizeControlStrategy != null) {
 							myISizeControlStrategy.controlPopulation(this);
 						}
@@ -184,6 +186,7 @@ public class ClassifierSet implements Serializable {
 				} else if (theClassifier.equals(aClassifier)) { // Or it can't
 																// subsume but
 																// it is equal
+					
 					myMacroclassifiers.elementAt(i).numerosity += numerosity;
 					myMacroclassifiers.elementAt(i).numberOfSubsumptions++;
 
@@ -202,6 +205,9 @@ public class ClassifierSet implements Serializable {
 		 * pros9ese ton macroclassifier sto vector myMacroclassifiers.
 		 * sti sunexeia an exei oristei stratigiki diagrafis, ektelese tin.
 		 * an to numerocity ton macroclassifiers einai pano apo to populationSize arxise na diagrafeis
+		 * 
+		 * 
+		 * an borei na kanei subsume de 9a ektelesei tis parakato entoles
 		 */
 		this.myMacroclassifiers.add(macro);
 		if (myISizeControlStrategy != null) {
@@ -380,7 +386,8 @@ public class ClassifierSet implements Serializable {
 	 * @return the macroclassifier at a given index
 	 */
 	public final Macroclassifier getMacroclassifier(final int index) {
-		return new Macroclassifier(this.myMacroclassifiers.elementAt(index));
+		//return new Macroclassifier(this.myMacroclassifiers.elementAt(index));
+		return this.myMacroclassifiers.elementAt(index);
 	}
 
 	/**
@@ -601,7 +608,8 @@ public class ClassifierSet implements Serializable {
 		
 		
 		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
-			myMacroclassifiers.elementAt(i).totalFitness = this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;
+			myMacroclassifiers.elementAt(i).totalFitness = 
+				this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;
 		}
 		
         DecimalFormat df = new DecimalFormat("#.####");
@@ -609,7 +617,8 @@ public class ClassifierSet implements Serializable {
 		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
 			
 			//response.append(this.getClassifier(i).toString()
-			response.append(myMacroclassifiers.elementAt(i).myClassifier.toString()
+			response.append(
+						myMacroclassifiers.elementAt(i).myClassifier.toString()
 					+ " total fitness: " + df.format(myMacroclassifiers.elementAt(i).totalFitness)
 					+ " fit:" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION))
 					+ " num:" + myMacroclassifiers.elementAt(i).numerosity
@@ -627,24 +636,24 @@ public class ClassifierSet implements Serializable {
 				numOfGA++;
 				response.append(" origin: ga "); 
 			}
-			
 			numOfSubsumptions += myMacroclassifiers.elementAt(i).numberOfSubsumptions;
 			response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.timestamp + " ");
 			response.append(System.getProperty("line.separator"));
 		}
 		
 		
-		System.out.println("Population size:" + this.getNumberOfMacroclassifiers());
+		System.out.println("Population size:" 				+ this.getNumberOfMacroclassifiers());
 		System.out.println("Number of classifiers covered:" + (int) numOfCover);
-		System.out.println("Number of classifiers ga-ed:" + (int) numOfGA);
+		System.out.println("Number of classifiers ga-ed:" 	+ (int) numOfGA);
 		
-		System.out.println("% covered:" + 100 * (numOfCover / this.getNumberOfMacroclassifiers()) + " %");
-		System.out.println("% ga-ed:" + 100 * (numOfGA / this.getNumberOfMacroclassifiers()) + " %");
+		System.out.println("% covered:" 					+ df.format(100 * (numOfCover / this.getNumberOfMacroclassifiers())) + " %");
+		System.out.println("% ga-ed:" 						+ df.format(100 * (numOfGA / this.getNumberOfMacroclassifiers())) + " %");
 		
-		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
-		System.out.println("Total number of epochs:" + this.totalGAInvocations);
+		System.out.println("Total number of epochs:" 		+ this.totalGAInvocations);
 
-		System.out.println("Total number of subsumptions:" + numOfSubsumptions);
+		System.out.println("Total number of subsumptions:"	+ numOfSubsumptions);
+		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
+
 
 		return response.toString();
 	}

@@ -106,7 +106,7 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 
 	@Override
 	public final String toString() {
-		return this.myClassifier.toString() + "numerosity: " + this.numerosity;
+		return this.myClassifier.toString() + " numerosity: " + this.numerosity + " numberOfSubsumptions " + this.numberOfSubsumptions;
 	}
 	
 	public int compareTo(Macroclassifier anotherMacro) {
