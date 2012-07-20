@@ -30,6 +30,10 @@ import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.data.ILCSMetric;
+import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
+import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
+import gr.auth.ee.lcs.evaluators.FileLogger;
+import gr.auth.ee.lcs.evaluators.HammingLossEvaluator;
 import gr.auth.ee.lcs.utilities.ExtendedBitSet;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 import gr.auth.ee.lcs.utilities.InstancesUtility;
@@ -424,5 +428,37 @@ public abstract class AbstractLearningClassifierSystem {
 									   final ClassifierSet population) {
 		
 		trainSet(iterations, population, false); // evolve = false
+	}
+	
+	
+	
+	
+	/**
+	 * Registration of hooks to perform periodical inspection of metrics.
+	 * 
+	 * @param numberOfLabels 
+	 *				the dataset's number of labels
+	 *
+	 * @author alexandros filotheou
+	 * 
+	 * 
+	 * */
+	public void registerMultilabelHooks(int numberOfLabels) {
+		
+		this.registerHook(new FileLogger(
+				"_accuracy",
+				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
+		
+		this.registerHook(new FileLogger(
+				"_recall",
+				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_RECALL)));
+		
+		this.registerHook(new FileLogger(
+				"_exactMatch", 
+				new ExactMatchEvalutor(this.instances, false, this)));
+		
+		this.registerHook(new FileLogger(
+				"_hamming", 
+				new HammingLossEvaluator(this.instances, false, numberOfLabels, this)));
 	}
 }
