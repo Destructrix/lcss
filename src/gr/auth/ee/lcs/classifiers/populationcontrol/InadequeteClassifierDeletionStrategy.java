@@ -76,6 +76,7 @@ public class InadequeteClassifierDeletionStrategy implements
 					&& (aClassifier.getCoverage() == 0);
 			if (zeroCoverage)
 				//aSet.deleteClassifier(i);
+				System.out.println("xaxa");
 				aSet.deleteMacroclassifier(i); // afou telika exei zero coverage den exei noima na ton kratame
 		}
 

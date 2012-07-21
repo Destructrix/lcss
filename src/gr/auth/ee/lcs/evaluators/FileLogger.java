@@ -71,12 +71,13 @@ public class FileLogger implements ILCSMetric {
 		
 		String str = sdf.format(cal.getTime());
 		
-		
-		File dir = new File("hookedMetrics/" + str);
+		// make directory hookedMetrics/{simpleDateFormat}
+		File dir = new File("hookedMetrics/" + str); 
 		if (!dir.exists()) {
 		  dir.mkdir();
 		}
-		file = "hookedMetrics/" + str + "/" + filename + ".txt"; // gia na grafontai sto fakelo lcss/hookedMetrics
+		
+		file = "hookedMetrics/" + str + "/" + filename + ".txt"; 
 		actualEvaluator = evaluator;
 		
 		try {
