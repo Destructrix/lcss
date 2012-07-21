@@ -295,7 +295,7 @@ public abstract class AbstractLearningClassifierSystem {
 	 * Registration of hooks to perform periodical inspection using metrics.
 	 * 
 	 * @param numberOfLabels 
-	 *				the dataset's number of labels
+	 *				the dataset's number of labels. 
 	 *
 	 * @author alexandros filotheou
 	 * 
@@ -303,37 +303,37 @@ public abstract class AbstractLearningClassifierSystem {
 	 * */
 	public void registerMultilabelHooks(int numberOfLabels) {
 				
-		this.registerHook(new FileLogger("_accuracy",
+		this.registerHook(new FileLogger("accuracy",
 				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
 		
-		this.registerHook(new FileLogger("_recall",
+		this.registerHook(new FileLogger("recall",
 				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_RECALL)));
 		
-		this.registerHook(new FileLogger("_exactMatch", 
+		this.registerHook(new FileLogger("exactMatch", 
 				new ExactMatchEvalutor(this.instances, false, this)));
 		
-		this.registerHook(new FileLogger("_hamming", 
+		this.registerHook(new FileLogger("hamming", 
 				new HammingLossEvaluator(this.instances, false, numberOfLabels, this)));
 		
-		this.registerHook(new FileLogger("_meanFitness",
+		this.registerHook(new FileLogger("meanFitness",
 				new MeanFitnessStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
 		
-		this.registerHook(new FileLogger("_meanCoverage",
+		this.registerHook(new FileLogger("meanCoverage",
 				new MeanCoverageStatistic()));
 		
-		this.registerHook(new FileLogger("_weightedMeanCoverage",
+		this.registerHook(new FileLogger("weightedMeanCoverage",
 				new WeightedMeanCoverageStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
 		
-		this.registerHook(new FileLogger("_meanAttributeSpecificity",
+		this.registerHook(new FileLogger("meanAttributeSpecificity",
 				new MeanAttributeSpecificityStatistic()));
 		
-		this.registerHook(new FileLogger("_weightedMeanAttributeSpecificity",
+		this.registerHook(new FileLogger("weightedMeanAttributeSpecificity",
 				new WeightedMeanAttributeSpecificityStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
 		
-		this.registerHook(new FileLogger("_meanLabelSpecificity",
+		this.registerHook(new FileLogger("meanLabelSpecificity",
 				new MeanLabelSpecificity(numberOfLabels)));
 		
-		this.registerHook(new FileLogger("_weightedMeanLabelSpecificity",
+		this.registerHook(new FileLogger("weightedMeanLabelSpecificity",
 				new WeightedMeanLabelSpecificity(numberOfLabels, AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
 	}
 	

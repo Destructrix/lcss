@@ -69,14 +69,15 @@ public class InadequeteClassifierDeletionStrategy implements
 	public final void controlPopulation(final ClassifierSet aSet) {
 
 		final int setSize = aSet.getNumberOfMacroclassifiers();
-
+		
 		for (int i = setSize - 1; i >= 0; i--) {
 			final Classifier aClassifier = aSet.getClassifier(i);
 			final boolean zeroCoverage = (aClassifier.getCheckedInstances() >= myLcs.instances.length)
 					&& (aClassifier.getCoverage() == 0);
 			if (zeroCoverage)
 				//aSet.deleteClassifier(i);
-				System.out.println("xaxa");
+				// do not add any sort of instruction in here
+				//System.out.println("xaxa"); XALAEI OLO TO RULESET WTF
 				aSet.deleteMacroclassifier(i); // afou telika exei zero coverage den exei noima na ton kratame
 		}
 

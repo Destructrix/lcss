@@ -319,17 +319,16 @@ public class ClassifierSet implements Serializable {
 			// getClassifier(i) <--- this.myMacroclassifiers.elementAt(index).myClassifier;
 			
 
-			
-
-			
 			if (this.getClassifier(i).isMatch(dataInstanceIndex)) { 
 				
 				matchSet.addClassifier(this.getMacroclassifier(i), false); // ton pros9eto. prepei na elegkso oti den exo fugei pano apo to megisto ari9mo classifiers (mono ston population xreiazetai logika)
 			}
 			
-			boolean zeroCoverage = (this.getClassifier(i).getCheckedInstances() >= this.getClassifier(i).getLCS().instances.length) && (this.getClassifier(i).getCoverage() == 0);
+			boolean zeroCoverage = (this.getClassifier(i).getCheckedInstances() >= this.getClassifier(i).getLCS().instances.length) 
+									 && (this.getClassifier(i).getCoverage() == 0);
 			
 			if(zeroCoverage) {
+				matchSet.deleteMacroclassifier(i);
 				this.deleteMacroclassifier(i);
 			}
 		}
