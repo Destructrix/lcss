@@ -207,7 +207,7 @@ public class ClassifierSet implements Serializable {
 		 * an to numerocity ton macroclassifiers einai pano apo to populationSize arxise na diagrafeis
 		 * 
 		 * 
-		 * an borei na kanei subsume de 9a ektelesei tis parakato entoles
+		 * an borei na kanei subsume de 9a ektelesei tis parakato entoles (return statements pio pano)
 		 */
 		this.myMacroclassifiers.add(macro);
 		if (myISizeControlStrategy != null) {
@@ -227,11 +227,9 @@ public class ClassifierSet implements Serializable {
 		int index;
 		final int macroSize = myMacroclassifiers.size();
 		for (index = 0; index < macroSize; index++) {
-			if (myMacroclassifiers.elementAt(index).myClassifier.getSerial() 
-					== 
-				aClassifier.getSerial())
-				
+			if (myMacroclassifiers.elementAt(index).myClassifier.getSerial() ==  aClassifier.getSerial()) {
 				break;
+			}
 		}
 
 		if (index == macroSize)
@@ -637,6 +635,7 @@ public class ClassifierSet implements Serializable {
 			}
 			numOfSubsumptions += myMacroclassifiers.elementAt(i).numberOfSubsumptions;
 			response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.timestamp + " ");
+			response.append(" subsumptions: " + myMacroclassifiers.elementAt(i).numberOfSubsumptions + " ");
 			response.append(System.getProperty("line.separator"));
 		}
 		

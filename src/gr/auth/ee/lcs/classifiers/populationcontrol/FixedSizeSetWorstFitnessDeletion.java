@@ -73,7 +73,6 @@ public class FixedSizeSetWorstFitnessDeletion implements
 		
 		this.populationSize = maxPopulationSize;
 		mySelector = selector; // roulette wheel gia ton GMlASLCS3
-
 		zeroCoverageRemoval = new InadequeteClassifierDeletionStrategy(lcs);
 	}
 
@@ -81,6 +80,11 @@ public class FixedSizeSetWorstFitnessDeletion implements
 	 * @param aSet
 	 *            the set to control
 	 * @see gr.auth.ee.lcs.classifiers.IPopulationControlStrategy#controlPopulation(gr.auth.ee.lcs.classifiers.ClassifierSet)
+	 * 
+	 * 
+	 * ekteleitai otan kano addClassifier ston population. diladi otan kano cover i ga.
+	 * diagrapse prota autous pou exoun zero coverage. 
+	 * sti sunexeia, an akoma eimaste pano apo to ano orio tou pli9ismou, diagrapse me rouleta osous kanones prepei oste na pesoume kato apo to ano orio
 	 */
 	@Override
 	public final void controlPopulation(final ClassifierSet aSet) {
@@ -91,7 +95,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			zeroCoverageRemoval.controlPopulation(aSet);
 		
 		while (aSet.getTotalNumerosity() > populationSize) {
-			mySelector.select(1, aSet, toBeDeleted);
+			mySelector.select(1, aSet, toBeDeleted); // me rouleta
 			aSet.deleteClassifier(toBeDeleted.getClassifier(0));
 			toBeDeleted.deleteClassifier(0);
 		}

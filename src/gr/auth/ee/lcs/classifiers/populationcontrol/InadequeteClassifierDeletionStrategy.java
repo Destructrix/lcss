@@ -39,6 +39,8 @@ import gr.auth.ee.lcs.classifiers.IPopulationControlStrategy;
  */
 public class InadequeteClassifierDeletionStrategy implements
 		IPopulationControlStrategy {
+	
+	public int execs;
 
 	/**
 	 * @uml.property  name="myLcs"
@@ -67,20 +69,17 @@ public class InadequeteClassifierDeletionStrategy implements
 	 */
 	@Override
 	public final void controlPopulation(final ClassifierSet aSet) {
-
 		final int setSize = aSet.getNumberOfMacroclassifiers();
 		
 		for (int i = setSize - 1; i >= 0; i--) {
 			final Classifier aClassifier = aSet.getClassifier(i);
 			final boolean zeroCoverage = (aClassifier.getCheckedInstances() >= myLcs.instances.length)
 					&& (aClassifier.getCoverage() == 0);
-			if (zeroCoverage)
-				//aSet.deleteClassifier(i);
-				// do not add any sort of instruction in here
-				//System.out.println("xaxa"); XALAEI OLO TO RULESET WTF
+			if (zeroCoverage) {
+				//aSet.deleteClassifier(i);				
 				aSet.deleteMacroclassifier(i); // afou telika exei zero coverage den exei noima na ton kratame
+			}
 		}
-
 	}
 
 }

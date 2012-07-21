@@ -194,6 +194,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		switch (mode) {
 		case COMPARISON_MODE_EXPLORATION:
 			return ((aClassifier.experience < 10) ? 0 : data.fitness);
+			
 		case COMPARISON_MODE_DELETION:
 			return 1 / (data.fitness * ((aClassifier.experience < THETA_DEL) ? 100.
 					: Math.exp(-(Double.isNaN(data.ns) ? 1 : data.ns) + 1)));
@@ -219,10 +220,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		
         DecimalFormat df = new DecimalFormat("#.####");
 
-		return " internalFitness: " + df.format(data.fitness) 
+		return   " internalFitness: " + df.format(data.fitness) 
 				+ " tp: " + df.format(data.tp) 
-				+ " msa: " + df.format(data.msa) + 
-				" ns: " + df.format(data.ns);
+				+ " msa: " + df.format(data.msa) 
+				+ " ns: " + df.format(data.ns);
 	}
 
 	/*
@@ -269,10 +270,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		// Create all label correct sets
 		final ClassifierSet[] labelCorrectSets = new ClassifierSet[numberOfLabels];
 
-		for (int i = 0; i < numberOfLabels; i++) // gia ka9e label parago to correctSet pou antistoixei se auto
+		for (int i = 0; i < numberOfLabels; i++) { // gia ka9e label parago to correctSet pou antistoixei se auto
 			
 			labelCorrectSets[i] = generateLabelCorrectSet(matchSet, instanceIndex, i); // periexei tous kanones pou apofasizoun gia to label 9etika.
-																					   // den perilambanei autous pou adiaforoun.
+		}																			   // den perilambanei autous pou adiaforoun.
 
 		final int matchSetSize = matchSet.getNumberOfMacroclassifiers();
 		
@@ -280,28 +281,22 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		for (int i = 0; i < matchSetSize; i++) { // gia ka9e macroclassifier
 			
 			final Macroclassifier cl = matchSet.getMacroclassifier(i);
-
 			int minCurrentNs = Integer.MAX_VALUE;
-
 			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 
 			for (int l = 0; l < numberOfLabels; l++) {
-				
 				// Get classification ability for label l. an anikei dld sto labelCorrectSet me alla logia.
 				final float classificationAbility = cl.myClassifier.classifyLabelCorrectly(instanceIndex, l);
 
 				if (classificationAbility == 0) // an proekupse apo adiaforia
-					data.tp += .9;
+					data.tp += 0.9;
 				else if (classificationAbility > 0) { // an proekupse apo 9etiki apofasi (yper)
-					
 					data.tp += 1;
 					final int labelNs = labelCorrectSets[l].getTotalNumerosity();
-					
 					if (minCurrentNs > labelNs) { // bainei edo mono otan exei prokupsei apo 9etiki apofasi
 						minCurrentNs = labelNs;
 					}
 				}
-				
 				data.msa += 1;
 
 			} // kleinei to for gia ka9e label

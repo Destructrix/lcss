@@ -173,7 +173,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		rulePopulation = new ClassifierSet(
 											new FixedSizeSetWorstFitnessDeletion(this,
 																				 populationSize,
-																				 new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_DELETION, true)));
+																				 new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_DELETION /*=1*/, true)));
 	}
 
 	@Override
