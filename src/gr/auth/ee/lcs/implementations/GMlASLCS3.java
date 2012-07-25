@@ -233,7 +233,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		
 		
 		/*
-		 * oi proigoumenes metrikes anaferontan sto testSet. apo edo kai pera milame gia olo to dataset (instances)
+		 * oi proigoumenes metrikes anaferontan sto testSet. apo edo kai pera milame gia olo to testSet
 		 * */
 		final AccuracyRecallEvaluator selfAcc = new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		

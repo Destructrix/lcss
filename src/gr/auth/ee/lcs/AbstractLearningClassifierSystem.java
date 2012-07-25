@@ -145,9 +145,11 @@ public abstract class AbstractLearningClassifierSystem {
 			final boolean zeroCoverage = (aClassifier.getCheckedInstances() >= instances.length)
 				// einai dunaton getCheckedInstances() > instances.length ? see classifier.384 [...]
 					&& (aClassifier.getCoverage() == 0);
-			if (zeroCoverage)
+			if (zeroCoverage) {
+				// meta tin allagi stin ClassifierSet.geerateMatchset, opou diagrafetai opoios kanonas exei zero coverage, auti i klisi den exei pleon noima
 				//aSet.deleteClassifier(i); // de 9a eprepe na diagrapsei olo ton macroclassifier?
 				aSet.deleteMacroclassifier(i);
+			}
 		}
 
 	}
@@ -423,15 +425,15 @@ public abstract class AbstractLearningClassifierSystem {
 		repetition = 0;
 		
 		int trainsBeforeHook = 0;
-		final double instanceProb = (1. / (numInstances));
+		//final double instanceProb = (1. / (numInstances));
 
 		while (repetition < iterations) { 												  // train  me olo to trainset gia {iterations} fores
 			while ((trainsBeforeHook < hookCallbackRate) && (repetition < iterations)) { // ap! allios 9a ksefeuge kai anti na ekteleito gia iterations
 				System.out.print('.');													  // 9a ekteleito gia iterations * hookCallBackRate
 				for (int i = 0; i < numInstances; i++) {
 					trainWithInstance(population, i, evolve); // i pio kato sunartisi
-					if (Math.random() < instanceProb) // 1/numInstances. ka9e pote prepei na ginetai? skepsou
-						cleanUpZeroCoverageClassifiers(population);
+					/*if (Math.random() < instanceProb) // 1/numInstances. ka9e pote prepei na ginetai? skepsou
+						cleanUpZeroCoverageClassifiers(population);*/
 				}
 				repetition++;
 				trainsBeforeHook++;

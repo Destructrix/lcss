@@ -388,7 +388,7 @@ public final class GenericMultiLabelRepresentation extends
 		 * 
 		 * */
 		private float[] getConfidenceArray(final ClassifierSet aSet,
-										   final double[] visionVector) {
+										     final double[] visionVector) {
 			
 			final float[] votingTable = new float[numberOfLabels]; // auto ginetai gia ka9e instance
 			Arrays.fill(votingTable, 0);

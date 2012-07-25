@@ -31,6 +31,7 @@ import gr.auth.ee.lcs.data.ILCSMetric;
 /**
  * Calculates the mean coverage statistic weighted by each classifier's fitness.
  * 
+ * 
  * @author Miltos Allamanis
  * 
  */
@@ -54,6 +55,7 @@ public class WeightedMeanCoverageStatistic implements ILCSMetric {
 	 */
 	@Override
 	public double getMetric(AbstractLearningClassifierSystem lcs) {
+		
 		final ClassifierSet set = lcs.getRulePopulation();
 		double coverageSum = 0;
 		double fitnessSum = 0;
@@ -61,11 +63,9 @@ public class WeightedMeanCoverageStatistic implements ILCSMetric {
 		final int numOfMacroclassifiers = set.getNumberOfMacroclassifiers();
 		for (int i = 0; i < numOfMacroclassifiers; i++) {
 			final int classifierNumerosity = set.getClassifierNumerosity(i);
-			final double classifierFitness = set.getClassifier(i)
-					.getComparisonValue(comparisonMode);
-			final double totalFitness = classifierFitness
-					* classifierNumerosity;
-			coverageSum += totalFitness * set.getClassifier(i).getCoverage();
+			final double classifierFitness = set.getClassifier(i).getComparisonValue(comparisonMode);
+			final double totalFitness = classifierFitness* classifierNumerosity;
+			coverageSum += totalFitness * set.getClassifier(i).getCoverage(); // covered/checked
 			fitnessSum += totalFitness;
 
 		}

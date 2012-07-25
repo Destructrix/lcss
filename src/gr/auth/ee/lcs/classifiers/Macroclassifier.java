@@ -41,7 +41,7 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 	 * The myClassifier's numerosity.
 	 * @uml.property  name="numerosity"
 	 */
-	public int numerosity;
+	public int numerosity = 1;
 
 	/**
 	 * The (micro-)classifier of the macroclassifier.
@@ -53,6 +53,8 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 	public int numberOfSubsumptions;
 	
 	public double totalFitness;
+	
+	//public double alternateFitness;
 
 	/**
 	 * The Macroclassifier object constructor.
@@ -75,8 +77,11 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 	 *            the macroclassifier to copy
 	 */
 	public Macroclassifier(final Macroclassifier copy) {
+		
 		myClassifier = copy.myClassifier;
 		numerosity = copy.numerosity;
+		numberOfSubsumptions = copy.numberOfSubsumptions;
+		//totalFitness = copy.totalFitness;
 	}
 
 	/**
@@ -106,7 +111,11 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 
 	@Override
 	public final String toString() {
-		return this.myClassifier.toString() + " numerosity: " + this.numerosity + " numberOfSubsumptions " + this.numberOfSubsumptions;
+		return this.myClassifier.toString() 
+				+ " numerosity: " + this.numerosity 
+				+ " numberOfSubsumptions " + this.numberOfSubsumptions 
+				+ " totalFitness: " + this.totalFitness
+				/*+ " alternate fitness: " + this.alternateFitness*/;
 	}
 	
 	public int compareTo(Macroclassifier anotherMacro) {

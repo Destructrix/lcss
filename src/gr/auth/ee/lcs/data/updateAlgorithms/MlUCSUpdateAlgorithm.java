@@ -113,6 +113,7 @@ public final class MlUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 		 *            the number of labels used
 		 */
 		public MlUCSClassifierData(final int numberOfLabels) {
+			
 			tp = new int[numberOfLabels];
 			fp = new int[numberOfLabels];
 			cs = new float[numberOfLabels];
@@ -420,8 +421,9 @@ public final class MlUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 	 *            true to run cover and GA operators
 	 */
 	private void updatePerLabel(final ClassifierSet population,
-			final ClassifierSet matchSet, final int instanceIndex,
-			final boolean evolve) {
+								  final ClassifierSet matchSet, 
+								  final int instanceIndex,
+								  final boolean evolve) {
 
 		// Generate random labels
 		final int[] labelSequence = new int[numberOfLabels];
@@ -432,6 +434,7 @@ public final class MlUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 		// Shuffle
 		final Random rgen = new Random();
 		for (int i = 0; i < numberOfLabels; i++) {
+			
 			final int randomPosition = rgen.nextInt(numberOfLabels);
 			final int temp = labelSequence[i];
 			labelSequence[i] = labelSequence[randomPosition];
@@ -439,13 +442,11 @@ public final class MlUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 		}
 
 		for (int j = 0; j < numberOfLabels; j++) {
+			
 			int label = labelSequence[j];
-			ClassifierSet labelMatchSet = generateLabelMatchSet(matchSet,
-					instanceIndex, label);
-			ClassifierSet labelCorrectSet = generateCorrectSet(labelMatchSet,
-					instanceIndex, label);
-			final int matchSetSize = labelMatchSet
-					.getNumberOfMacroclassifiers();
+			ClassifierSet labelMatchSet = generateLabelMatchSet(matchSet, instanceIndex, label);
+			ClassifierSet labelCorrectSet = generateCorrectSet(labelMatchSet, instanceIndex, label);
+			final int matchSetSize = labelMatchSet.getNumberOfMacroclassifiers();
 			final int correctSetSize = labelCorrectSet.getTotalNumerosity();
 
 			if ((correctSetSize == 0) && evolve) {
@@ -455,20 +456,19 @@ public final class MlUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 
 			float fitnessSum = 0;
 			for (int i = 0; i < matchSetSize; i++) {
+				
 				final Classifier cl = labelMatchSet.getClassifier(i);
-				final MlUCSClassifierData data = ((MlUCSClassifierData) cl
-						.getUpdateDataObject());
-				final int numerosity = labelMatchSet
-						.getClassifierNumerosity(cl);
+				final MlUCSClassifierData data = ((MlUCSClassifierData) cl.getUpdateDataObject());
+				final int numerosity = labelMatchSet.getClassifierNumerosity(cl);
 				if (cl.classifyLabelCorrectly(instanceIndex, label) > 0) {
+					
 					data.tp[label] += 1;
-					if (Double.isInfinite(data.cs[label]))
+					if (Double.isInfinite(data.cs[label])) 
 						System.out.println("in " + data.cs[label]);
 					data.cs[label] += b * (correctSetSize - data.cs[label]);
 					if (Double.isInfinite(data.cs[label]))
 						System.out.println("out " + data.cs[label]);
-					final float acc = ((float) (data.tp[label]))
-							/ ((float) (data.tp[label] + data.fp[label]));
+					final float acc = ((float) (data.tp[label])) / ((float) (data.tp[label] + data.fp[label]));
 					if (acc > acc0) {
 						data.fitness0[label] = 1;
 					} else {
@@ -482,12 +482,11 @@ public final class MlUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 			}
 
 			for (int i = 0; i < matchSetSize; i++) {
+				
 				final Classifier cl = labelMatchSet.getClassifier(i);
-				final MlUCSClassifierData data = ((MlUCSClassifierData) cl
-						.getUpdateDataObject());
+				final MlUCSClassifierData data = ((MlUCSClassifierData) cl.getUpdateDataObject());
 
-				data.labelFitness[label] += b
-						* ((data.fitness0[label] / fitnessSum) - data.labelFitness[label]);
+				data.labelFitness[label] += b * ((data.fitness0[label] / fitnessSum) - data.labelFitness[label]);
 			}
 		}
 	}

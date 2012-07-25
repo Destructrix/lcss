@@ -319,14 +319,14 @@ public class ClassifierSet implements Serializable {
 
 			if (this.getClassifier(i).isMatch(dataInstanceIndex)) { 
 				
-				matchSet.addClassifier(this.getMacroclassifier(i), false); // ton pros9eto. prepei na elegkso oti den exo fugei pano apo to megisto ari9mo classifiers (mono ston population xreiazetai logika)
+				matchSet.addClassifier(this.getMacroclassifier(i), false); 
 			}
 			
 			boolean zeroCoverage = (this.getClassifier(i).getCheckedInstances() >= this.getClassifier(i).getLCS().instances.length) 
 									 && (this.getClassifier(i).getCoverage() == 0);
 			
 			if(zeroCoverage) {
-				matchSet.deleteMacroclassifier(i);
+				//matchSet.deleteMacroclassifier(i);
 				this.deleteMacroclassifier(i);
 			}
 		}
@@ -376,14 +376,29 @@ public class ClassifierSet implements Serializable {
 	}
 
 	/**
-	 * Returns the macroclassifier at the given index.
+	 * Returns (a copy of) the macroclassifier at the given index.
 	 * 
 	 * @param index
 	 *            the index of the macroclassifier vector
 	 * @return the macroclassifier at a given index
 	 */
 	public final Macroclassifier getMacroclassifier(final int index) {
-		//return new Macroclassifier(this.myMacroclassifiers.elementAt(index));
+		return new Macroclassifier(this.myMacroclassifiers.elementAt(index));
+		//return this.myMacroclassifiers.elementAt(index);
+	}
+	
+	
+	/**
+	 * Returns the actual (not a copy as the aboce method) macroclassifier at the given index.
+	 * 
+	 * @param index
+	 *            the index of the macroclassifier vector
+	 * @return the macroclassifier at a given index
+	 * 
+	 * @author alexandros filotheou
+	 */
+	
+	public Macroclassifier getActualMacroclassifier(final int index) {
 		return this.myMacroclassifiers.elementAt(index);
 	}
 
@@ -616,12 +631,15 @@ public class ClassifierSet implements Serializable {
 			//response.append(this.getClassifier(i).toString()
 			response.append(
 						myMacroclassifiers.elementAt(i).myClassifier.toString()
-					+ " total fitness: " + df.format(myMacroclassifiers.elementAt(i).totalFitness)
-					+ " fit:" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION))
-					+ " num:" + myMacroclassifiers.elementAt(i).numerosity
 					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
-					+ " exp:" + myMacroclassifiers.elementAt(i).myClassifier.experience 
-					+ " cov:" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getCoverage()));
+					// myMacroclassifiers.elementAt(i).toString isos kalutera
+					+ " total macro fit: " + myMacroclassifiers.elementAt(i).totalFitness
+					//+ " alt fit: " + myMacroclassifiers.elementAt(i).alternateFitness
+					+ " fit: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION))
+					+ " num: " + myMacroclassifiers.elementAt(i).numerosity
+					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
+					+ " exp: " + myMacroclassifiers.elementAt(i).myClassifier.experience 
+					+ " cov: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getCoverage()));
 			
 			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
 			
@@ -647,7 +665,7 @@ public class ClassifierSet implements Serializable {
 		System.out.println("% covered:" 					+ df.format(100 * (numOfCover / this.getNumberOfMacroclassifiers())) + " %");
 		System.out.println("% ga-ed:" 						+ df.format(100 * (numOfGA / this.getNumberOfMacroclassifiers())) + " %");
 		
-		System.out.println("Total number of epochs:" 		+ this.totalGAInvocations);
+		System.out.println("Total number of ga invocations:" 		+ this.totalGAInvocations);
 
 		System.out.println("Total number of subsumptions:"	+ numOfSubsumptions);
 		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);

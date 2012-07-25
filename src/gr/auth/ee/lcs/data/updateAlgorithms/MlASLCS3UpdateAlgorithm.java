@@ -75,6 +75,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		 * true positives.
 		 */
 		public double tp = 0;
+		
+		public double totalFitness = 1;
+		
+		// public double alternateFitness = 1;
 
 	}
 
@@ -173,7 +177,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * gr.auth.ee.lcs.data.AbstractUpdateStrategy#createStateClassifierObject()
+	 * gr.auth.ee.lcs.data.AbstractUpdateStrategy#createStateClassifierObjecAccuracy(best): 1.0
+Recall(best): 1.0
+HammingLoss(best): 0.0
+ExactMatch(best): 1.0t()
 	 */
 	@Override
 	public Serializable createStateClassifierObject() {
@@ -191,17 +198,19 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	public double getComparisonValue(Classifier aClassifier, int mode) {
 		
 		final MlASLCSClassifierData data = (MlASLCSClassifierData) aClassifier.getUpdateDataObject();
+		
 		switch (mode) {
 		case COMPARISON_MODE_EXPLORATION:
 			return ((aClassifier.experience < 10) ? 0 : data.fitness);
-			
+			// clean up please
 		case COMPARISON_MODE_DELETION:
 			return 1 / (data.fitness * ((aClassifier.experience < THETA_DEL) ? 100.
 					: Math.exp(-(Double.isNaN(data.ns) ? 1 : data.ns) + 1)));
 
 		case COMPARISON_MODE_EXPLOITATION:
+			//aClassifier.experience < 10) ? 0  kai edo
 			final double exploitationFitness = Math.pow(((data.tp) / (data.msa)) , n); // auto einai to accuracy oxi to fitness
-			return Double.isNaN(exploitationFitness) ? 0 : exploitationFitness;
+			return (aClassifier.experience < 10) ? 0 : (Double.isNaN(exploitationFitness) ? 0 : exploitationFitness);
 		default:
 		}
 		return 0;
@@ -216,14 +225,17 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 */
 	@Override
 	public String getData(Classifier aClassifier) {
+		
 		final MlASLCSClassifierData data = ((MlASLCSClassifierData) aClassifier.getUpdateDataObject());
 		
         DecimalFormat df = new DecimalFormat("#.####");
 
-		return   " internalFitness: " + df.format(data.fitness) 
-				+ " tp: " + df.format(data.tp) 
+		return  /* " internalFitness: " + df.format(data.fitness) 
+				+ */" tp: " + df.format(data.tp) 
 				+ " msa: " + df.format(data.msa) 
-				+ " ns: " + df.format(data.ns);
+				+ " ns: " + df.format(data.ns)
+				/*+ " total fitness: " + df.format(data.totalFitness) 
+				+ " alt fitness: " + df.format(data.alternateFitness) */ ;
 	}
 
 	/*
@@ -280,7 +292,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		// For each classifier in the matchset
 		for (int i = 0; i < matchSetSize; i++) { // gia ka9e macroclassifier
 			
-			final Macroclassifier cl = matchSet.getMacroclassifier(i);
+			final Macroclassifier cl = matchSet.getMacroclassifier(i); // getMacroclassifier => fernei to copy, oxi ton idio ton macroclassifier
+			
 			int minCurrentNs = Integer.MAX_VALUE;
 			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 
@@ -309,11 +322,18 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			 * 
 			 * */
 			
-			if (minCurrentNs != Integer.MAX_VALUE) 
+			if (minCurrentNs != Integer.MAX_VALUE) {
 				//data.ns += .1 * (minCurrentNs - data.ns);
 				data.ns += LEARNING_RATE * (minCurrentNs - data.ns);
+			}
 			
 			data.fitness = Math.pow((data.tp) / (data.msa), n);
+			
+			// fitness calculation as in MlClassificationWithLCS paper
+			//data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
+			
+			
+
 			updateSubsumption(cl.myClassifier);
 			
 		} // kleinei to for gia ka9e macroclassifier

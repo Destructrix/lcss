@@ -103,12 +103,12 @@ public class LCSMetricBundle {
 	 * Convert the bundle to a string.
 	 */
 	public String toString() {
+		
 		final StringBuffer response = new StringBuffer();
 		final int numOfMetrics = metrics.size();
 
 		for (int i = 0; i < numOfMetrics; i++) {
-			response.append(metrics.elementAt(i).getMetricName() + ": "
-					+ metrics.elementAt(i).getMetric(myLcs));
+			response.append(metrics.elementAt(i).getMetricName() + ": " + 100 * metrics.elementAt(i).getMetric(myLcs) + " %");
 			response.append(System.getProperty("line.separator"));
 		}
 

@@ -46,8 +46,8 @@ public class MeanAttributeSpecificityStatistic implements ILCSMetric {
 	 */
 	@Override
 	public double getMetric(AbstractLearningClassifierSystem lcs) {
-		final ClassifierTransformBridge bridge = lcs
-				.getClassifierTransformBridge();
+		
+		final ClassifierTransformBridge bridge = lcs.getClassifierTransformBridge();
 		final int numberOfAttributes = bridge.getNumberOfAttributes();
 		final ClassifierSet set = lcs.getRulePopulation();
 		final int numberOfMacroclassifiers = set.getNumberOfMacroclassifiers();
@@ -64,7 +64,7 @@ public class MeanAttributeSpecificityStatistic implements ILCSMetric {
 		}
 
 		return ((double) specificAttibutes)
-				/ ((double) (numberOfMacroclassifiers * numberOfAttributes));
+				/ ((double) (numberOfMacroclassifiers * Math.pow(numberOfAttributes, 2)));
 	}
 
 	/*

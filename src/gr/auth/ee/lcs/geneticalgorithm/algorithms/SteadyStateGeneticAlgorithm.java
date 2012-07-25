@@ -140,8 +140,9 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		//System.out.println("timestamp changed");
 
 		final int meanAge = getMeanAge(evolveSet); // i mesi ilikia tou sunolou ton macroclassifiers tou classifierSet
-		if (timestamp - meanAge < this.gaActivationAge)
+		if (timestamp - meanAge < this.gaActivationAge) {
 			return;
+		}
 
 		final int evolveSetSize = evolveSet.getNumberOfMacroclassifiers();
 		for (int i = 0; i < evolveSetSize; i++) {
