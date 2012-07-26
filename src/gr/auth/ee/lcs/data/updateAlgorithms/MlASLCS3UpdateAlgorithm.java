@@ -168,7 +168,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 											  .getClassifierTransformBridge()
 											  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
 		
-		coveringClassifier.timestamp = ga.getTimestamp();
+		coveringClassifier.created = ga.getTimestamp();
 		
 		population.addClassifier(new Macroclassifier(coveringClassifier, 1), false);
 	}
@@ -177,11 +177,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * gr.auth.ee.lcs.data.AbstractUpdateStrategy#createStateClassifierObjecAccuracy(best): 1.0
-Recall(best): 1.0
-HammingLoss(best): 0.0
-ExactMatch(best): 1.0t()
-	 */
+	 * gr.auth.ee.lcs.data.AbstractUpdateStrategy#createStateClassifierObject()
+	 * */
 	@Override
 	public Serializable createStateClassifierObject() {
 		return new MlASLCSClassifierData();

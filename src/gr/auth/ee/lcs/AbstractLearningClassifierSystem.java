@@ -27,6 +27,7 @@ package gr.auth.ee.lcs;
 
 import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
+import gr.auth.ee.lcs.classifiers.populationcontrol.SortPopulationControl;
 import gr.auth.ee.lcs.classifiers.statistics.MeanAttributeSpecificityStatistic;
 import gr.auth.ee.lcs.classifiers.statistics.MeanCoverageStatistic;
 import gr.auth.ee.lcs.classifiers.statistics.MeanFitnessStatistic;
@@ -45,6 +46,9 @@ import gr.auth.ee.lcs.utilities.ExtendedBitSet;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -71,6 +75,8 @@ public abstract class AbstractLearningClassifierSystem {
 	 */
 	
 	public double labelCardinality = 1;
+	
+	public String hookedMetricsFileName;
 	
 	
 	private ClassifierTransformBridge transformBridge;
@@ -167,10 +173,78 @@ public abstract class AbstractLearningClassifierSystem {
 	 * @param aSet
 	 *            the set on which to run the callbacks
 	 */
-	private void executeCallbacks(final ClassifierSet aSet) {
+	private void executeCallbacks(final ClassifierSet aSet, final int repetition) {
 		for (int i = 0; i < hooks.size(); i++) {
 			hooks.elementAt(i).getMetric(this);
 		}
+		
+		
+		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+		srt.controlPopulation(this.rulePopulation);
+		
+		int numberOfClassifiersCovered = 0;
+		int numberClassifiersGaed = 0;
+		int numberOfSubsumptions = 0;
+		
+		for (int i = 0; i < rulePopulation.getNumberOfMacroclassifiers(); i++) {
+			if (this.getRulePopulation().getMacroclassifier(i).myClassifier.getClassifierOrigin() == "cover") {
+				numberOfClassifiersCovered++;
+			}
+			else if (this.getRulePopulation().getMacroclassifier(i).myClassifier.getClassifierOrigin() == "ga") {
+				numberClassifiersGaed++;
+			}
+			numberOfSubsumptions += this.getRulePopulation().getMacroclassifier(i).numberOfSubsumptions;
+
+		}
+		
+		
+		try {
+			
+			// write the dataset that is being used in file dataset.txt 
+			File getDataset = new File(this.hookedMetricsFileName, "dataset.txt");
+			if (!getDataset.exists()) {
+				final FileWriter fstreamDataset = new FileWriter(this.hookedMetricsFileName + "/dataset.txt", true);
+				final BufferedWriter datasetBuffer = new BufferedWriter(fstreamDataset);
+				String [] datasetName = SettingsLoader.getStringSetting("filename", "").split("/");
+				datasetBuffer.write(datasetName[datasetName.length - 1]);
+				datasetBuffer.flush();
+				datasetBuffer.close();
+			}
+			
+			
+			// record the rule population and its metrics in population.txt
+			final FileWriter fstream = new FileWriter(this.hookedMetricsFileName + "/population.txt", true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			buffer.write(					
+					  String.valueOf(this.repetition) + "th repetition:"
+					+ System.getProperty("line.separator")
+					+ System.getProperty("line.separator")
+					+ "Population size: " + rulePopulation.getNumberOfMacroclassifiers()
+					+ System.getProperty("line.separator")
+					+ "Timestamp: " + rulePopulation.totalGAInvocations
+					+ System.getProperty("line.separator")
+					+ "Number of classifiers in population covered :" 	+ numberOfClassifiersCovered
+					+ System.getProperty("line.separator")
+					+ "Number of classifiers in population ga-ed :" 	+ numberClassifiersGaed
+					+ System.getProperty("line.separator")
+					+ "Covers occured: " + ((int) SettingsLoader.getNumericSetting("numberOfLabels", 0) 
+											* repetition
+											* instances.length 
+											- this.getRulePopulation().totalGAInvocations)
+					+ System.getProperty("line.separator")
+					+ "Number of subsumptions: " + numberOfSubsumptions
+					+ System.getProperty("line.separator")
+					+ System.getProperty("line.separator")
+					+ rulePopulation
+					+ System.getProperty("line.separator"));
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		
 	}
 
 	/**
@@ -372,6 +446,11 @@ public abstract class AbstractLearningClassifierSystem {
 		hookCallbackRate = rate;
 	}
 
+	
+	public void setHookedMetricsFileName (String file) {
+		hookedMetricsFileName = file;
+	}
+	
 	/**
 	 * Sets the LCS's population.
 	 * @param population  the new LCS's population
@@ -438,7 +517,7 @@ public abstract class AbstractLearningClassifierSystem {
 				repetition++;
 				trainsBeforeHook++;
 			}
-			executeCallbacks(population); // endiamesa briskei metrikes? mallon einai gia na parakolou9isoume tin proodo --> diagrammata
+			executeCallbacks(population, repetition); 
 			trainsBeforeHook = 0;
 		}
 

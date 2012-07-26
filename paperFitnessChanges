@@ -1,0 +1,11 @@
+CHANGES IN FITNESS CALCULATION, NUMEROSITY REDUCTION:
+
+GenericMultilabelRepresentation.classify(77)
+SortPopulationControl.Comparator(80,81)
+GenericMultilabelRepresentation.getConfidenceArray(414,416)
+MeanFitnessStatistic.getMetric(62)
+WeightedMeanAttributeSpecificityStatistic.getMetric(72)
+WeightedMeanCoverageStatistic.getMetric(67)
+WeightedMeanLabelSpecificity.getMetric(81)
+BestClassifierSelector.select(81)
+RouletteWheelSelector.select(88)

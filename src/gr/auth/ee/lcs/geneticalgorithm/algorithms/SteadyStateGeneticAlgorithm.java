@@ -111,11 +111,12 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	 * 
 	 */
 	public SteadyStateGeneticAlgorithm(final IRuleSelector gaSelector,
-			final IBinaryGeneticOperator crossoverOperator,
-			final float crossoverRate,
-			final IUnaryGeneticOperator mutationOperator,
-			final int gaActivationAge,
-			final AbstractLearningClassifierSystem lcs) {
+										final IBinaryGeneticOperator crossoverOperator,
+										final float crossoverRate,
+										final IUnaryGeneticOperator mutationOperator,
+										final int gaActivationAge,
+										final AbstractLearningClassifierSystem lcs) {
+		
 		this.gaSelector = gaSelector;
 		this.crossoverOp = crossoverOperator;
 		this.mutationOp = mutationOperator;
@@ -137,7 +138,6 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 								  final ClassifierSet population) {
 
 		timestamp++;
-		//System.out.println("timestamp changed");
 
 		final int meanAge = getMeanAge(evolveSet); // i mesi ilikia tou sunolou ton macroclassifiers tou classifierSet
 		if (timestamp - meanAge < this.gaActivationAge) {
@@ -146,7 +146,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 		final int evolveSetSize = evolveSet.getNumberOfMacroclassifiers();
 		for (int i = 0; i < evolveSetSize; i++) {
-			evolveSet.getClassifier(i).timestamp = timestamp;
+			evolveSet.getClassifier(i).timestamp = timestamp ;
 		}
 
 		final ClassifierSet parents = new ClassifierSet(null);
@@ -155,6 +155,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		gaSelector.select(1, evolveSet, parents); // dialegei enan ikano apogono kai ton topo9etei sto sunolo parents
 		final Classifier parentA = parents.getClassifier(0);
 		parents.deleteClassifier(0);
+		
 		gaSelector.select(1, evolveSet, parents);
 		final Classifier parentB = parents.getClassifier(0);
 		parents.deleteClassifier(0);
@@ -177,8 +178,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			child = mutationOp.operate(child);
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
 			child.setClassifierOrigin("ga");
-			child.timestamp = timestamp;
-			//child.setDateCreated(timestamp);
+			//child.timestamp = timestamp;
+			child.created = timestamp; // tote dimiourgi9ike apo ga o classifier
 			population.addClassifier(new Macroclassifier(child, 1), true); // elegxei gia subsumption tautoxrona (true orisma)
 
 		}

@@ -46,6 +46,16 @@ public class FileLogger implements ILCSMetric {
 	 * @uml.property  name="file"
 	 */
 	private final String file;
+	
+	
+	/**
+	 * The directory that the metric files will be stored.
+	 * 
+	 * @author alexandros filotheou
+	 * 
+	 * */
+	
+	private final String storeDirectory;
 
 	/**
 	 * The evaluator from which we log the output.
@@ -53,6 +63,7 @@ public class FileLogger implements ILCSMetric {
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
 	private final ILCSMetric actualEvaluator;
+	
 
 	/**
 	 * FileLogger constructor.
@@ -66,7 +77,7 @@ public class FileLogger implements ILCSMetric {
 					   final ILCSMetric evaluator) {
 		
 		final Calendar cal = Calendar.getInstance();
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.kk.mm.ss");
 		
 		
 		String str = sdf.format(cal.getTime());
@@ -77,6 +88,7 @@ public class FileLogger implements ILCSMetric {
 		  dir.mkdir();
 		}
 		
+		storeDirectory = "hookedMetrics/" + str;
 		file = "hookedMetrics/" + str + "/" + filename + ".txt"; 
 		actualEvaluator = evaluator;
 		
@@ -97,12 +109,20 @@ public class FileLogger implements ILCSMetric {
 		
 		final double evalResult = actualEvaluator.getMetric(lcs);
 		
+		
+		// set the name of the directory in which the metrics will be stored
+		if (lcs.hookedMetricsFileName == null) {
+			lcs.setHookedMetricsFileName(storeDirectory); 
+		}
+		
+		
 		try {
 			
 			final FileWriter fstream = new FileWriter(file, true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
-			buffer.write(String.valueOf(lcs.repetition) + ":" +String.valueOf(evalResult)
-					+ System.getProperty("line.separator"));
+			buffer.write(String.valueOf(lcs.repetition) 
+						+ ":" +String.valueOf(evalResult)
+						+ System.getProperty("line.separator"));
 			buffer.flush();
 			buffer.close();
 		} catch (Exception e) {
@@ -114,5 +134,9 @@ public class FileLogger implements ILCSMetric {
 	public String getMetricName() {
 		return actualEvaluator.getMetricName();
 	}
+	
+	
+	
+
 
 }
