@@ -62,7 +62,9 @@ import weka.core.Instances;
  */
 public abstract class AbstractLearningClassifierSystem {
 	
-	public int numberOfCoversOccured = 0;
+	
+	public String hookedMetricsFileName;
+
 
 	/**
 	 * The train set.
@@ -77,8 +79,8 @@ public abstract class AbstractLearningClassifierSystem {
 	 */
 	
 	public double labelCardinality = 1;
-	
-	public String hookedMetricsFileName;
+	public int numberOfCoversOccured = 0;
+
 	
 	
 	private ClassifierTransformBridge transformBridge;

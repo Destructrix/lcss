@@ -73,23 +73,24 @@ public class FileLogger implements ILCSMetric {
 	 * @param evaluator
 	 *            the evaluator which we are going to output.
 	 */
-	public FileLogger(final String filename, 
+	public FileLogger(
+					   final String filename, 
 					   final ILCSMetric evaluator) {
+		
 		
 		final Calendar cal = Calendar.getInstance();
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.kk.mm.ss");
 		
-		
-		String str = sdf.format(cal.getTime());
+		String timestamp = sdf.format(cal.getTime());
 		
 		// make directory hookedMetrics/{simpleDateFormat}
-		File dir = new File("hookedMetrics/" + str); 
+		File dir = new File("hookedMetrics/" + timestamp); 
 		if (!dir.exists()) {
 		  dir.mkdir();
 		}
 		
-		storeDirectory = "hookedMetrics/" + str;
-		file = "hookedMetrics/" + str + "/" + filename + ".txt"; 
+		storeDirectory = "hookedMetrics/" + timestamp;
+		file = "hookedMetrics/" + timestamp + "/" + filename + ".txt"; 
 		actualEvaluator = evaluator;
 		
 		try {

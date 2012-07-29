@@ -308,6 +308,7 @@ public class ClassifierSet implements Serializable {
 	public final ClassifierSet generateMatchSet(final int dataInstanceIndex) {
 		
 		final ClassifierSet matchSet = new ClassifierSet(null); // kataskeuazoume ena adeio arxika classifierSet
+		Vector <Integer> deleteIndices = new Vector <Integer>(); // vector to hold the indices of macroclassifiers that have to be deleted due to zero coverage
 		final int populationSize = this.getNumberOfMacroclassifiers();
 		// TODO: Parallelize for performance increase
 		for (int i = 0; i < populationSize; i++) {
@@ -326,10 +327,18 @@ public class ClassifierSet implements Serializable {
 									 && (this.getClassifier(i).getCoverage() == 0);
 			
 			if(zeroCoverage) {
-				//matchSet.deleteMacroclassifier(i);
-				this.deleteMacroclassifier(i);
+				//this.deleteMacroclassifier(i);
+				deleteIndices.add(i); // add the index of the macroclassifier with zero coverage 
 			}
 		}
+		
+		for (int i = 0; i < deleteIndices.size(); i++) {
+			this.deleteMacroclassifier(deleteIndices.elementAt(i));
+		}
+		
+		//System.out.println(matchSet);
+
+		
 		return matchSet;
 	}
 
