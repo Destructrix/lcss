@@ -76,8 +76,10 @@ public class AllMlTypes {
 			final ArffTrainTestLoader loader = new ArffTrainTestLoader(lcs);
 			loader.loadInstancesWithTest(file, testFile); // dimiourgei to trainSet kai to testSet, tupou instances kai to myLcs.instances = (double) trainSet
 			
-			// bazo ta hooks pou 9elo
-			lcs.registerMultilabelHooks(numberOfLabels);
+			// bazo ta hooks pou 9elo.
+			// me orisma double[][]. an 9eloume na to treksoume gia to test set 9a prepei prota na metatrepsoume to testSet se double[][] 
+			// meso tis loadInstancesWithTest (i parapano sunartisi)
+			lcs.registerMultilabelHooks(lcs.instances, numberOfLabels);
 			loader.evaluate(); // edo einai ola ta lefta
 
 		}

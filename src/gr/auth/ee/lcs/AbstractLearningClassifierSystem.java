@@ -61,6 +61,8 @@ import weka.core.Instances;
  * 
  */
 public abstract class AbstractLearningClassifierSystem {
+	
+	public int numberOfCoversOccured = 0;
 
 	/**
 	 * The train set.
@@ -173,7 +175,8 @@ public abstract class AbstractLearningClassifierSystem {
 	 * @param aSet
 	 *            the set on which to run the callbacks
 	 */
-	private void executeCallbacks(final ClassifierSet aSet, final int repetition) {
+	private void executeCallbacks(final ClassifierSet aSet, 
+								    final int repetition) {
 		for (int i = 0; i < hooks.size(); i++) {
 			hooks.elementAt(i).getMetric(this);
 		}
@@ -227,10 +230,7 @@ public abstract class AbstractLearningClassifierSystem {
 					+ System.getProperty("line.separator")
 					+ "Number of classifiers in population ga-ed :" 	+ numberClassifiersGaed
 					+ System.getProperty("line.separator")
-					+ "Covers occured: " + ((int) SettingsLoader.getNumericSetting("numberOfLabels", 0) 
-											* repetition
-											* instances.length 
-											- this.getRulePopulation().totalGAInvocations)
+					+ "Covers occured: " + numberOfCoversOccured
 					+ System.getProperty("line.separator")
 					+ "Number of subsumptions: " + numberOfSubsumptions
 					+ System.getProperty("line.separator")
@@ -243,6 +243,8 @@ public abstract class AbstractLearningClassifierSystem {
 		catch (Exception e) {
 			e.printStackTrace();
 		}	
+		
+		this.numberOfCoversOccured = 0;
 		
 		
 	}
@@ -373,23 +375,26 @@ public abstract class AbstractLearningClassifierSystem {
 	 * @param numberOfLabels 
 	 *				the dataset's number of labels. 
 	 *
+	 *@param instances
+	 *			the set of instances on which we will evaluate on. (train or test)
+	 *
 	 * @author alexandros filotheou
 	 * 
 	 * 
 	 * */
-	public void registerMultilabelHooks(int numberOfLabels) {
+	public void registerMultilabelHooks( double[][] instances, int numberOfLabels) {
 				
 		this.registerHook(new FileLogger("accuracy",
-				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
+				new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
 		
 		this.registerHook(new FileLogger("recall",
-				new AccuracyRecallEvaluator(this.instances, false, this, AccuracyRecallEvaluator.TYPE_RECALL)));
+				new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_RECALL)));
 		
 		this.registerHook(new FileLogger("exactMatch", 
-				new ExactMatchEvalutor(this.instances, false, this)));
+				new ExactMatchEvalutor(instances, false, this)));
 		
 		this.registerHook(new FileLogger("hamming", 
-				new HammingLossEvaluator(this.instances, false, numberOfLabels, this)));
+				new HammingLossEvaluator(instances, false, numberOfLabels, this)));
 		
 		this.registerHook(new FileLogger("meanFitness",
 				new MeanFitnessStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));

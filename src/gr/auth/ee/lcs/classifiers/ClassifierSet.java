@@ -630,14 +630,14 @@ public class ClassifierSet implements Serializable {
 			
 			//response.append(this.getClassifier(i).toString()
 			response.append(
-						myMacroclassifiers.elementAt(i).myClassifier.toString()
+						myMacroclassifiers.elementAt(i).myClassifier.toString() // antecedent => concequent
 					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
 					// myMacroclassifiers.elementAt(i).toString isos kalutera
 					+ " total macro fit: " + df.format(myMacroclassifiers.elementAt(i).totalFitness)
 					+ " fit: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION))
 					+ " num: " + myMacroclassifiers.elementAt(i).numerosity
 					+ " exp: " + myMacroclassifiers.elementAt(i).myClassifier.experience 
-					+ " cov: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getCoverage()));
+					+ " cov: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getCoverage()) + "% of dataset");
 			
 			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
 			

@@ -199,7 +199,6 @@ public class ArffTrainTestLoader {
 
 		myLcs.instances = InstancesUtility.convertIntancesToDouble(trainSet); // to trainSet se double pinaka
 		myLcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
-		//myLcs.getLabelCardinality(myLcs.instances);
 		testSet = InstancesUtility.openInstance(testFile);
 
 	}

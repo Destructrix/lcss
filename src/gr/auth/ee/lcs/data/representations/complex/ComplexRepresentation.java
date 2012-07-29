@@ -1049,7 +1049,7 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 		}
 		
 		generatedClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
-
+		myLcs.numberOfCoversOccured ++ ;
 		return generatedClassifier;
 	}
 
@@ -1180,8 +1180,8 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 	public final String toNaturalLanguageString(final Classifier aClassifier) {
 		final StringBuffer nlRule = new StringBuffer();
 		for (int i = 0; i < (attributeList.length - numberOfLabels); i++) {
-			final String attributeString = attributeList[i]
-					.toString(aClassifier);
+			
+			final String attributeString = attributeList[i].toString(aClassifier);
 /*			if (!attributeString.contains("#"))
 				nlRule.append(attributeString + " AND ");*/
 			nlRule.append(attributeString); // to ekana etsi gia na fainetai kai to antecedent kommati
