@@ -76,7 +76,8 @@ public class InadequeteClassifierDeletionStrategy implements
 			final boolean zeroCoverage = (aClassifier.getCheckedInstances() >= myLcs.instances.length)
 					&& (aClassifier.getCoverage() == 0);
 			if (zeroCoverage) {
-				//aSet.deleteClassifier(i);				
+				//aSet.deleteClassifier(i);	
+				System.out.print("test");
 				aSet.deleteMacroclassifier(i); // afou telika exei zero coverage den exei noima na ton kratame
 			}
 		}

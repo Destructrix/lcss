@@ -223,7 +223,7 @@ public class ClassifierSet implements Serializable {
 	 *            the classifier to delete
 	 */
 	public final void deleteClassifier(final Classifier aClassifier) {
-
+		
 		int index;
 		final int macroSize = myMacroclassifiers.size();
 		for (index = 0; index < macroSize; index++) {
@@ -308,7 +308,7 @@ public class ClassifierSet implements Serializable {
 	public final ClassifierSet generateMatchSet(final int dataInstanceIndex) {
 		
 		final ClassifierSet matchSet = new ClassifierSet(null); // kataskeuazoume ena adeio arxika classifierSet
-		Vector <Integer> deleteIndices = new Vector <Integer>(); // vector to hold the indices of macroclassifiers that have to be deleted due to zero coverage
+		Vector <Integer> deleteIndices = new Vector <Integer>(); // vector to hold the indices of macroclassifiers that are to be deleted due to zero coverage
 		final int populationSize = this.getNumberOfMacroclassifiers();
 		// TODO: Parallelize for performance increase
 		for (int i = 0; i < populationSize; i++) {
@@ -332,7 +332,7 @@ public class ClassifierSet implements Serializable {
 			}
 		}
 		
-		for (int i = 0; i < deleteIndices.size(); i++) {
+		for (int i = deleteIndices.size() - 1; i >= 0 ; i--) {
 			this.deleteMacroclassifier(deleteIndices.elementAt(i));
 		}
 		

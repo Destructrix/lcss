@@ -23,6 +23,7 @@ package gr.auth.ee.lcs.geneticalgorithm.selectors;
 
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.Macroclassifier;
+import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.geneticalgorithm.IRuleSelector;
 
 /**
@@ -77,34 +78,44 @@ public class RouletteWheelSelector implements IRuleSelector {
 	 */
 	@Override
 	public final void select(final int howManyToSelect,
-							   final ClassifierSet fromPopulation, // to correctSet i o population
+							   final ClassifierSet fromPopulation, // to correctSet(evolve) i o population(addClassifier)
 							   final ClassifierSet toPopulation) {
+		
+		
+		final int numberOfMacroclassifiers = fromPopulation.getNumberOfMacroclassifiers();
+		
+		// if mode == 1 : upologise edo to Σd. diairese to sta getComparisonValue
+		if (mode == AbstractUpdateStrategy.COMPARISON_MODE_DELETION) {}
 		
 		// Find total sum
 		double fitnessSum = 0;
-		final int numberOfMacroclassifiers = fromPopulation.getNumberOfMacroclassifiers();
-
 		for (int i = 0; i < numberOfMacroclassifiers; i++) {
+
 			final double fitnessValue = fromPopulation.getClassifierNumerosity(i)
 					* fromPopulation.getClassifier(i).getComparisonValue(mode);
 			fitnessSum += max ? fitnessValue : 1 / (fitnessValue + Double.MIN_NORMAL);
 		}
-
+		
 		// Repeat roulette for howManyToSelect times
 		for (int i = 0; i < howManyToSelect; i++) {
 			// Roulette
 			final double rand = Math.random() * fitnessSum;
+
 			double tempSum = 0;
 			int selectedIndex = -1;
+			//if (mode == 1) System.out.println("below lies the problem of selectedIndex > macroclassifiers");
+
 			do {
 				selectedIndex++;
 				final double tempValue = fromPopulation.getClassifierNumerosity(selectedIndex)
-						* fromPopulation.getClassifier(selectedIndex).getComparisonValue(mode);
+						 * fromPopulation.getClassifier(selectedIndex).getComparisonValue(mode);
+
 				tempSum += max ? tempValue : 1 / (tempValue + Double.MIN_NORMAL);
+				
 			} while (tempSum < rand);
 			// Add selectedIndex
-			toPopulation.addClassifier(
-					new Macroclassifier(fromPopulation.getClassifier(selectedIndex), 1), false);
+			toPopulation.addClassifier(new Macroclassifier(fromPopulation.getClassifier(selectedIndex), 1), false);
+
 		} // next roulette
 
 	}

@@ -63,7 +63,7 @@ import weka.core.Instances;
 public abstract class AbstractLearningClassifierSystem {
 	
 	
-	public String hookedMetricsFileName;
+	public String hookedMetricsFileDirectory;
 
 
 	/**
@@ -79,6 +79,7 @@ public abstract class AbstractLearningClassifierSystem {
 	 */
 	
 	public double labelCardinality = 1;
+	
 	public int numberOfCoversOccured = 0;
 
 	
@@ -150,7 +151,7 @@ public abstract class AbstractLearningClassifierSystem {
 
 		final int setSize = aSet.getNumberOfMacroclassifiers();
 
-		for (int i = setSize - 1; i >= 0; i--) { // giati anapoda?
+		for (int i = setSize - 1; i >= 0; i--) { // giati anapoda? giati diagrafei apo vector, an to ekane apo tin arxi 9a diegrafe otinanai
 			final Classifier aClassifier = aSet.getClassifier(i);
 			final boolean zeroCoverage = (aClassifier.getCheckedInstances() >= instances.length)
 				// einai dunaton getCheckedInstances() > instances.length ? see classifier.384 [...]
@@ -206,9 +207,9 @@ public abstract class AbstractLearningClassifierSystem {
 		try {
 			
 			// write the dataset that is being used in file dataset.txt 
-			File getDataset = new File(this.hookedMetricsFileName, "dataset.txt");
+			File getDataset = new File(this.hookedMetricsFileDirectory, "dataset.txt");
 			if (!getDataset.exists()) {
-				final FileWriter fstreamDataset = new FileWriter(this.hookedMetricsFileName + "/dataset.txt", true);
+				final FileWriter fstreamDataset = new FileWriter(this.hookedMetricsFileDirectory + "/dataset.txt", true);
 				final BufferedWriter datasetBuffer = new BufferedWriter(fstreamDataset);
 				String [] datasetName = SettingsLoader.getStringSetting("filename", "").split("/");
 				datasetBuffer.write(datasetName[datasetName.length - 1]);
@@ -218,7 +219,7 @@ public abstract class AbstractLearningClassifierSystem {
 			
 			
 			// record the rule population and its metrics in population.txt
-			final FileWriter fstream = new FileWriter(this.hookedMetricsFileName + "/population.txt", true);
+			final FileWriter fstream = new FileWriter(this.hookedMetricsFileDirectory + "/population.txt", true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
 			buffer.write(					
 					  String.valueOf(this.repetition) + "th repetition:"
@@ -418,6 +419,8 @@ public abstract class AbstractLearningClassifierSystem {
 		
 		this.registerHook(new FileLogger("weightedMeanLabelSpecificity",
 				new WeightedMeanLabelSpecificity(numberOfLabels, AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		
 	}
 	
 	
@@ -454,8 +457,8 @@ public abstract class AbstractLearningClassifierSystem {
 	}
 
 	
-	public void setHookedMetricsFileName (String file) {
-		hookedMetricsFileName = file;
+	public void setHookedMetricsFileDirectory(String file) {
+		hookedMetricsFileDirectory = file;
 	}
 	
 	/**

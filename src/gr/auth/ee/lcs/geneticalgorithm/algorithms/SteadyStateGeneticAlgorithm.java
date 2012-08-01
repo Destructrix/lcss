@@ -146,7 +146,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 		final int evolveSetSize = evolveSet.getNumberOfMacroclassifiers();
 		for (int i = 0; i < evolveSetSize; i++) {
-			evolveSet.getClassifier(i).timestamp = timestamp ;
+			evolveSet.getClassifier(i).timestamp = timestamp ;			
 		}
 
 		final ClassifierSet parents = new ClassifierSet(null);

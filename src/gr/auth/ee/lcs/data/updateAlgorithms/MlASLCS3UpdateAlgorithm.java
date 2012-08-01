@@ -57,6 +57,12 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		private static final long serialVersionUID = 2584696442026755144L;
 
 		/**
+		 * d refers to the paper's d parameter in deletion possibility
+		 */
+		
+		public double d = 0;
+		
+		/**
 		 * The classifier's fitness
 		 */
 		public double fitness = 1; //.5;
@@ -76,11 +82,22 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		 */
 		public double tp = 0;
 		
+		/**
+		 * totalFitness = numerosity * fitness
+		 */
+		
 		public double totalFitness = 1;
 		
 		// public double alternateFitness = 1;
 
 	}
+	
+	/**
+	 * The delta (δ) parameter used in determining the formula of possibility of deletion
+	 */
+	
+	public static double DELTA = (double) SettingsLoader.getNumericSetting("ASLCS_DELTA", 20);
+
 
 	/**
 	 * The theta_del parameter.
@@ -93,7 +110,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	private final double LEARNING_RATE = SettingsLoader.getNumericSetting("LearningRate", 0.2);
 
 	/**
-	 * The LCS instance being used.
+	 * The LCS instance being used.COMPARISON_MODE_DELETION
 	 */
 	private final AbstractLearningClassifierSystem myLcs;
 
@@ -121,6 +138,14 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 * The n dumping factor for acc.
 	 */
 	private final double n;
+	
+	/**
+	 * The mean fitness of the population. 
+	 * Updated after fitness updates of the matchset's classifiers, and cover or ga.
+	 */
+	private double meanPopulationFitness = 0;
+	
+	private double sumOfDParameters = 0;
 
 	/**
 	 * Constructor.
@@ -179,7 +204,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 * @see
 	 * gr.auth.ee.lcs.data.AbstractUpdateStrategy#createStateClassifierObject()
 	 * */
-	@Override
+	@Override				
+
 	public Serializable createStateClassifierObject() {
 		return new MlASLCSClassifierData();
 	}
@@ -201,12 +227,28 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			return ((aClassifier.experience < 10) ? 0 : data.fitness);
 			// clean up please
 		case COMPARISON_MODE_DELETION:
-			return 1 / (data.fitness * ((aClassifier.experience < THETA_DEL) ? 100.
-					: Math.exp(-(Double.isNaN(data.ns) ? 1 : data.ns) + 1)));
-
+						
+			/*final ClassifierSet population = aClassifier.getLCS().getRulePopulation();
+			final int numOfMacroclassifiers = population.getNumberOfMacroclassifiers();*/
+			
+			// isos 9a eprepe na bei pano, sto for pou upologizo to fitnessSum,
+			// alla stin arxi einai ola 0 kai Pdel-->oo
+			/*double sumOfDParameters = 0;
+			for (int i = 0; i < numOfMacroclassifiers; i++) {
+				MlASLCSClassifierData dataForD = (MlASLCSClassifierData) population.getClassifier(i).getUpdateDataObject();
+				sumOfDParameters += dataForD.d;
+			}*/
+			//System.out.println(sumOfDParameters);
+			return (double) (data.d / sumOfDParameters);
+			
+			/*original:
+			 * 
+			 * return 1 / (data.fitness * ((aClassifier.experience < THETA_DEL) ? 100.
+					: Math.exp(-(Double.isNaN(data.ns) ? 1 : data.ns) + 1)));*/
+			
 		case COMPARISON_MODE_EXPLOITATION:
 			//aClassifier.experience < 10) ? 0  kai edo
-			final double exploitationFitness = Math.pow(((data.tp) / (data.msa)) , n); // auto einai to accuracy oxi to fitness
+			final double exploitationFitness = data.fitness; //Math.pow(((data.tp) / (data.msa)) , n); // auto einai to accuracy oxi to fitness
 			return (aClassifier.experience < 10) ? 0 : (Double.isNaN(exploitationFitness) ? 0 : exploitationFitness);
 		default:
 		}
@@ -283,8 +325,11 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			labelCorrectSets[i] = generateLabelCorrectSet(matchSet, instanceIndex, i); // periexei tous kanones pou apofasizoun gia to label 9etika.
 		}																			   // den perilambanei autous pou adiaforoun.
-
+	
+		
 		final int matchSetSize = matchSet.getNumberOfMacroclassifiers();
+		
+		
 		
 		// For each classifier in the matchset
 		for (int i = 0; i < matchSetSize; i++) { // gia ka9e macroclassifier
@@ -314,11 +359,11 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			cl.myClassifier.experience++;
 			
+			
 			/* einai emmesos tropos na elegkso oti o kanonas anikei sto labelCorrectSet
 			 * giati to minCurrentNs allazei mono an classificationAbility > 0 dld o kanonas apofasizei, den adiaforei
 			 * 
 			 * */
-			
 			if (minCurrentNs != Integer.MAX_VALUE) {
 				//data.ns += .1 * (minCurrentNs - data.ns);
 				data.ns += LEARNING_RATE * (minCurrentNs - data.ns);
@@ -326,6 +371,14 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			data.fitness = Math.pow((data.tp) / (data.msa), n);
 			
+			
+			data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) 
+								&& (data.fitness < DELTA * meanPopulationFitness) ? 
+										meanPopulationFitness / data.fitness : 1);
+
+			
+
+
 			// fitness calculation as in MlClassificationWithLCS paper
 			//data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
 			
@@ -334,8 +387,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			updateSubsumption(cl.myClassifier);
 			
 		} // kleinei to for gia ka9e macroclassifier
-		
-		
 		
 
 		if (evolve) {
@@ -348,6 +399,24 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 			}
 		}
+		
+		
+		// upologise to meanfitness edo kai balto sa metabliti stin klasi
+		
+		final int numOfMacroclassifiers = population.getNumberOfMacroclassifiers();
+		
+		sumOfDParameters = 0;
+		double fitnessSum = 0;
+		for (int j = 0; j < numOfMacroclassifiers; j++) {
+			
+			final Macroclassifier cl = population.getMacroclassifier(j);
+			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
+			this.sumOfDParameters += data.d;
+			fitnessSum += population.getClassifierNumerosity(j)
+					* population.getClassifier(j).getComparisonValue(COMPARISON_MODE_EXPLORATION);
+		}
+		
+		this.meanPopulationFitness = (fitnessSum / numOfMacroclassifiers); // (population.getTotalNumerosity()) ?
 
 	}
 

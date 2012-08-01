@@ -112,8 +112,8 @@ public class FileLogger implements ILCSMetric {
 		
 		
 		// set the name of the directory in which the metrics will be stored
-		if (lcs.hookedMetricsFileName == null) {
-			lcs.setHookedMetricsFileName(storeDirectory); 
+		if (lcs.hookedMetricsFileDirectory == null) {
+			lcs.setHookedMetricsFileDirectory(storeDirectory); 
 		}
 		
 		

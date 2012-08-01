@@ -82,7 +82,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 	 * @see gr.auth.ee.lcs.classifiers.IPopulationControlStrategy#controlPopulation(gr.auth.ee.lcs.classifiers.ClassifierSet)
 	 * 
 	 * 
-	 * ekteleitai otan kano addClassifier ston population. diladi otan kano cover i ga.
+	 * ekteleitai otan kano addClassifier ston population. diladi otan kano cover i ga. (sto cover einai me false to thorough)
 	 * diagrapse prota autous pou exoun zero coverage. 
 	 * sti sunexeia, an akoma eimaste pano apo to ano orio tou pli9ismou, diagrapse me rouleta osous kanones prepei oste na pesoume kato apo to ano orio
 	 */
