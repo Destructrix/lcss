@@ -89,28 +89,64 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		public double totalFitness = 1;
 		
 		// public double alternateFitness = 1;
+		
+		public double k = 0;
 
 	}
 	
+	
+	
+	/**
+	 * The way to differentiate the choice of the fitness calculation formula.
+	 * 
+	 * Simple = (acc)^n
+	 * 
+	 * Complex = F + β(k - F)
+	 * 
+	 * Sharing = F + β((k*num)/(Σ k*num) - F)
+	 * 
+	 * */
+	public static final int FITNESS_MODE_SIMPLE = 0;
+	
+	public static final int FITNESS_MODE_COMPLEX = 1;
+	
+	public static final int FITNESS_MODE_SHARING = 2;
+
+	
+	
+	public static double ACC_0 = (double) SettingsLoader.getNumericSetting("ASLCS_Acc0", .99);
+
+	public static double a = (double) SettingsLoader.getNumericSetting("ASLCS_Alpha", .1);
+
 	/**
 	 * The delta (δ) parameter used in determining the formula of possibility of deletion
 	 */
 	
-	public static double DELTA = (double) SettingsLoader.getNumericSetting("ASLCS_DELTA", 20);
+	public static double DELTA = (double) SettingsLoader.getNumericSetting("ASLCS_DELTA", .1);
+	
+	/**
+	 * The fitness mode, 0 for simple, 1 for complex. 0 As default.
+	 * 
+	 */
+	public static int FITNESS_MODE = (int) SettingsLoader.getNumericSetting("FITNESS_MODE", 0);
 
-
+	/**
+	 * The learning rate.
+	 */
+	private final double LEARNING_RATE = SettingsLoader.getNumericSetting("LearningRate", 0.2);
+	
+	
 	/**
 	 * The theta_del parameter.
 	 */
 	public static int THETA_DEL = (int) SettingsLoader.getNumericSetting("ASLCS_THETA_DEL", 20);
 	
-	/**
-	 * The learning rate.
-	 */
-	private final double LEARNING_RATE = SettingsLoader.getNumericSetting("LearningRate", 0.2);
+	
+	
+
 
 	/**
-	 * The LCS instance being used.COMPARISON_MODE_DELETION
+	 * The LCS instance being used.
 	 */
 	private final AbstractLearningClassifierSystem myLcs;
 
@@ -145,6 +181,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 */
 	private double meanPopulationFitness = 0;
 	
+	
+	/**
+	 * The sum of d parameters used in the formula for the deletion mechanism.
+	 */
 	private double sumOfDParameters = 0;
 
 	/**
@@ -297,12 +337,12 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 * .ee.lcs.classifiers.Classifier, int, double)
 	 */
 	@Override
-	public void setComparisonValue(Classifier aClassifier, int mode,
-			double comparisonValue) {
-		final MlASLCSClassifierData data = ((MlASLCSClassifierData) aClassifier
-				.getUpdateDataObject());
+	public void setComparisonValue(Classifier aClassifier, 
+									int mode,
+									double comparisonValue) {
+		
+		final MlASLCSClassifierData data = ((MlASLCSClassifierData) aClassifier.getUpdateDataObject());
 		data.fitness = comparisonValue;
-
 	}
 
 	/*
@@ -328,7 +368,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	
 		
 		final int matchSetSize = matchSet.getNumberOfMacroclassifiers();
-		
+		double sumOfKParameters = 0;
+
 		
 		
 		// For each classifier in the matchset
@@ -338,7 +379,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			int minCurrentNs = Integer.MAX_VALUE;
 			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
-
+			
+			int leniency = 0;
 			for (int l = 0; l < numberOfLabels; l++) {
 				// Get classification ability for label l. an anikei dld sto labelCorrectSet me alla logia.
 				final float classificationAbility = cl.myClassifier.classifyLabelCorrectly(instanceIndex, l);
@@ -347,6 +389,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 					data.tp += 0.9;
 				else if (classificationAbility > 0) { // an proekupse apo 9etiki apofasi (yper)
 					data.tp += 1;
+					leniency++;
 					final int labelNs = labelCorrectSets[l].getTotalNumerosity();
 					if (minCurrentNs > labelNs) { // bainei edo mono otan exei prokupsei apo 9etiki apofasi
 						minCurrentNs = labelNs;
@@ -355,38 +398,92 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				data.msa += 1;
 
 			} // kleinei to for gia ka9e label
-			
+
 			
 			cl.myClassifier.experience++;
 			
+
 			
-			/* einai emmesos tropos na elegkso oti o kanonas anikei sto labelCorrectSet
+			/* einai emmesos tropos na elegkso oti o kanonas anikei sto (se ena toulaxiston ennoo) labelCorrectSet
 			 * giati to minCurrentNs allazei mono an classificationAbility > 0 dld o kanonas apofasizei, den adiaforei
 			 * 
 			 * */
 			if (minCurrentNs != Integer.MAX_VALUE) {
 				//data.ns += .1 * (minCurrentNs - data.ns);
 				data.ns += LEARNING_RATE * (minCurrentNs - data.ns);
+				
+				// an efarmozoume fitness sharing upologise tin parametro k. 
+				// o kanonas prepei na exei summetexei se ena klasma apo correctsets
+				// gia pano apo ena dinei kala apotelesmata
+				if (FITNESS_MODE == FITNESS_MODE_SHARING && leniency >= 1/7 * numberOfLabels) {
+					data.k = Math.pow((data.tp) / (data.msa), n) > ACC_0 ? 1 : a * Math.pow((((data.tp) / (data.msa)) / ACC_0), n);
+				}
 			}
+			if (FITNESS_MODE == FITNESS_MODE_SHARING) sumOfKParameters += data.k;
+		} // kleinei to for gia ka9e macroclassifier
+		
+		
+		
+		
+		
+		for (int i = 0; i < matchSetSize; i++) {
 			
-			data.fitness = Math.pow((data.tp) / (data.msa), n);
-			
-			
-			data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) 
-								&& (data.fitness < DELTA * meanPopulationFitness) ? 
-										meanPopulationFitness / data.fitness : 1);
+			final Macroclassifier cl = matchSet.getMacroclassifier(i);
+			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 
-			
 
-
-			// fitness calculation as in MlClassificationWithLCS paper
-			//data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
+			switch (FITNESS_MODE) {
 			
-			
+			case FITNESS_MODE_SIMPLE:
+				data.fitness = Math.pow((data.tp) / (data.msa), n);
+				break;
+			case FITNESS_MODE_COMPLEX:
+				data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
+				data.fitness /= cl.numerosity;
+				break;
+			case FITNESS_MODE_SHARING:
+				data.fitness += LEARNING_RATE * (data.k * cl.numerosity / sumOfKParameters - data.fitness);
+				data.fitness /= cl.numerosity;
+			}
 
 			updateSubsumption(cl.myClassifier);
 			
-		} // kleinei to for gia ka9e macroclassifier
+		} // kleinei o upologismos tou fitness
+		
+
+		final int numOfMacroclassifiers = population.getNumberOfMacroclassifiers();
+		
+		sumOfDParameters = 0;
+
+		// calculate the mean fitness of the population, used in the deletion mechanism
+		double fitnessSum = 0;
+		for (int j = 0; j < numOfMacroclassifiers; j++) {
+			final Macroclassifier cl = population.getMacroclassifier(j);
+			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
+			this.sumOfDParameters += data.d;
+			fitnessSum += population.getClassifierNumerosity(j)
+					* population.getClassifier(j).getComparisonValue(COMPARISON_MODE_EXPLORATION);
+		}
+		
+		this.meanPopulationFitness = (fitnessSum / numOfMacroclassifiers); // (population.getTotalNumerosity()) ?
+		
+		
+		
+		/* update the d parameter, employed in the deletion mechanism, for each classifier in the match set, due to the change in 
+		 * the classifiers's numerosities, niches' sizes, fitnesses and the mean fitness of the population
+		 */
+		 
+		for (int i = 0; i < matchSetSize; i++) {
+			final Macroclassifier cl = matchSet.getMacroclassifier(i);
+			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
+
+			data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) 
+				&& (data.fitness < DELTA * meanPopulationFitness) ? 
+						meanPopulationFitness / data.fitness : 1);
+		}
+		
+		
+		
 		
 
 		if (evolve) {
@@ -400,23 +497,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			}
 		}
 		
-		
-		// upologise to meanfitness edo kai balto sa metabliti stin klasi
-		
-		final int numOfMacroclassifiers = population.getNumberOfMacroclassifiers();
-		
-		sumOfDParameters = 0;
-		double fitnessSum = 0;
-		for (int j = 0; j < numOfMacroclassifiers; j++) {
-			
-			final Macroclassifier cl = population.getMacroclassifier(j);
-			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
-			this.sumOfDParameters += data.d;
-			fitnessSum += population.getClassifierNumerosity(j)
-					* population.getClassifier(j).getComparisonValue(COMPARISON_MODE_EXPLORATION);
-		}
-		
-		this.meanPopulationFitness = (fitnessSum / numOfMacroclassifiers); // (population.getTotalNumerosity()) ?
+				
+
 
 	}
 

@@ -646,7 +646,8 @@ public class ClassifierSet implements Serializable {
 					+ " fit: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION))
 					+ " num: " + myMacroclassifiers.elementAt(i).numerosity
 					+ " exp: " + myMacroclassifiers.elementAt(i).myClassifier.experience 
-					+ " cov: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getCoverage()) + "% of dataset");
+					+ " cov: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getCoverage()) + "% of dataset"
+					+ " Pdel: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_DELETION)) + "% ");
 			
 			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
 			

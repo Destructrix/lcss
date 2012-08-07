@@ -48,6 +48,8 @@ import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
@@ -207,16 +209,21 @@ public abstract class AbstractLearningClassifierSystem {
 		try {
 			
 			// write the dataset that is being used in file dataset.txt 
-			File getDataset = new File(this.hookedMetricsFileDirectory, "dataset.txt");
-			if (!getDataset.exists()) {
-				final FileWriter fstreamDataset = new FileWriter(this.hookedMetricsFileDirectory + "/dataset.txt", true);
-				final BufferedWriter datasetBuffer = new BufferedWriter(fstreamDataset);
-				String [] datasetName = SettingsLoader.getStringSetting("filename", "").split("/");
-				datasetBuffer.write(datasetName[datasetName.length - 1]);
-				datasetBuffer.flush();
-				datasetBuffer.close();
-			}
+			File getConfigurationFile = new File(this.hookedMetricsFileDirectory, "defaultLcs.properties");
 			
+			if (!getConfigurationFile.exists()) {
+				FileInputStream in = new FileInputStream("defaultLcs.properties");
+				FileOutputStream out = new FileOutputStream(this.hookedMetricsFileDirectory + "/defaultLcs.properties");
+				byte[] buf = new byte[1024];
+				int len;
+				while ((len = in.read(buf)) > 0) {
+				   out.write(buf, 0, len);
+				}
+				in.close();
+				out.close();
+			}
+
+
 			
 			// record the rule population and its metrics in population.txt
 			final FileWriter fstream = new FileWriter(this.hookedMetricsFileDirectory + "/population.txt", true);
@@ -527,6 +534,7 @@ public abstract class AbstractLearningClassifierSystem {
 				repetition++;
 				trainsBeforeHook++;
 			}
+			if (hookCallbackRate < iterations) System.out.print(repetition + "/" + iterations);	
 			executeCallbacks(population, repetition); 
 			trainsBeforeHook = 0;
 		}
