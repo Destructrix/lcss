@@ -72,8 +72,8 @@ public final class StrictMultiLabelRepresentation extends ComplexRepresentation 
 				// For each classifier
 				final Classifier currentClassifier = matchSet.getClassifier(i);
 				final int numerosity = matchSet.getClassifierNumerosity(i);
-				final double fitness = numerosity
-						* currentClassifier
+				final double fitness = /*numerosity
+						**/ currentClassifier
 								.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 				if (fitness > bestFitness) {
 					bestFitness = fitness;
@@ -212,9 +212,9 @@ public final class StrictMultiLabelRepresentation extends ComplexRepresentation 
 							.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 					final boolean labelActivated = ((Label) attributeList[(attributeList.length - numberOfLabels)
 							+ label]).getValue(currentClassifier);
-					fitnessSum[label] += classifierNumerosity * fitness;
+					fitnessSum[label] += /*classifierNumerosity **/ fitness;
 					if (labelActivated)
-						voteSum[label] += classifierNumerosity * fitness;
+						voteSum[label] += /*classifierNumerosity **/ fitness;
 
 				}
 			}
@@ -338,9 +338,9 @@ public final class StrictMultiLabelRepresentation extends ComplexRepresentation 
 					final boolean labelActivated = ((Label) attributeList[(attributeList.length - numberOfLabels)
 							+ label]).getValue(currentClassifier);
 					if (labelActivated)
-						votingTable[label] += classifierNumerosity * fitness;
+						votingTable[label] += /*classifierNumerosity **/ fitness;
 					else
-						votingTable[label] -= classifierNumerosity * fitness;
+						votingTable[label] -= /*classifierNumerosity **/ fitness;
 
 				}
 			}

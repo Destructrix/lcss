@@ -77,8 +77,8 @@ public class SortPopulationControl implements IPopulationControlStrategy {
 			public final int compare(final Macroclassifier macroA,
 									   final Macroclassifier macroB) {
 
-				final double fitnessA = macroA.myClassifier.getComparisonValue(comparisonMode) * macroA.numerosity;
-				final double fitnessB = macroB.myClassifier.getComparisonValue(comparisonMode) * macroB.numerosity;
+				final double fitnessA = macroA.myClassifier.getComparisonValue(comparisonMode) /** macroA.numerosity*/;
+				final double fitnessB = macroB.myClassifier.getComparisonValue(comparisonMode) /** macroB.numerosity*/;
 
 				final int experienceA = macroA.myClassifier.experience;
 				final int experienceB = macroB.myClassifier.experience;

@@ -59,8 +59,8 @@ public class MeanFitnessStatistic implements ILCSMetric {
 
 		final int numOfMacroclassifiers = set.getNumberOfMacroclassifiers();
 		for (int i = 0; i < numOfMacroclassifiers; i++)
-			fitnessSum += set.getClassifierNumerosity(i)
-					* set.getClassifier(i).getComparisonValue(comparisonMode);
+			fitnessSum += /*set.getClassifierNumerosity(i)
+					**/ set.getClassifier(i).getComparisonValue(comparisonMode);
 
 		return fitnessSum / ((double) set.getTotalNumerosity());
 	}

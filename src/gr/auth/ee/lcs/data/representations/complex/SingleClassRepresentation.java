@@ -229,9 +229,9 @@ public final class SingleClassRepresentation extends ComplexRepresentation {
 			for (int i = 0; i < setSize; i++) {
 				final int advocatingClass = ((UniLabel) attributeList[attributeList.length - 1])
 						.getValue(matchSet.getClassifier(i));
-				votingTable[advocatingClass] += matchSet
+				votingTable[advocatingClass] += /*matchSet
 						.getClassifierNumerosity(i)
-						* matchSet
+						**/ matchSet
 								.getClassifier(i)
 								.getComparisonValue(
 										AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);

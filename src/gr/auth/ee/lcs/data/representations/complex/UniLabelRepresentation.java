@@ -162,8 +162,8 @@ public final class UniLabelRepresentation extends ComplexRepresentation {
 
 				final int classification = getClassification(cl)[0];
 
-				lblProbs[classification] += numerosity
-						* cl.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
+				lblProbs[classification] += /*numerosity
+						**/ cl.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 
 			}
 
