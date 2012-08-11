@@ -415,48 +415,52 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				// an efarmozoume fitness sharing upologise tin parametro k. 
 				// o kanonas prepei na exei summetexei se ena klasma apo correctsets
 				// gia pano apo ena dinei kala apotelesmata
-				if (FITNESS_MODE == FITNESS_MODE_SHARING/* && leniency >= 1/7 * numberOfLabels*/) {
+				if (FITNESS_MODE == FITNESS_MODE_SHARING && leniency >= 1/7 * numberOfLabels) {
 					data.k = Math.pow((data.tp) / (data.msa), n) > ACC_0 ? 1 : a * Math.pow((((data.tp) / (data.msa)) / ACC_0), n);
 				}
 			}
-			
 			if (FITNESS_MODE == FITNESS_MODE_SHARING) sumOfKParameters += data.k;
-			
-			
-			switch (FITNESS_MODE) {
-			
-			case FITNESS_MODE_SIMPLE:
-				data.fitness = cl.numerosity * Math.pow((data.tp) / (data.msa), n);
-				updateSubsumption(cl.myClassifier);
-				break;
-			case FITNESS_MODE_COMPLEX:
-				data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
-				updateSubsumption(cl.myClassifier);
-				//data.fitness /= cl.numerosity;
-			}
 		} // kleinei to for gia ka9e macroclassifier
 		
 		
 		
 		
-		if (FITNESS_MODE == FITNESS_MODE_SHARING) {
-			for (int i = 0; i < matchSetSize; i++) {
+		
+		for (int i = 0; i < matchSetSize; i++) {
 			
-				final Macroclassifier cl = matchSet.getMacroclassifier(i);
-				final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
+			final Macroclassifier cl = matchSet.getMacroclassifier(i);
+			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
+
+
+			switch (FITNESS_MODE) {
+			
+			case FITNESS_MODE_SIMPLE:
+				data.fitness = Math.pow((data.tp) / (data.msa), n);
+				break;
+			case FITNESS_MODE_COMPLEX:
+				data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
+				//data.fitness /= cl.numerosity;
+				break;
+			case FITNESS_MODE_SHARING:
 				data.fitness += LEARNING_RATE * (data.k * cl.numerosity / sumOfKParameters - data.fitness);
-				updateSubsumption(cl.myClassifier);
 				//data.fitness /= cl.numerosity;
 			}
+
+			updateSubsumption(cl.myClassifier);
+			
 		} // kleinei o upologismos tou fitness
 		
 
 		final int numOfMacroclassifiers = population.getNumberOfMacroclassifiers();
 		
+		sumOfDParameters = 0;
 
 		// calculate the mean fitness of the population, used in the deletion mechanism
 		double fitnessSum = 0;
 		for (int j = 0; j < numOfMacroclassifiers; j++) {
+			final Macroclassifier cl = population.getMacroclassifier(j);
+			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
+			this.sumOfDParameters += data.d;
 			fitnessSum += /*population.getClassifierNumerosity(j)
 					**/ population.getClassifier(j).getComparisonValue(COMPARISON_MODE_EXPLORATION);
 		}
@@ -473,18 +477,12 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			final Macroclassifier cl = matchSet.getMacroclassifier(i);
 			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 
-			data.d = data.ns * cl.numerosity * ((cl.myClassifier.experience > THETA_DEL) 
-				&& (data.fitness < cl.numerosity * DELTA * meanPopulationFitness) ? 
+			data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) 
+				&& (data.fitness < DELTA * meanPopulationFitness) ? 
 						meanPopulationFitness / data.fitness : 1);
 		}
 		
 		
-		sumOfDParameters = 0;
-		for (int j = 0; j < numOfMacroclassifiers; j++) {
-			final Macroclassifier cl = population.getMacroclassifier(j);
-			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
-			this.sumOfDParameters += data.d;
-		}
 		
 		
 
@@ -541,7 +539,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	protected void updateSubsumption(final Classifier aClassifier) {
 		aClassifier
 				.setSubsumptionAbility((aClassifier
-						.getComparisonValue(COMPARISON_MODE_EXPLOITATION) / aClassifier.getLCS().getRulePopulation().getClassifierNumerosity(aClassifier) > subsumptionFitnessThreshold)
+						.getComparisonValue(COMPARISON_MODE_EXPLOITATION) > subsumptionFitnessThreshold)
 						&& (aClassifier.experience > subsumptionExperienceThreshold));
 	}
 

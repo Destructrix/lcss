@@ -172,7 +172,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				child.setComparisonValue(
 						AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION,
 						((i == 0) ? parentA : parentB)
-								.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION)/* / ((i == 0) ? parentA : parentB).getLCS().getRulePopulation().getClassifierNumerosity((i == 0) ? parentA : parentB)*/);
+								.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 			}
 
 			child = mutationOp.operate(child);
