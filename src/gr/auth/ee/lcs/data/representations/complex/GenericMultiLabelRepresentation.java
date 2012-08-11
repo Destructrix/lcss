@@ -74,8 +74,8 @@ public final class GenericMultiLabelRepresentation extends
 				// For each classifier
 				final Classifier currentClassifier = matchSet.getClassifier(i);
 				final int numerosity = matchSet.getClassifierNumerosity(i);
-				final double fitness = /*numerosity
-						**/ currentClassifier
+				final double fitness = numerosity
+						* currentClassifier
 								.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 
 				// For each label
@@ -411,9 +411,9 @@ public final class GenericMultiLabelRepresentation extends
 					if (cons.equals("#"))
 						continue;
 					if (cons.equals("1"))
-						votingTable[label] += /*classifierNumerosity **/ fitness;
+						votingTable[label] += classifierNumerosity * fitness;
 					else
-						votingTable[label] -= /*classifierNumerosity **/ fitness;
+						votingTable[label] -= classifierNumerosity * fitness;
 
 				} // kleinei gia ka9e label
 			} // kleinei gia ka9e macroclassifier

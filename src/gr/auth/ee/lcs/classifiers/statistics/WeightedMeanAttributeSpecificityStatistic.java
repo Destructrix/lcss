@@ -69,7 +69,7 @@ public class WeightedMeanAttributeSpecificityStatistic implements ILCSMetric {
 			final int numerosity = set.getClassifierNumerosity(i);
 			final double classifierFitness = set.getClassifier(i)
 					.getComparisonValue(comparisonMode);
-			final double weight = /*numerosity **/ classifierFitness;
+			final double weight = numerosity * classifierFitness;
 
 			for (int j = 0; j < numberOfAttributes; j++) {
 

@@ -439,11 +439,11 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				break;
 			case FITNESS_MODE_COMPLEX:
 				data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
-				//data.fitness /= cl.numerosity;
+				data.fitness /= cl.numerosity;
 				break;
 			case FITNESS_MODE_SHARING:
 				data.fitness += LEARNING_RATE * (data.k * cl.numerosity / sumOfKParameters - data.fitness);
-				//data.fitness /= cl.numerosity;
+				data.fitness /= cl.numerosity;
 			}
 
 			updateSubsumption(cl.myClassifier);
@@ -461,8 +461,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			final Macroclassifier cl = population.getMacroclassifier(j);
 			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 			this.sumOfDParameters += data.d;
-			fitnessSum += /*population.getClassifierNumerosity(j)
-					**/ population.getClassifier(j).getComparisonValue(COMPARISON_MODE_EXPLORATION);
+			fitnessSum += population.getClassifierNumerosity(j)
+					* population.getClassifier(j).getComparisonValue(COMPARISON_MODE_EXPLORATION);
 		}
 		
 		this.meanPopulationFitness = (fitnessSum / numOfMacroclassifiers); // (population.getTotalNumerosity()) ?

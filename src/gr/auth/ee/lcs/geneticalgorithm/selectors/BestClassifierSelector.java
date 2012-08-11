@@ -76,8 +76,9 @@ public final class BestClassifierSelector implements IRuleSelector {
 		int bestIndex = -1;
 		final int popSize = fromPopulation.getNumberOfMacroclassifiers();
 		for (int i = 0; i < popSize; i++) {
-			final double temp = /*fromPopulation.getClassifierNumerosity(i) 
-						**/ fromPopulation.getClassifier(i).getComparisonValue(mode); // TODO:
+			final double temp = fromPopulation.getClassifier(i)
+					.getComparisonValue(mode)
+					* fromPopulation.getClassifierNumerosity(i); // TODO:
 																	// Numerosity
 																	// is
 																	// correct?
