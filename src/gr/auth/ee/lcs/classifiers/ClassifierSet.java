@@ -630,7 +630,7 @@ public class ClassifierSet implements Serializable {
 		
 		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
 			myMacroclassifiers.elementAt(i).totalFitness = 
-				 /*this.getMacroclassifier(i).numerosity **/ this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) ;
+				this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;
 		}
 		
         DecimalFormat df = new DecimalFormat("#.####");

@@ -78,7 +78,7 @@ public class WeightedMeanLabelSpecificity implements ILCSMetric {
 			final int numerosity = set.getClassifierNumerosity(i);
 			final double classifierFitness = set.getClassifier(i)
 					.getComparisonValue(comparisonMode);
-			final double totalFitness = /*numerosity **/ classifierFitness;
+			final double totalFitness = classifierFitness * numerosity;
 			for (int l = numberOfAttributes; l < numberOfAttributes
 					+ numOfLabels; l++) {
 				if (bridge.isAttributeSpecific(cl, l)) {

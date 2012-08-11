@@ -64,7 +64,7 @@ public class WeightedMeanCoverageStatistic implements ILCSMetric {
 		for (int i = 0; i < numOfMacroclassifiers; i++) {
 			final int classifierNumerosity = set.getClassifierNumerosity(i);
 			final double classifierFitness = set.getClassifier(i).getComparisonValue(comparisonMode);
-			final double totalFitness = /*classifierNumerosity **/ classifierFitness;
+			final double totalFitness = classifierFitness* classifierNumerosity;
 			coverageSum += totalFitness * set.getClassifier(i).getCoverage(); // covered/checked
 			fitnessSum += totalFitness;
 
