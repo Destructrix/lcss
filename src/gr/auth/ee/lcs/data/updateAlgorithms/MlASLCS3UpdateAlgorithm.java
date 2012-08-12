@@ -415,41 +415,47 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				// an efarmozoume fitness sharing upologise tin parametro k. 
 				// o kanonas prepei na exei summetexei se ena klasma apo correctsets
 				// gia pano apo ena dinei kala apotelesmata
-				if (FITNESS_MODE == FITNESS_MODE_SHARING && leniency >= 1/7 * numberOfLabels) {
+				if (FITNESS_MODE == FITNESS_MODE_SHARING /*&& leniency >= 1/7 * numberOfLabels*/) {
 					data.k = Math.pow((data.tp) / (data.msa), n) > ACC_0 ? 1 : a * Math.pow((((data.tp) / (data.msa)) / ACC_0), n);
 				}
 			}
-			if (FITNESS_MODE == FITNESS_MODE_SHARING) sumOfKParameters += data.k;
+			
+			switch (FITNESS_MODE) {
+			
+			case FITNESS_MODE_SIMPLE:
+				data.fitness =  Math.pow((data.tp) / (data.msa), n);
+				updateSubsumption(cl.myClassifier);
+				break;
+			case FITNESS_MODE_COMPLEX:
+				data.fitness += cl.numerosity * LEARNING_RATE * ( Math.pow((data.tp) / (data.msa), n) - data.fitness);
+				data.fitness /= cl.numerosity;
+				updateSubsumption(cl.myClassifier);
+				break;
+			case FITNESS_MODE_SHARING:
+				sumOfKParameters += data.k;
+			}
 		} // kleinei to for gia ka9e macroclassifier
 		
 		
 		
 		
-		
+	if (FITNESS_MODE == FITNESS_MODE_SHARING) {
 		for (int i = 0; i < matchSetSize; i++) {
 			
 			final Macroclassifier cl = matchSet.getMacroclassifier(i);
 			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 
 
-			switch (FITNESS_MODE) {
 			
-			case FITNESS_MODE_SIMPLE:
-				data.fitness = Math.pow((data.tp) / (data.msa), n);
-				break;
-			case FITNESS_MODE_COMPLEX:
-				data.fitness += LEARNING_RATE * (cl.numerosity * Math.pow((data.tp) / (data.msa), n) - data.fitness);
-				data.fitness /= cl.numerosity;
-				break;
-			case FITNESS_MODE_SHARING:
 				data.fitness += LEARNING_RATE * (data.k * cl.numerosity / sumOfKParameters - data.fitness);
-				data.fitness /= cl.numerosity;
-			}
+				//data.fitness /= cl.numerosity;
+			
+			
 
 			updateSubsumption(cl.myClassifier);
 			
 		} // kleinei o upologismos tou fitness
-		
+	}
 
 		final int numOfMacroclassifiers = population.getNumberOfMacroclassifiers();
 		

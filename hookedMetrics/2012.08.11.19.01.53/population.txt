@@ -1,0 +1,938 @@
+100th repetition:
+
+Population size: 45
+Timestamp: 89508
+Number of classifiers in population covered :3
+Number of classifiers in population ga-ed :42
+Covers occured: 92
+Number of subsumptions: 3014
+
+#######=>#0#0000 total macro fit: 88926.6546 fit: 195.4432 num: 455 exp: 12799 cov: 100% of dataset Pdel: 0.1306%  tp: 82333.2 msa: 89593 ns: 580.0313 origin: cover  created: 0  last in correctset: 89356  subsumptions: 763 
+#######=>0100000 total macro fit: 9373.152 fit: 29.1999 num: 321 exp: 12794 cov: 100% of dataset Pdel: 0.5062%  tp: 70468 msa: 89558 ns: 335.9503 origin: cover  created: 25  last in correctset: 89474  subsumptions: 1245 
+00001##=>#000100 total macro fit: 3275.1563 fit: 52.8251 num: 62 exp: 131 cov: 3.125% of dataset Pdel: 0.0558%  tp: 903.9 msa: 917 ns: 66.7496 origin: ga  created: 60260  last in correctset: 89478  subsumptions: 66 
+0#1####=>0010000 total macro fit: 1336.658 fit: 16.9197 num: 79 exp: 3093 cov: 25% of dataset Pdel: 0.5662%  tp: 18559 msa: 21651 ns: 217.7458 origin: ga  created: 2996  last in correctset: 89406  subsumptions: 413 
+0001###=>0#01000 total macro fit: 296.167 fit: 15.5877 num: 19 exp: 107 cov: 6.25% of dataset Pdel: 0.0667%  tp: 738.3 msa: 749 ns: 23.0908 origin: ga  created: 77344  last in correctset: 89491  subsumptions: 19 
+#######=>10##000 total macro fit: 47.7832 fit: 3.1855 num: 15 exp: 12799 cov: 100% of dataset Pdel: 5.4413%  tp: 76733.2 msa: 89593 ns: 393.9873 origin: cover  created: 0  last in correctset: 89356  subsumptions: 496 
+00000#1=>0000011 total macro fit: 11.9873 fit: 1.4984 num: 8 exp: 22 cov: 1.5625% of dataset Pdel: 0.3165%  tp: 132 msa: 154 ns: 12.8235 origin: ga  created: 79193  last in correctset: 89046  subsumptions: 9 
+00000##=>0000011 total macro fit: 1.2352 fit: 0.4117 num: 3 exp: 23 cov: 3.125% of dataset Pdel: 9.7044%  tp: 132 msa: 161 ns: 97.3893 origin: ga  created: 84194  last in correctset: 89243  subsumptions: 2 
+1######=>100#000 total macro fit: 0.866 fit: 0.866 num: 1 exp: 477 cov: 50% of dataset Pdel: 1.0028%  tp: 3291.3 msa: 3339 ns: 19.7374 origin: ga  created: 82735  last in correctset: 89448  subsumptions: 0 
+0001###=>0001#00 total macro fit: 0.866 fit: 0.866 num: 1 exp: 64 cov: 6.25% of dataset Pdel: 1.201%  tp: 441.6 msa: 448 ns: 23.0908 origin: ga  created: 82325  last in correctset: 89491  subsumptions: 0 
+00000##=>00#001# total macro fit: 0.3487 fit: 0.3487 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.003%  tp: 75.6 msa: 84 ns: 157.5338 origin: ga  created: 86644  last in correctset: 89243  subsumptions: 0 
+0#01###=>0#01#00 total macro fit: 0.3142 fit: 0.3142 num: 1 exp: 23 cov: 12.5% of dataset Pdel: 28.2626%  tp: 143.4 msa: 161 ns: 197.1699 origin: ga  created: 88308  last in correctset: 89491  subsumptions: 0 
+00000#1=>#000#0# total macro fit: 0.2971 fit: 0.2971 num: 1 exp: 16 cov: 1.5625% of dataset Pdel: 0.0063%  tp: 99.2 msa: 112 ns: 329.0162 origin: ga  created: 81880  last in correctset: 85087  subsumptions: 0 
+00001##=>0000110 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0012%  tp: 90 msa: 105 ns: 64.604 origin: ga  created: 86230  last in correctset: 89478  subsumptions: 0 
+#######=>1000000 total macro fit: 0.1848 fit: 0.1848 num: 1 exp: 80 cov: 100% of dataset Pdel: 55.0652%  tp: 473 msa: 560 ns: 231.313 origin: ga  created: 88942  last in correctset: 89448  subsumptions: 0 
+10000##=>#000001 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 20 cov: 3.125% of dataset Pdel: 0.0062%  tp: 118 msa: 140 ns: 322.1288 origin: ga  created: 84998  last in correctset: 87018  subsumptions: 0 
+00001##=>#000110 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0012%  tp: 76.7 msa: 91 ns: 63.3462 origin: ga  created: 86573  last in correctset: 89478  subsumptions: 0 
+00001#1=>#001100 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0012%  tp: 70.8 msa: 84 ns: 61.8162 origin: ga  created: 83886  last in correctset: 89261  subsumptions: 0 
+0001###=>0#11000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 10 cov: 6.25% of dataset Pdel: 0.0004%  tp: 59 msa: 70 ns: 20.8828 origin: ga  created: 88308  last in correctset: 89491  subsumptions: 0 
+000#1##=>#000100 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 10 cov: 6.25% of dataset Pdel: 0.0032%  tp: 59 msa: 70 ns: 167.9621 origin: ga  created: 88365  last in correctset: 89478  subsumptions: 0 
+1######=>11##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 56 cov: 50% of dataset Pdel: 5.694%  tp: 324.8 msa: 392 ns: 19.7373 origin: ga  created: 88718  last in correctset: 89215  subsumptions: 0 
+00000##=>00#0011 total macro fit: 0.1174 fit: 0.1174 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0018%  tp: 90.4 msa: 112 ns: 95.481 origin: ga  created: 85748  last in correctset: 89243  subsumptions: 0 
+0#1###0=>0011000 total macro fit: 0.0431 fit: 0.0431 num: 1 exp: 18 cov: 12.5% of dataset Pdel: 0.0037%  tp: 92 msa: 126 ns: 191.3207 origin: ga  created: 88356  last in correctset: 89406  subsumptions: 0 
+00001##=>0000111 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0012%  tp: 65 msa: 91 ns: 63.3462 origin: ga  created: 86573  last in correctset: 89478  subsumptions: 0 
+1001###=>0#01000 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.0061%  tp: 78.4 msa: 112 ns: 319.8169 origin: ga  created: 87699  last in correctset: 88881  subsumptions: 0 
+00011##=>#000100 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.006%  tp: 49 msa: 70 ns: 311.0423 origin: ga  created: 87126  last in correctset: 89356  subsumptions: 0 
+00000#1=>10#0011 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 11 cov: 1.5625% of dataset Pdel: 0.0002%  tp: 53.9 msa: 77 ns: 12.5626 origin: ga  created: 84194  last in correctset: 89046  subsumptions: 0 
+1001###=>0#010#0 total macro fit: 0.023 fit: 0.023 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.0061%  tp: 76.8 msa: 112 ns: 319.8169 origin: ga  created: 87699  last in correctset: 88881  subsumptions: 0 
+00000##=>0001011 total macro fit: 0.0207 fit: 0.0207 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0018%  tp: 76 msa: 112 ns: 95.2852 origin: ga  created: 85748  last in correctset: 89243  subsumptions: 0 
+#0001##=>#101000 total macro fit: 0.0102 fit: 0.0102 num: 1 exp: 19 cov: 6.25% of dataset Pdel: 0.0068%  tp: 84.1 msa: 133 ns: 353.4785 origin: ga  created: 87469  last in correctset: 89448  subsumptions: 0 
+00100#1=>0#00011 total macro fit: 0.0029 fit: 0.0029 num: 1 exp: 13 cov: 1.5625% of dataset Pdel: 0.0074%  tp: 50.7 msa: 91 ns: 387.4422 origin: ga  created: 83299  last in correctset: 86793  subsumptions: 0 
+00100#0=>0000#11 total macro fit: 0.0029 fit: 0.0029 num: 1 exp: 13 cov: 1.5625% of dataset Pdel: 0.0074%  tp: 50.7 msa: 91 ns: 386.9799 origin: ga  created: 83671  last in correctset: 87900  subsumptions: 0 
+001#1##=>#10010# total macro fit: 0.0022 fit: 0.0022 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.015%  tp: 41.8 msa: 77 ns: 784.1425 origin: ga  created: 88365  last in correctset: 88679  subsumptions: 0 
+0#1##1#=>0011000 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 11.1111% of dataset Pdel: 0.0018%  tp: 28 msa: 35 ns: 94.5994 origin: ga  created: 89189  last in correctset: 89406  subsumptions: 0 
+00001##=>#000101 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.0011%  tp: 53.1 msa: 63 ns: 58.1686 origin: ga  created: 87469  last in correctset: 89478  subsumptions: 0 
+0001##1=>0#01100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0004%  tp: 47.2 msa: 56 ns: 20.08 origin: ga  created: 87412  last in correctset: 89201  subsumptions: 0 
+00010##=>0#01001 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 3.125% of dataset Pdel: 0.0003%  tp: 29.5 msa: 35 ns: 16.3578 origin: ga  created: 88091  last in correctset: 89491  subsumptions: 0 
+#0000#1=>0000011 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0019%  tp: 20 msa: 28 ns: 98.9376 origin: ga  created: 88150  last in correctset: 89046  subsumptions: 0 
+0000##1=>00#0011 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0022%  tp: 19.6 msa: 28 ns: 112.2736 origin: ga  created: 88436  last in correctset: 89046  subsumptions: 0 
+00001##=>##00110 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0008%  tp: 23.2 msa: 28 ns: 40.1408 origin: ga  created: 88582  last in correctset: 89478  subsumptions: 0 
+00000##=>0001010 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 3.0303% of dataset Pdel: 0.0011%  tp: 11 msa: 14 ns: 55.36 origin: ga  created: 89046  last in correctset: 89243  subsumptions: 0 
+00001##=>0000100 total macro fit: 0 fit: 0 num: 2 exp: 1 cov: 2.8571% of dataset Pdel: 0.0003%  tp: 7 msa: 7 ns: 14.4 origin: ga  created: 89261  last in correctset: 89478  subsumptions: 1 
+0000011=>#000#01 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 0.7812% of dataset Pdel: 0.0056%  tp: 43.2 msa: 63 ns: 293.0629 origin: ga  created: 80985  last in correctset: 85087  subsumptions: 0 
+1000011=>#000#01 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 0.7812% of dataset Pdel: 0.0046%  tp: 34.8 msa: 42 ns: 241.7284 origin: ga  created: 83671  last in correctset: 87018  subsumptions: 0 
+0001###=>0#01001 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 89491  last in correctset: 0  subsumptions: 0 
+
+200th repetition:
+
+Population size: 49
+Timestamp: 179089
+Number of classifiers in population covered :2
+Number of classifiers in population ga-ed :47
+Covers occured: 19
+Number of subsumptions: 6798
+
+1######=>10##000 total macro fit: 80021.0475 fit: 244.7127 num: 327 exp: 6225 cov: 50% of dataset Pdel: 0.2587%  tp: 42330 msa: 43575 ns: 330.7284 origin: ga  created: 91917  last in correctset: 178978  subsumptions: 808 
+#######=>#0#0000 total macro fit: 26954.5804 fit: 107.8183 num: 250 exp: 25599 cov: 100% of dataset Pdel: 0.501%  tp: 164673.2 msa: 179193 ns: 282.1869 origin: cover  created: 0  last in correctset: 179088  subsumptions: 2368 
+0001###=>0#01000 total macro fit: 16973.3114 fit: 121.2379 num: 140 exp: 907 cov: 6.25% of dataset Pdel: 0.2298%  tp: 6258.3 msa: 6349 ns: 142.0052 origin: ga  created: 77344  last in correctset: 179069  subsumptions: 435 
+00001##=>#000100 total macro fit: 5611.5846 fit: 69.2788 num: 81 exp: 531 cov: 3.125% of dataset Pdel: 0.2452%  tp: 3663.9 msa: 3717 ns: 84.4991 origin: ga  created: 60260  last in correctset: 179059  subsumptions: 296 
+001####=>##1##0# total macro fit: 3860.4523 fit: 42.8939 num: 90 exp: 1001 cov: 12.5% of dataset Pdel: 0.4418%  tp: 6506.5 msa: 7007 ns: 94.3731 origin: ga  created: 123064  last in correctset: 179064  subsumptions: 310 
+000001#=>#0#0010 total macro fit: 695.9719 fit: 22.4507 num: 31 exp: 132 cov: 1.5625% of dataset Pdel: 0.2715%  tp: 897.6 msa: 924 ns: 31.1421 origin: ga  created: 119777  last in correctset: 178913  subsumptions: 70 
+#######=>0100000 total macro fit: 99.0538 fit: 3.0016 num: 33 exp: 25594 cov: 100% of dataset Pdel: 3.3077%  tp: 140968 msa: 179158 ns: 51.8638 origin: cover  created: 25  last in correctset: 179088  subsumptions: 2504 
+00000#1=>##00#01 total macro fit: 1.1535 fit: 0.3845 num: 3 exp: 18 cov: 1.5625% of dataset Pdel: 0.0015%  tp: 102.6 msa: 126 ns: 22.0229 origin: ga  created: 170563  last in correctset: 178623  subsumptions: 2 
+001####=>##10#0# total macro fit: 1.1104 fit: 1.1104 num: 1 exp: 33 cov: 12.5% of dataset Pdel: 17.0555%  tp: 217.8 msa: 231 ns: 94.3111 origin: ga  created: 177195  last in correctset: 179064  subsumptions: 1 
+1######=>100#000 total macro fit: 0.866 fit: 0.866 num: 1 exp: 61 cov: 49.1935% of dataset Pdel: 7.4012%  tp: 420.9 msa: 427 ns: 33.4801 origin: ga  created: 178216  last in correctset: 179050  subsumptions: 0 
+00001##=>#000101 total macro fit: 0.7238 fit: 0.3619 num: 2 exp: 19 cov: 3.125% of dataset Pdel: 0.0057%  tp: 112.1 msa: 133 ns: 83.2868 origin: ga  created: 174913  last in correctset: 179059  subsumptions: 1 
+00001#1=>#000101 total macro fit: 0.7238 fit: 0.3619 num: 2 exp: 16 cov: 1.5625% of dataset Pdel: 0.0056%  tp: 94.4 msa: 112 ns: 82.5053 origin: ga  created: 171672  last in correctset: 178843  subsumptions: 1 
+000001#=>#0#1010 total macro fit: 0.61 fit: 0.305 num: 2 exp: 10 cov: 1.5625% of dataset Pdel: 0.0019%  tp: 58 msa: 70 ns: 28.1931 origin: ga  created: 174433  last in correctset: 178913  subsumptions: 1 
+001####=>0#1##0# total macro fit: 0.5552 fit: 0.5552 num: 1 exp: 39 cov: 12.5% of dataset Pdel: 11.9853%  tp: 257.4 msa: 273 ns: 33.1374 origin: ga  created: 176978  last in correctset: 179064  subsumptions: 0 
+0010#1#=>##10#0# total macro fit: 0.5552 fit: 0.5552 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.0061%  tp: 79.2 msa: 84 ns: 89.4709 origin: ga  created: 176376  last in correctset: 177195  subsumptions: 0 
+000####=>0#01000 total macro fit: 0.3619 fit: 0.1809 num: 2 exp: 15 cov: 12.3967% of dataset Pdel: 0.0056%  tp: 88.5 msa: 105 ns: 82.0499 origin: ga  created: 178236  last in correctset: 179069  subsumptions: 1 
+0001###=>0001100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.0089%  tp: 66 msa: 77 ns: 130.0619 origin: ga  created: 177669  last in correctset: 179069  subsumptions: 0 
+#001###=>0#01000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.006%  tp: 94.4 msa: 112 ns: 87.4726 origin: ga  created: 178173  last in correctset: 179069  subsumptions: 0 
+00000#1=>#000001 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0014%  tp: 70.8 msa: 84 ns: 21.0971 origin: ga  created: 173251  last in correctset: 178623  subsumptions: 0 
+1######=>10##010 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 20 cov: 41.6667% of dataset Pdel: 0.0224%  tp: 116 msa: 140 ns: 326.9321 origin: ga  created: 178747  last in correctset: 178978  subsumptions: 0 
+0#000#1=>##00001 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 22 cov: 3.125% of dataset Pdel: 40.9941%  tp: 127.6 msa: 154 ns: 31.2387 origin: ga  created: 174147  last in correctset: 178623  subsumptions: 0 
+00000#1=>##00011 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0012%  tp: 81.2 msa: 98 ns: 17.7987 origin: ga  created: 172355  last in correctset: 178623  subsumptions: 0 
+01000#1=>##00001 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0024%  tp: 81.2 msa: 98 ns: 34.8615 origin: ga  created: 173251  last in correctset: 176922  subsumptions: 0 
+000001#=>#0#0011 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.0019%  tp: 58 msa: 70 ns: 28.1931 origin: ga  created: 174433  last in correctset: 178913  subsumptions: 0 
+001101#=>#0#001# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0173%  tp: 79.8 msa: 98 ns: 252.8415 origin: ga  created: 172641  last in correctset: 177936  subsumptions: 0 
+0#000#1=>##00#01 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.002%  tp: 57 msa: 70 ns: 28.5126 origin: ga  created: 176835  last in correctset: 178623  subsumptions: 0 
+1000011=>###0010 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 10 cov: 0.7812% of dataset Pdel: 0.0184%  tp: 57 msa: 70 ns: 269.5443 origin: ga  created: 169953  last in correctset: 178393  subsumptions: 0 
+000#0#1=>##00001 total macro fit: 0.0619 fit: 0.0619 num: 1 exp: 20 cov: 3.125% of dataset Pdel: 0.0061%  tp: 106 msa: 140 ns: 88.7005 origin: ga  created: 174147  last in correctset: 178623  subsumptions: 0 
+00000##=>#0#010# total macro fit: 0.0546 fit: 0.0546 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0182%  tp: 78.5 msa: 105 ns: 266.1839 origin: ga  created: 175809  last in correctset: 177929  subsumptions: 0 
+00101##=>#000100 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0172%  tp: 78.4 msa: 112 ns: 252.1012 origin: ga  created: 175475  last in correctset: 176256  subsumptions: 0 
+00010#1=>##00001 total macro fit: 0.023 fit: 0.023 num: 1 exp: 18 cov: 1.5625% of dataset Pdel: 0.0118%  tp: 86.4 msa: 126 ns: 172.0668 origin: ga  created: 170563  last in correctset: 176449  subsumptions: 0 
+0000001=>#0#0010 total macro fit: 0.023 fit: 0.023 num: 1 exp: 13 cov: 0.7812% of dataset Pdel: 0.0179%  tp: 62.4 msa: 91 ns: 262.2584 origin: ga  created: 167503  last in correctset: 177726  subsumptions: 0 
+101####=>##1##1# total macro fit: 0.0121 fit: 0.0121 num: 1 exp: 40 cov: 12.5% of dataset Pdel: 16.7209%  tp: 180 msa: 280 ns: 1 origin: ga  created: 176740  last in correctset: 0  subsumptions: 0 
+10001##=>#001110 total macro fit: 0.0029 fit: 0.0029 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0022%  tp: 39 msa: 70 ns: 31.8267 origin: ga  created: 177048  last in correctset: 179050  subsumptions: 0 
+000011#=>#1#0010 total macro fit: 0.0022 fit: 0.0022 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0239%  tp: 45.6 msa: 84 ns: 348.891 origin: ga  created: 173537  last in correctset: 174018  subsumptions: 0 
+#######=>#0##010 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 50% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 179088  last in correctset: 0  subsumptions: 0 
+0######=>10##000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 46.6667% of dataset Pdel: 0.0151%  tp: 36.6 msa: 49 ns: 220.9912 origin: ga  created: 178978  last in correctset: 179088  subsumptions: 0 
+0#1####=>##1##0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 33.3333% of dataset Pdel: 0.004%  tp: 5.5 msa: 7 ns: 58 origin: ga  created: 179064  last in correctset: 179088  subsumptions: 0 
+000####=>##1##0# total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 13.8889% of dataset Pdel: 0.0164%  tp: 26.5 msa: 35 ns: 240.1312 origin: ga  created: 178833  last in correctset: 178843  subsumptions: 0 
+0#001##=>#000100 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 8.3333% of dataset Pdel: 0.0031%  tp: 40.3 msa: 49 ns: 45.511 origin: ga  created: 178497  last in correctset: 179059  subsumptions: 0 
+#0011##=>#000100 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 5.9524% of dataset Pdel: 0.0042%  tp: 27.5 msa: 35 ns: 61.2115 origin: ga  created: 178497  last in correctset: 178538  subsumptions: 0 
+00001##=>#010100 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.005%  tp: 53.1 msa: 63 ns: 73.2961 origin: ga  created: 177048  last in correctset: 179059  subsumptions: 0 
+0000#1#=>#0#1010 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0104%  tp: 38.4 msa: 56 ns: 151.961 origin: ga  created: 177121  last in correctset: 178913  subsumptions: 0 
+00000#1=>0#000#1 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 1.5625% of dataset Pdel: 0.0011%  tp: 50.4 msa: 56 ns: 16.0034 origin: ga  created: 175043  last in correctset: 178623  subsumptions: 0 
+00010#1=>##00#01 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 1.5625% of dataset Pdel: 0.0088%  tp: 28.2 msa: 42 ns: 129.3374 origin: ga  created: 175939  last in correctset: 176449  subsumptions: 0 
+0000011=>###0001 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 0.7812% of dataset Pdel: 0.0182%  tp: 32.9 msa: 49 ns: 265.4455 origin: ga  created: 172355  last in correctset: 176462  subsumptions: 0 
+00001##=>#10#100 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 179059  last in correctset: 0  subsumptions: 0 
+#01####=>##1##0# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 179064  last in correctset: 0  subsumptions: 0 
+0001###=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 179069  last in correctset: 0  subsumptions: 0 
+
+300th repetition:
+
+Population size: 70
+Timestamp: 268668
+Number of classifiers in population covered :0
+Number of classifiers in population ga-ed :70
+Covers occured: 21
+Number of subsumptions: 4521
+
+1######=>10##000 total macro fit: 193123.9571 fit: 380.1653 num: 508 exp: 12625 cov: 50% of dataset Pdel: 0.5053%  tp: 85850 msa: 88375 ns: 592.4385 origin: ga  created: 91917  last in correctset: 268494  subsumptions: 1947 
+1######=>1000000 total macro fit: 6400 fit: 80 num: 80 exp: 4369 cov: 50% of dataset Pdel: 2.7461%  tp: 30583 msa: 30583 ns: 84.2841 origin: ga  created: 207484  last in correctset: 268494  subsumptions: 368 
+0######=>0#00000 total macro fit: 5822.621 fit: 49.3442 num: 118 exp: 3474 cov: 50% of dataset Pdel: 8.0064%  tp: 22287.6 msa: 24318 ns: 151.5697 origin: ga  created: 220056  last in correctset: 268634  subsumptions: 1154 
+01#1###=>0100000 total macro fit: 3136 fit: 56 num: 56 exp: 693 cov: 12.5% of dataset Pdel: 2.6937%  tp: 4851 msa: 4851 ns: 57.8727 origin: ga  created: 229845  last in correctset: 268600  subsumptions: 151 
+001####=>#01##0# total macro fit: 1444.1068 fit: 28.3158 num: 51 exp: 253 cov: 12.5% of dataset Pdel: 4.8948%  tp: 1669.8 msa: 1771 ns: 52.3518 origin: ga  created: 254517  last in correctset: 268642  subsumptions: 105 
+01#0###=>0100000 total macro fit: 1443 fit: 39 num: 37 exp: 786 cov: 12.5% of dataset Pdel: 2.6811%  tp: 5502 msa: 5502 ns: 40.096 origin: ga  created: 224614  last in correctset: 268424  subsumptions: 129 
+00001##=>#000100 total macro fit: 1385.5764 fit: 34.6394 num: 40 exp: 931 cov: 3.125% of dataset Pdel: 4.034%  tp: 6423.9 msa: 6517 ns: 52.7957 origin: ga  created: 60260  last in correctset: 268638  subsumptions: 565 
+0001###=>0001000 total macro fit: 1155 fit: 33 num: 35 exp: 170 cov: 6.25% of dataset Pdel: 2.8414%  tp: 1190 msa: 1190 ns: 35.94 origin: ga  created: 249549  last in correctset: 268649  subsumptions: 83 
+00000##=>0000010 total macro fit: 9.6592 fit: 1.6099 num: 6 exp: 24 cov: 3.125% of dataset Pdel: 19.381%  tp: 150 msa: 168 ns: 12.2579 origin: ga  created: 263116  last in correctset: 268492  subsumptions: 10 
+0001###=>0000000 total macro fit: 1.9265 fit: 0.6422 num: 3 exp: 19 cov: 6.25% of dataset Pdel: 0.0359%  tp: 114 msa: 133 ns: 42.0534 origin: ga  created: 266353  last in correctset: 268649  subsumptions: 2 
+00001##=>#010100 total macro fit: 1.0857 fit: 0.3619 num: 3 exp: 18 cov: 3.125% of dataset Pdel: 0.0443%  tp: 106.2 msa: 126 ns: 51.9134 origin: ga  created: 264498  last in correctset: 268638  subsumptions: 2 
+00001##=>0000100 total macro fit: 1 fit: 1 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0426%  tp: 91 msa: 91 ns: 49.899 origin: ga  created: 265730  last in correctset: 268638  subsumptions: 0 
+00000#1=>#000011 total macro fit: 0.7238 fit: 0.3619 num: 2 exp: 20 cov: 1.5625% of dataset Pdel: 0.0075%  tp: 118 msa: 140 ns: 8.7944 origin: ga  created: 259246  last in correctset: 268201  subsumptions: 1 
+00001##=>#100100 total macro fit: 0.7238 fit: 0.3619 num: 2 exp: 10 cov: 3.125% of dataset Pdel: 0.0401%  tp: 59 msa: 70 ns: 46.9681 origin: ga  created: 266290  last in correctset: 268638  subsumptions: 1 
+001####=>001##0# total macro fit: 0.6453 fit: 0.6453 num: 1 exp: 10 cov: 14.2857% of dataset Pdel: 0.0401%  tp: 67 msa: 70 ns: 46.9781 origin: ga  created: 268173  last in correctset: 268642  subsumptions: 0 
+00000#1=>#000##1 total macro fit: 0.5942 fit: 0.5942 num: 1 exp: 22 cov: 1.5625% of dataset Pdel: 49.1244%  tp: 136.4 msa: 154 ns: 11.1603 origin: ga  created: 258350  last in correctset: 268201  subsumptions: 1 
+#00011#=>#000100 total macro fit: 0.3801 fit: 0.3801 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.0575%  tp: 69.9 msa: 77 ns: 67.3714 origin: ga  created: 266283  last in correctset: 268075  subsumptions: 0 
+#1#1###=>0100000 total macro fit: 0.2572 fit: 0.2572 num: 1 exp: 18 cov: 27.6923% of dataset Pdel: 0.056%  tp: 110 msa: 126 ns: 65.6587 origin: ga  created: 268207  last in correctset: 268600  subsumptions: 0 
+00#00#1=>#000### total macro fit: 0.2525 fit: 0.2525 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0282%  tp: 61 msa: 70 ns: 33.1172 origin: ga  created: 266038  last in correctset: 268642  subsumptions: 0 
+#####0#=>0#00000 total macro fit: 0.2474 fit: 0.2474 num: 1 exp: 16 cov: 47.0588% of dataset Pdel: 0.1086%  tp: 97.4 msa: 112 ns: 127.3362 origin: ga  created: 268424  last in correctset: 268634  subsumptions: 0 
+1######=>1001000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 11 cov: 42.3077% of dataset Pdel: 0.0658%  tp: 66 msa: 77 ns: 77.1586 origin: ga  created: 268482  last in correctset: 268494  subsumptions: 0 
+0001#1#=>0001010 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.0302%  tp: 72 msa: 84 ns: 35.4667 origin: ga  created: 265961  last in correctset: 268145  subsumptions: 0 
+0001#11=>0001010 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0338%  tp: 84 msa: 98 ns: 39.6124 origin: ga  created: 261873  last in correctset: 268145  subsumptions: 0 
+01#####=>0#10000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 21 cov: 31.8182% of dataset Pdel: 2419.4356%  tp: 123.9 msa: 147 ns: 167.9553 origin: ga  created: 268200  last in correctset: 268424  subsumptions: 0 
+01#1#0#=>0110#00 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 17 cov: 6.25% of dataset Pdel: 0.0494%  tp: 100.3 msa: 119 ns: 57.9666 origin: ga  created: 266709  last in correctset: 268368  subsumptions: 0 
+000001#=>#000110 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 19 cov: 1.5625% of dataset Pdel: 0.0099%  tp: 112.1 msa: 133 ns: 11.6266 origin: ga  created: 260137  last in correctset: 268492  subsumptions: 0 
+00001##=>#000110 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0435%  tp: 88.5 msa: 105 ns: 50.9963 origin: ga  created: 265387  last in correctset: 268638  subsumptions: 0 
+1####0#=>00##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 14 cov: 21.875% of dataset Pdel: 0.4829%  tp: 81.2 msa: 98 ns: 566.2256 origin: ga  created: 268214  last in correctset: 268243  subsumptions: 0 
+1######=>11#000# total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 13 cov: 43.3333% of dataset Pdel: 0.0687%  tp: 75.4 msa: 91 ns: 80.5184 origin: ga  created: 268452  last in correctset: 268494  subsumptions: 0 
+00001##=>0000##1 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0424%  tp: 58 msa: 70 ns: 49.766 origin: ga  created: 266409  last in correctset: 268634  subsumptions: 0 
+1######=>10##1#0 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 12 cov: 42.8571% of dataset Pdel: 0.4709%  tp: 68.4 msa: 84 ns: 552.1872 origin: ga  created: 268466  last in correctset: 268494  subsumptions: 0 
+00010##=>#000100 total macro fit: 0.113 fit: 0.0565 num: 2 exp: 13 cov: 3.125% of dataset Pdel: 0.036%  tp: 63.7 msa: 91 ns: 42.2175 origin: ga  created: 265947  last in correctset: 268649  subsumptions: 1 
+000####=>00011#0 total macro fit: 0.0958 fit: 0.0958 num: 1 exp: 11 cov: 10.2804% of dataset Pdel: 0.0274%  tp: 60.9 msa: 77 ns: 32.1543 origin: ga  created: 267914  last in correctset: 268649  subsumptions: 0 
+0######=>0#0#001 total macro fit: 0.0791 fit: 0.0791 num: 1 exp: 19 cov: 54.2857% of dataset Pdel: 0.1276%  tp: 103.2 msa: 133 ns: 149.6254 origin: ga  created: 268419  last in correctset: 268634  subsumptions: 0 
+00000##=>###0011 total macro fit: 0.0766 fit: 0.0766 num: 1 exp: 14 cov: 3.125% of dataset Pdel: 0.0352%  tp: 75.8 msa: 98 ns: 41.3008 origin: ga  created: 265518  last in correctset: 268492  subsumptions: 0 
+00000#0=>#000011 total macro fit: 0.0746 fit: 0.0746 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.0087%  tp: 54 msa: 70 ns: 10.1798 origin: ga  created: 264622  last in correctset: 268492  subsumptions: 0 
+0#001##=>##01100 total macro fit: 0.0568 fit: 0.0568 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.0857%  tp: 57.8 msa: 77 ns: 100.4913 origin: ga  created: 267522  last in correctset: 268638  subsumptions: 0 
+0######=>0000100 total macro fit: 0.0431 fit: 0.0431 num: 1 exp: 18 cov: 52.9412% of dataset Pdel: 0.0889%  tp: 92 msa: 126 ns: 104.193 origin: ga  created: 268424  last in correctset: 268649  subsumptions: 0 
+00010##=>1001010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.0316%  tp: 85 msa: 119 ns: 37.0703 origin: ga  created: 264778  last in correctset: 268649  subsumptions: 0 
+0010##1=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.0434%  tp: 55 msa: 77 ns: 50.886 origin: ga  created: 266570  last in correctset: 268642  subsumptions: 0 
+000011#=>#010110 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 20 cov: 1.5625% of dataset Pdel: 0.0458%  tp: 98 msa: 140 ns: 53.6514 origin: ga  created: 259458  last in correctset: 268075  subsumptions: 0 
+00011##=>#000100 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0317%  tp: 49 msa: 70 ns: 37.1247 origin: ga  created: 266283  last in correctset: 268362  subsumptions: 0 
+00000#1=>#000100 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0137%  tp: 58.8 msa: 84 ns: 16.0193 origin: ga  created: 263042  last in correctset: 268201  subsumptions: 0 
+00000##=>#100100 total macro fit: 0.0054 fit: 0.0054 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.1004%  tp: 49.8 msa: 84 ns: 117.714 origin: ga  created: 265948  last in correctset: 266935  subsumptions: 0 
+00010##=>#000011 total macro fit: 0.0029 fit: 0.0029 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.0374%  tp: 66.3 msa: 119 ns: 43.7952 origin: ga  created: 264820  last in correctset: 268649  subsumptions: 0 
+00010##=>#0#0011 total macro fit: 0.0022 fit: 0.0022 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.036%  tp: 49.4 msa: 91 ns: 42.2175 origin: ga  created: 265716  last in correctset: 268649  subsumptions: 0 
+1###1##=>0#00000 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 24.2424% of dataset Pdel: 0.0605%  tp: 47.2 msa: 56 ns: 70.9235 origin: ga  created: 268431  last in correctset: 268482  subsumptions: 0 
+0##0###=>0100#00 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 22.2222% of dataset Pdel: 0.0389%  tp: 10.8 msa: 14 ns: 45.56 origin: ga  created: 268600  last in correctset: 268634  subsumptions: 0 
+01#0###=>1100001 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 14.5161% of dataset Pdel: 0.0297%  tp: 45 msa: 63 ns: 34.8059 origin: ga  created: 268229  last in correctset: 268335  subsumptions: 0 
+11#0###=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 11.2903% of dataset Pdel: 0.0569%  tp: 35 msa: 49 ns: 66.7367 origin: ga  created: 268229  last in correctset: 268482  subsumptions: 0 
+0101##1=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 6.9767% of dataset Pdel: 0.0745%  tp: 15 msa: 21 ns: 87.296 origin: ga  created: 268362  last in correctset: 268368  subsumptions: 0 
+0000###=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 6.25% of dataset Pdel: 0.0265%  tp: 46 msa: 63 ns: 31.057 origin: ga  created: 267620  last in correctset: 268634  subsumptions: 0 
+00000##=>0000110 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.0091%  tp: 48 msa: 63 ns: 10.6157 origin: ga  created: 266612  last in correctset: 268492  subsumptions: 0 
+00001##=>0000010 total macro fit: 0 fit: 0 num: 2 exp: 9 cov: 3.125% of dataset Pdel: 0.0411%  tp: 45 msa: 63 ns: 48.1822 origin: ga  created: 266700  last in correctset: 268634  subsumptions: 1 
+000#01#=>##00100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.1025%  tp: 38.4 msa: 56 ns: 120.2003 origin: ga  created: 266846  last in correctset: 266935  subsumptions: 0 
+00000##=>0000011 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.0071%  tp: 40 msa: 49 ns: 8.2936 origin: ga  created: 266934  last in correctset: 268492  subsumptions: 0 
+00011##=>#000110 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0261%  tp: 23.4 msa: 42 ns: 30.6021 origin: ga  created: 267186  last in correctset: 268362  subsumptions: 0 
+00001##=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0346%  tp: 36 msa: 42 ns: 40.5612 origin: ga  created: 267508  last in correctset: 268634  subsumptions: 0 
+0001#1#=>1001#0# total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 3.125% of dataset Pdel: 0.0215%  tp: 29 msa: 35 ns: 25.2454 origin: ga  created: 267249  last in correctset: 268145  subsumptions: 0 
+00010##=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 3.125% of dataset Pdel: 0.0257%  tp: 25 msa: 35 ns: 30.1517 origin: ga  created: 267596  last in correctset: 268649  subsumptions: 0 
+00001##=>#001100 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0264%  tp: 23.6 msa: 28 ns: 30.9792 origin: ga  created: 267742  last in correctset: 268638  subsumptions: 0 
+00001##=>1100010 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 3.0303% of dataset Pdel: 0.0534%  tp: 6 msa: 14 ns: 62.64 origin: ga  created: 268201  last in correctset: 268419  subsumptions: 0 
+00000##=>#000##1 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 2.521% of dataset Pdel: 0.005%  tp: 18.1 msa: 21 ns: 5.896 origin: ga  created: 267830  last in correctset: 268404  subsumptions: 0 
+00100#1=>#001011 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 1.5625% of dataset Pdel: 0.0409%  tp: 26.1 msa: 63 ns: 47.9042 origin: ga  created: 264622  last in correctset: 268642  subsumptions: 0 
+00100#1=>#000##0 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 1.5625% of dataset Pdel: 0.0325%  tp: 28.5 msa: 35 ns: 38.1571 origin: ga  created: 266409  last in correctset: 268642  subsumptions: 0 
+00001#1=>#001101 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 1.5625% of dataset Pdel: 0.0268%  tp: 19.6 msa: 28 ns: 31.4656 origin: ga  created: 266846  last in correctset: 268419  subsumptions: 0 
+001001#=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 1.5625% of dataset Pdel: 0.0233%  tp: 15 msa: 21 ns: 27.312 origin: ga  created: 267305  last in correctset: 267668  subsumptions: 0 
+010010#=>#000100 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 1.5625% of dataset Pdel: 0.0512%  tp: 9.8 msa: 14 ns: 60.08 origin: ga  created: 267742  last in correctset: 268335  subsumptions: 0 
+00001##=>#00000# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 268638  last in correctset: 0  subsumptions: 0 
+010####=>#01##0# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 268642  last in correctset: 0  subsumptions: 0 
+
+400th repetition:
+
+Population size: 98
+Timestamp: 358237
+Number of classifiers in population covered :0
+Number of classifiers in population ga-ed :98
+Covers occured: 31
+Number of subsumptions: 8616
+
+1######=>10##000 total macro fit: 244849.6328 fit: 427.3118 num: 573 exp: 19025 cov: 50% of dataset Pdel: 0.8145%  tp: 129370 msa: 133175 ns: 611.8959 origin: ga  created: 91917  last in correctset: 358225  subsumptions: 3092 
+01#1###=>0100000 total macro fit: 6560 fit: 80 num: 82 exp: 2293 cov: 12.5% of dataset Pdel: 3.8063%  tp: 16051 msa: 16051 ns: 83.4211 origin: ga  created: 229845  last in correctset: 358235  subsumptions: 881 
+01#0###=>0100000 total macro fit: 3136 fit: 56 num: 56 exp: 2386 cov: 12.5% of dataset Pdel: 3.9856%  tp: 16702 msa: 16702 ns: 58.5125 origin: ga  created: 224614  last in correctset: 358142  subsumptions: 877 
+0001###=>0001000 total macro fit: 2704 fit: 52 num: 52 exp: 970 cov: 6.25% of dataset Pdel: 4.2627%  tp: 6790 msa: 6790 ns: 60.162 origin: ga  created: 249549  last in correctset: 358084  subsumptions: 622 
+1######=>1000000 total macro fit: 1365 fit: 39 num: 35 exp: 10769 cov: 50% of dataset Pdel: 3.9195%  tp: 75383 msa: 75383 ns: 41.5563 origin: ga  created: 207484  last in correctset: 358225  subsumptions: 921 
+001####=>0#10#0# total macro fit: 859.5514 fit: 23.2311 num: 37 exp: 650 cov: 12.5% of dataset Pdel: 6.8822%  tp: 4355 msa: 4550 ns: 43.3913 origin: ga  created: 321930  last in correctset: 358212  subsumptions: 259 
+0000###=>0000#0# total macro fit: 612.3216 fit: 18.0095 num: 34 exp: 380 cov: 6.25% of dataset Pdel: 8.7439%  tp: 2489 msa: 2660 ns: 42.7299 origin: ga  created: 315688  last in correctset: 358057  subsumptions: 353 
+001####=>#01##0# total macro fit: 359.7775 fit: 14.9907 num: 24 exp: 1853 cov: 12.5% of dataset Pdel: 8.3647%  tp: 12229.8 msa: 12971 ns: 34.0314 origin: ga  created: 254517  last in correctset: 358212  subsumptions: 727 
+00001##=>#000100 total macro fit: 77.9387 fit: 7.7939 num: 10 exp: 1331 cov: 3.125% of dataset Pdel: 6.0093%  tp: 9183.9 msa: 9317 ns: 12.7087 origin: ga  created: 60260  last in correctset: 358207  subsumptions: 876 
+00000##=>#000#10 total macro fit: 0.9303 fit: 0.4652 num: 2 exp: 12 cov: 3.125% of dataset Pdel: 0.0177%  tp: 72.6 msa: 84 ns: 13.2923 origin: ga  created: 355376  last in correctset: 358057  subsumptions: 1 
+0001###=>0101000 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 15 cov: 6.25% of dataset Pdel: 0.0783%  tp: 90 msa: 105 ns: 58.845 origin: ga  created: 356493  last in correctset: 358084  subsumptions: 1 
+0001###=>1001000 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 12 cov: 6.25% of dataset Pdel: 0.0751%  tp: 72 msa: 84 ns: 56.4215 origin: ga  created: 356589  last in correctset: 357324  subsumptions: 1 
+#001###=>0001000 total macro fit: 0.7657 fit: 0.3829 num: 2 exp: 15 cov: 12.3967% of dataset Pdel: 0.0675%  tp: 89 msa: 105 ns: 50.6863 origin: ga  created: 357385  last in correctset: 358084  subsumptions: 1 
+00000#0=>#0000## total macro fit: 0.6453 fit: 0.6453 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0077%  tp: 93.8 msa: 98 ns: 5.754 origin: ga  created: 352402  last in correctset: 358057  subsumptions: 0 
+1000###=>0000#0# total macro fit: 0.61 fit: 0.305 num: 2 exp: 12 cov: 6.25% of dataset Pdel: 0.0505%  tp: 69.6 msa: 84 ns: 37.924 origin: ga  created: 356750  last in correctset: 358198  subsumptions: 1 
+00000#1=>#0010## total macro fit: 0.5127 fit: 0.2563 num: 2 exp: 11 cov: 1.5625% of dataset Pdel: 0.0075%  tp: 62.7 msa: 77 ns: 5.608 origin: ga  created: 352927  last in correctset: 357770  subsumptions: 1 
+101####=>#01##0# total macro fit: 0.4295 fit: 0.2147 num: 2 exp: 11 cov: 10.8911% of dataset Pdel: 0.7454%  tp: 61.6 msa: 77 ns: 559.9477 origin: ga  created: 357526  last in correctset: 357567  subsumptions: 1 
+0000###=>00#000# total macro fit: 0.2178 fit: 0.2178 num: 1 exp: 19 cov: 6.25% of dataset Pdel: 0.0341%  tp: 114.2 msa: 133 ns: 25.6037 origin: ga  created: 356187  last in correctset: 358057  subsumptions: 0 
+1######=>1000100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 16 cov: 42.1053% of dataset Pdel: 0.0539%  tp: 96 msa: 112 ns: 40.4862 origin: ga  created: 357968  last in correctset: 358225  subsumptions: 0 
+01#0#0#=>0100100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 14 cov: 6.25% of dataset Pdel: 0.0776%  tp: 84 msa: 98 ns: 58.3258 origin: ga  created: 356722  last in correctset: 358119  subsumptions: 0 
+00#1###=>000100# total macro fit: 0.1977 fit: 0.1977 num: 1 exp: 19 cov: 12.5% of dataset Pdel: 0.0483%  tp: 113.1 msa: 133 ns: 36.2578 origin: ga  created: 357037  last in correctset: 358084  subsumptions: 0 
+00001##=>#000101 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0163%  tp: 94.4 msa: 112 ns: 12.282 origin: ga  created: 354626  last in correctset: 358207  subsumptions: 0 
+000011#=>#000000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 16 cov: 1.5625% of dataset Pdel: 0.0235%  tp: 94.4 msa: 112 ns: 17.6326 origin: ga  created: 351046  last in correctset: 356751  subsumptions: 0 
+0010###=>000000# total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 15 cov: 6.25% of dataset Pdel: 0.0058%  tp: 88.5 msa: 105 ns: 4.3654 origin: ga  created: 356509  last in correctset: 358210  subsumptions: 0 
+0001###=>00110#0 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 14 cov: 6.25% of dataset Pdel: 0.077%  tp: 82.6 msa: 98 ns: 57.8096 origin: ga  created: 356533  last in correctset: 358084  subsumptions: 0 
+00001##=>#100100 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0158%  tp: 76.7 msa: 91 ns: 11.8479 origin: ga  created: 355305  last in correctset: 358207  subsumptions: 0 
+01100##=>#000000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.0765%  tp: 64.9 msa: 77 ns: 57.48 origin: ga  created: 356140  last in correctset: 356164  subsumptions: 0 
+00101#1=>#000#00 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 20 cov: 1.5625% of dataset Pdel: 0.0092%  tp: 116 msa: 140 ns: 6.88 origin: ga  created: 349933  last in correctset: 357204  subsumptions: 0 
+1######=>00##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 15 cov: 46.875% of dataset Pdel: 0.7877%  tp: 87 msa: 105 ns: 591.7568 origin: ga  created: 358007  last in correctset: 358225  subsumptions: 0 
+001####=>#010#01 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 17 cov: 12.5% of dataset Pdel: 0.0442%  tp: 98.6 msa: 119 ns: 33.1915 origin: ga  created: 357241  last in correctset: 358212  subsumptions: 0 
+0010#1#=>0000#0# total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0455%  tp: 87 msa: 105 ns: 34.1906 origin: ga  created: 354958  last in correctset: 358091  subsumptions: 0 
+011####=>0#10#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 20 cov: 12.5% of dataset Pdel: 0.0966%  tp: 114 msa: 140 ns: 72.5527 origin: ga  created: 357023  last in correctset: 358231  subsumptions: 0 
+001##1#=>0#11#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 20 cov: 6.25% of dataset Pdel: 0.0565%  tp: 114 msa: 140 ns: 42.4141 origin: ga  created: 356127  last in correctset: 358135  subsumptions: 0 
+01000#1=>#100##1 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0871%  tp: 79.8 msa: 98 ns: 65.4272 origin: ga  created: 352404  last in correctset: 356968  subsumptions: 0 
+001###0=>011##0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.0531%  tp: 62.7 msa: 77 ns: 39.9256 origin: ga  created: 357024  last in correctset: 358135  subsumptions: 0 
+001###1=>#11##0# total macro fit: 0.1074 fit: 0.1074 num: 1 exp: 18 cov: 6.25% of dataset Pdel: 0.0911%  tp: 100.8 msa: 126 ns: 68.421 origin: ga  created: 356212  last in correctset: 358212  subsumptions: 0 
+000#0#1=>#000##1 total macro fit: 0.0818 fit: 0.0818 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0492%  tp: 87.2 msa: 112 ns: 36.9701 origin: ga  created: 354194  last in correctset: 357770  subsumptions: 0 
+0#000##=>#000#1# total macro fit: 0.0755 fit: 0.0755 num: 1 exp: 17 cov: 6.25% of dataset Pdel: 0.0595%  tp: 91.9 msa: 119 ns: 44.6645 origin: ga  created: 356272  last in correctset: 358057  subsumptions: 0 
+0000###=>001000# total macro fit: 0.048 fit: 0.048 num: 1 exp: 15 cov: 6.25% of dataset Pdel: 0.0335%  tp: 77.5 msa: 105 ns: 25.1294 origin: ga  created: 356509  last in correctset: 358057  subsumptions: 0 
+01#1###=>0010000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 17 cov: 12.5% of dataset Pdel: 0.1103%  tp: 85 msa: 119 ns: 82.8839 origin: ga  created: 357275  last in correctset: 358235  subsumptions: 0 
+11#1###=>0100000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.0544%  tp: 80 msa: 112 ns: 40.8938 origin: ga  created: 357340  last in correctset: 357361  subsumptions: 0 
+1001###=>0000010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.0513%  tp: 80 msa: 112 ns: 38.5553 origin: ga  created: 356533  last in correctset: 357017  subsumptions: 0 
+0101###=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 15 cov: 6.25% of dataset Pdel: 0.1097%  tp: 75 msa: 105 ns: 82.4319 origin: ga  created: 356821  last in correctset: 357752  subsumptions: 0 
+00#0###=>010#000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 10 cov: 16.129% of dataset Pdel: 0.0077%  tp: 50 msa: 70 ns: 5.8051 origin: ga  created: 357798  last in correctset: 358210  subsumptions: 0 
+11#1###=>0100#00 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.0544%  tp: 78.4 msa: 112 ns: 40.8938 origin: ga  created: 357340  last in correctset: 357346  subsumptions: 0 
+01#0###=>#110001 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 10 cov: 14.7059% of dataset Pdel: 0.069%  tp: 49 msa: 70 ns: 51.8356 origin: ga  created: 357755  last in correctset: 357798  subsumptions: 0 
+00101##=>#001000 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.0085%  tp: 53.9 msa: 77 ns: 6.3614 origin: ga  created: 356140  last in correctset: 357927  subsumptions: 0 
+01#1###=>00#0#01 total macro fit: 0.023 fit: 0.023 num: 1 exp: 18 cov: 12.5% of dataset Pdel: 0.1123%  tp: 86.4 msa: 126 ns: 84.34 origin: ga  created: 357214  last in correctset: 358231  subsumptions: 0 
+001####=>1#11#0# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 13 cov: 12.8713% of dataset Pdel: 0.0891%  tp: 61.1 msa: 91 ns: 66.9062 origin: ga  created: 357525  last in correctset: 358212  subsumptions: 0 
+00#1###=>0100100 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.048%  tp: 64 msa: 112 ns: 36.0464 origin: ga  created: 357337  last in correctset: 358084  subsumptions: 0 
+00#1#0#=>1100000 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 18 cov: 6.25% of dataset Pdel: 0.0494%  tp: 72 msa: 126 ns: 37.1332 origin: ga  created: 356133  last in correctset: 357412  subsumptions: 0 
+#######=>10##000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 100% of dataset Pdel: 0.0234%  tp: 4.8 msa: 7 ns: 17.6 origin: ga  created: 358224  last in correctset: 358235  subsumptions: 0 
+#######=>11##000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 100% of dataset Pdel: 0.0229%  tp: 5.8 msa: 7 ns: 17.2 origin: ga  created: 358225  last in correctset: 358235  subsumptions: 0 
+00#1###=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 50% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 358231  last in correctset: 0  subsumptions: 0 
+01#1###=>0101000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 50% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 358232  last in correctset: 0  subsumptions: 0 
+11#1###=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 50% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 358232  last in correctset: 0  subsumptions: 0 
+01#0###=>0110000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 50% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 358235  last in correctset: 0  subsumptions: 0 
+1######=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 20% of dataset Pdel: 0.0125%  tp: 6 msa: 7 ns: 9.4 origin: ga  created: 358198  last in correctset: 358225  subsumptions: 0 
+1######=>1000001 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 20% of dataset Pdel: 0.0125%  tp: 6 msa: 7 ns: 9.4 origin: ga  created: 358198  last in correctset: 358225  subsumptions: 0 
+#01####=>0#10#0# total macro fit: 0 fit: 0 num: 2 exp: 6 cov: 18.1818% of dataset Pdel: 0.0442%  tp: 36.2 msa: 42 ns: 33.207 origin: ga  created: 358000  last in correctset: 358212  subsumptions: 1 
+001####=>0#10#01 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 15% of dataset Pdel: 0.03%  tp: 17.4 msa: 21 ns: 22.528 origin: ga  created: 358091  last in correctset: 358212  subsumptions: 0 
+01#0###=>0100100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 14.2857% of dataset Pdel: 0.0658%  tp: 48 msa: 56 ns: 49.4559 origin: ga  created: 357839  last in correctset: 358142  subsumptions: 0 
+0#1####=>0#10#01 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 14.2857% of dataset Pdel: 0.0326%  tp: 10.6 msa: 14 ns: 24.48 origin: ga  created: 358135  last in correctset: 358231  subsumptions: 0 
+01#0###=>0110100 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 13.2075% of dataset Pdel: 0.0628%  tp: 35 msa: 49 ns: 47.1413 origin: ga  created: 357860  last in correctset: 358119  subsumptions: 0 
+01#1###=>1100000 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 11.9048% of dataset Pdel: 0.0743%  tp: 30 msa: 35 ns: 55.7955 origin: ga  created: 357940  last in correctset: 358235  subsumptions: 0 
+#01#1##=>0#10#0# total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 11.3636% of dataset Pdel: 0.0406%  tp: 29.5 msa: 35 ns: 30.4986 origin: ga  created: 357923  last in correctset: 358112  subsumptions: 0 
+11#0###=>0100001 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 11.2903% of dataset Pdel: 0.0436%  tp: 28 msa: 49 ns: 32.7361 origin: ga  created: 357798  last in correctset: 357876  subsumptions: 0 
+0010###=>0000#0# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 9.0909% of dataset Pdel: 0.0341%  tp: 34.8 msa: 42 ns: 25.6206 origin: ga  created: 357770  last in correctset: 358210  subsumptions: 0 
+0000###=>0#00#1# total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 8.1081% of dataset Pdel: 0.0206%  tp: 18.1 msa: 21 ns: 15.504 origin: ga  created: 357973  last in correctset: 357986  subsumptions: 0 
+0100###=>0000#0# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 7.2289% of dataset Pdel: 0.0601%  tp: 34.8 msa: 42 ns: 45.1162 origin: ga  created: 357650  last in correctset: 358142  subsumptions: 0 
+0000###=>0010#0# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 7.1429% of dataset Pdel: 0.0425%  tp: 33.8 msa: 42 ns: 31.8929 origin: ga  created: 357643  last in correctset: 358057  subsumptions: 0 
+001####=>1#10#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 7.1429% of dataset Pdel: 0.013%  tp: 5.7 msa: 7 ns: 9.8 origin: ga  created: 358135  last in correctset: 358212  subsumptions: 0 
+101####=>0##000# total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 6.8182% of dataset Pdel: 0.0288%  tp: 17.1 msa: 21 ns: 21.6 origin: ga  created: 357927  last in correctset: 357968  subsumptions: 0 
+00#10##=>0001#00 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 6.087% of dataset Pdel: 0.0308%  tp: 40.3 msa: 49 ns: 23.1013 origin: ga  created: 357427  last in correctset: 357713  subsumptions: 0 
+001##1#=>##10#01 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 5.8824% of dataset Pdel: 0.013%  tp: 5.7 msa: 7 ns: 9.8 origin: ga  created: 358112  last in correctset: 358135  subsumptions: 0 
+0000###=>#000#1# total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 5.7143% of dataset Pdel: 0.016%  tp: 12.4 msa: 14 ns: 12 origin: ga  created: 357986  last in correctset: 358057  subsumptions: 0 
+0001###=>0001010 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 4.6512% of dataset Pdel: 0.0306%  tp: 12 msa: 14 ns: 22.96 origin: ga  created: 357930  last in correctset: 358084  subsumptions: 0 
+0001###=>0001001 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 4.0541% of dataset Pdel: 0.0408%  tp: 18 msa: 21 ns: 30.64 origin: ga  created: 357713  last in correctset: 358084  subsumptions: 0 
+1001##1=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.0506%  tp: 45 msa: 63 ns: 37.9973 origin: ga  created: 356141  last in correctset: 357017  subsumptions: 0 
+11001##=>#0011#0 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.0478%  tp: 43.2 msa: 63 ns: 35.9204 origin: ga  created: 356201  last in correctset: 356261  subsumptions: 0 
+000#0#1=>#101##1 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0434%  tp: 35.6 msa: 56 ns: 32.6356 origin: ga  created: 355986  last in correctset: 357401  subsumptions: 0 
+00001##=>#000110 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0136%  tp: 47.2 msa: 56 ns: 10.2294 origin: ga  created: 356418  last in correctset: 358207  subsumptions: 0 
+00001##=>#000000 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0174%  tp: 47.2 msa: 56 ns: 13.0589 origin: ga  created: 356418  last in correctset: 356751  subsumptions: 0 
+00001##=>0010#10 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0174%  tp: 39.2 msa: 56 ns: 13.0589 origin: ga  created: 356510  last in correctset: 357986  subsumptions: 0 
+010#0#1=>#1#0##1 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0837%  tp: 44.8 msa: 56 ns: 62.843 origin: ga  created: 356882  last in correctset: 357940  subsumptions: 0 
+00101##=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.008%  tp: 42 msa: 49 ns: 6.0235 origin: ga  created: 357034  last in correctset: 358112  subsumptions: 0 
+00101##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.0084%  tp: 35 msa: 49 ns: 6.3115 origin: ga  created: 357097  last in correctset: 358112  subsumptions: 0 
+01001##=>00001#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0619%  tp: 29.4 msa: 42 ns: 46.4906 origin: ga  created: 357097  last in correctset: 358142  subsumptions: 0 
+00000##=>#100#10 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 3.125% of dataset Pdel: 0.0123%  tp: 26 msa: 35 ns: 9.265 origin: ga  created: 357085  last in correctset: 357401  subsumptions: 0 
+#0000#1=>##010## total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0199%  tp: 22.4 msa: 28 ns: 14.936 origin: ga  created: 356880  last in correctset: 357401  subsumptions: 0 
+01001#1=>#000100 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.8571% of dataset Pdel: 0.017%  tp: 4.9 msa: 7 ns: 12.8 origin: ga  created: 357990  last in correctset: 358142  subsumptions: 0 
+00000##=>1000#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.7027% of dataset Pdel: 0.0133%  tp: 4.8 msa: 7 ns: 10 origin: ga  created: 357973  last in correctset: 358057  subsumptions: 0 
+0000##1=>1000#0# total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 2.4096% of dataset Pdel: 0.0253%  tp: 11.6 msa: 14 ns: 19 origin: ga  created: 357650  last in correctset: 357770  subsumptions: 0 
+00000#0=>#00#0## total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 1.5625% of dataset Pdel: 0.0044%  tp: 19.8 msa: 21 ns: 3.312 origin: ga  created: 357083  last in correctset: 358057  subsumptions: 0 
+00010#0=>#0000## total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 1.5625% of dataset Pdel: 0.0394%  tp: 17.1 msa: 21 ns: 29.584 origin: ga  created: 357083  last in correctset: 357324  subsumptions: 0 
+01#0###=>0100001 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 358142  last in correctset: 0  subsumptions: 0 
+00001##=>#001100 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 358207  last in correctset: 0  subsumptions: 0 
+000#1##=>0#10#0# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 358212  last in correctset: 0  subsumptions: 0 
+
+500th repetition:
+
+Population size: 76
+Timestamp: 447806
+Number of classifiers in population covered :0
+Number of classifiers in population ga-ed :76
+Covers occured: 31
+Number of subsumptions: 13336
+
+1######=>10##000 total macro fit: 233011.3761 fit: 417.5831 num: 558 exp: 25425 cov: 50% of dataset Pdel: 0.1813%  tp: 172890 msa: 177975 ns: 612.1152 origin: ga  created: 91917  last in correctset: 447591  subsumptions: 4309 
+01#0###=>0100000 total macro fit: 6480 fit: 81 num: 80 exp: 3986 cov: 12.5% of dataset Pdel: 0.974%  tp: 27902 msa: 27902 ns: 80.7776 origin: ga  created: 224614  last in correctset: 447688  subsumptions: 1725 
+01#1###=>0100000 total macro fit: 5776 fit: 76 num: 76 exp: 3893 cov: 12.5% of dataset Pdel: 1.0323%  tp: 27251 msa: 27251 ns: 79.7917 origin: ga  created: 229845  last in correctset: 447639  subsumptions: 1763 
+1######=>1000000 total macro fit: 2704 fit: 52 num: 52 exp: 17169 cov: 50% of dataset Pdel: 0.9767%  tp: 120183 msa: 120183 ns: 51.6525 origin: ga  created: 207484  last in correctset: 447761  subsumptions: 1467 
+0001###=>0001000 total macro fit: 1599 fit: 39 num: 41 exp: 1770 cov: 6.25% of dataset Pdel: 1.0714%  tp: 12390 msa: 12390 ns: 42.2873 origin: ga  created: 249549  last in correctset: 447786  subsumptions: 1259 
+001####=>0#10#0# total macro fit: 1084.1189 fit: 25.8124 num: 42 exp: 2250 cov: 12.5% of dataset Pdel: 1.6878%  tp: 15075 msa: 15750 ns: 43.4317 origin: ga  created: 321930  last in correctset: 447779  subsumptions: 1043 
+001####=>#0##000 total macro fit: 1032.4942 fit: 25.8124 num: 40 exp: 1574 cov: 12.5% of dataset Pdel: 1.6448%  tp: 10545.8 msa: 11018 ns: 42.3261 origin: ga  created: 359719  last in correctset: 447780  subsumptions: 610 
+0000###=>0000#0# total macro fit: 543.3711 fit: 16.4658 num: 33 exp: 1180 cov: 6.25% of dataset Pdel: 3.0094%  tp: 7729 msa: 8260 ns: 49.3787 origin: ga  created: 315688  last in correctset: 447773  subsumptions: 1150 
+00001##=>000#100 total macro fit: 7.7939 fit: 2.598 num: 3 exp: 17 cov: 3.125% of dataset Pdel: 0.0021%  tp: 117.3 msa: 119 ns: 7.0342 origin: ga  created: 443975  last in correctset: 447773  subsumptions: 2 
+000000#=>00#0001 total macro fit: 3.4864 fit: 1.1621 num: 3 exp: 15 cov: 1.5625% of dataset Pdel: 0.0033%  tp: 95.5 msa: 105 ns: 11.1755 origin: ga  created: 441070  last in correctset: 447542  subsumptions: 2 
+0000###=>0000#1# total macro fit: 0.9739 fit: 0.487 num: 2 exp: 18 cov: 6.25% of dataset Pdel: 0.0112%  tp: 109.4 msa: 126 ns: 37.911 origin: ga  created: 445763  last in correctset: 447773  subsumptions: 1 
+00001##=>#0001#0 total macro fit: 0.7484 fit: 0.7484 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.002%  tp: 74.8 msa: 77 ns: 6.9139 origin: ga  created: 445424  last in correctset: 447773  subsumptions: 0 
+0010###=>00#0#0# total macro fit: 0.6453 fit: 0.6453 num: 1 exp: 12 cov: 6.25% of dataset Pdel: 0.0127%  tp: 80.4 msa: 84 ns: 42.748 origin: ga  created: 446729  last in correctset: 447780  subsumptions: 0 
+0010###=>0000#0# total macro fit: 0.61 fit: 0.305 num: 2 exp: 20 cov: 6.25% of dataset Pdel: 0.0134%  tp: 116 msa: 140 ns: 45.2115 origin: ga  created: 445833  last in correctset: 447780  subsumptions: 1 
+00#####=>#0#0000 total macro fit: 0.3903 fit: 0.3903 num: 1 exp: 14 cov: 31.1111% of dataset Pdel: 0.0101%  tp: 89.2 msa: 98 ns: 34.2411 origin: ga  created: 447486  last in correctset: 447780  subsumptions: 0 
+000####=>0000#00 total macro fit: 0.3135 fit: 0.3135 num: 1 exp: 21 cov: 12.5% of dataset Pdel: 88.4531%  tp: 130.9 msa: 147 ns: 28.0634 origin: ga  created: 446646  last in correctset: 447786  subsumptions: 0 
+01#0###=>0100100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 12 cov: 13.6364% of dataset Pdel: 0.0223%  tp: 72 msa: 84 ns: 75.2613 origin: ga  created: 447188  last in correctset: 447688  subsumptions: 0 
+01#1###=>0100100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 13 cov: 13.5417% of dataset Pdel: 0.0224%  tp: 78 msa: 91 ns: 75.5776 origin: ga  created: 447128  last in correctset: 447639  subsumptions: 0 
+01#1###=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 21 cov: 12.5% of dataset Pdel: 363.2812%  tp: 126 msa: 147 ns: 79.0891 origin: ga  created: 446610  last in correctset: 447639  subsumptions: 0 
+01#1###=>0110000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 20 cov: 12.5% of dataset Pdel: 0.0234%  tp: 120 msa: 140 ns: 79.0423 origin: ga  created: 446701  last in correctset: 447639  subsumptions: 0 
+01#1###=>0101000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 18 cov: 12.5% of dataset Pdel: 0.0234%  tp: 108 msa: 126 ns: 79.0497 origin: ga  created: 446815  last in correctset: 447639  subsumptions: 0 
+0001###=>0001010 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 10 cov: 6.25% of dataset Pdel: 0.0112%  tp: 60 msa: 70 ns: 37.9406 origin: ga  created: 446603  last in correctset: 447786  subsumptions: 0 
+0000##1=>0000#10 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0062%  tp: 94.4 msa: 112 ns: 21.0878 origin: ga  created: 444188  last in correctset: 447338  subsumptions: 0 
+000####=>0#10#0# total macro fit: 0.1528 fit: 0.0764 num: 2 exp: 20 cov: 12.5% of dataset Pdel: 0.0145%  tp: 101 msa: 140 ns: 48.8506 origin: ga  created: 446673  last in correctset: 447786  subsumptions: 1 
+00000#1=>#0#0001 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 16 cov: 1.5625% of dataset Pdel: 0.0027%  tp: 92.8 msa: 112 ns: 9.2302 origin: ga  created: 440176  last in correctset: 447342  subsumptions: 0 
+1######=>10##010 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 15 cov: 46.875% of dataset Pdel: 0.175%  tp: 87 msa: 105 ns: 590.6643 origin: ga  created: 447576  last in correctset: 447591  subsumptions: 0 
+001####=>0#10#1# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 19 cov: 12.5% of dataset Pdel: 0.0127%  tp: 108.3 msa: 133 ns: 42.801 origin: ga  created: 446764  last in correctset: 447779  subsumptions: 0 
+001###1=>0#00#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 12 cov: 6.25% of dataset Pdel: 0.0129%  tp: 68.4 msa: 84 ns: 43.6081 origin: ga  created: 446596  last in correctset: 447779  subsumptions: 0 
+00000##=>#0#0001 total macro fit: 0.092 fit: 0.092 num: 1 exp: 14 cov: 3.125% of dataset Pdel: 0.0034%  tp: 77.2 msa: 98 ns: 11.4322 origin: ga  created: 444656  last in correctset: 447542  subsumptions: 0 
+0#0000#=>#0#0001 total macro fit: 0.0897 fit: 0.0897 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0129%  tp: 55 msa: 70 ns: 43.6815 origin: ga  created: 445552  last in correctset: 447542  subsumptions: 0 
+0000###=>0001#0# total macro fit: 0.0897 fit: 0.0897 num: 1 exp: 10 cov: 6.25% of dataset Pdel: 0.0133%  tp: 55 msa: 70 ns: 44.9156 origin: ga  created: 446659  last in correctset: 447773  subsumptions: 0 
+000####=>10##000 total macro fit: 0.0687 fit: 0.0687 num: 1 exp: 18 cov: 12.5% of dataset Pdel: 0.008%  tp: 96.4 msa: 126 ns: 27.151 origin: ga  created: 446770  last in correctset: 447773  subsumptions: 0 
+0000###=>1#0010# total macro fit: 0.0392 fit: 0.0392 num: 1 exp: 19 cov: 6.25% of dataset Pdel: 0.008%  tp: 96.2 msa: 133 ns: 27.1352 origin: ga  created: 445750  last in correctset: 447559  subsumptions: 0 
+01#0###=>0010000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.0234%  tp: 80 msa: 112 ns: 78.9474 origin: ga  created: 446815  last in correctset: 447688  subsumptions: 0 
+0101###=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 18 cov: 6.25% of dataset Pdel: 0.0236%  tp: 90 msa: 126 ns: 79.6535 origin: ga  created: 445861  last in correctset: 447639  subsumptions: 0 
+10#01##=>000#100 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.0152%  tp: 78.4 msa: 112 ns: 51.2363 origin: ga  created: 445984  last in correctset: 447137  subsumptions: 0 
+011##1#=>0#10#01 total macro fit: 0.023 fit: 0.023 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.0236%  tp: 76.8 msa: 112 ns: 79.5549 origin: ga  created: 445868  last in correctset: 447240  subsumptions: 0 
+1######=>00##100 total macro fit: 0.023 fit: 0.023 num: 1 exp: 14 cov: 45.1613% of dataset Pdel: 0.1736%  tp: 67.2 msa: 98 ns: 585.8965 origin: ga  created: 447583  last in correctset: 447591  subsumptions: 0 
+0010#10=>101##1# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 17 cov: 1.5625% of dataset Pdel: 0.0131%  tp: 79.9 msa: 119 ns: 44.068 origin: ga  created: 440462  last in correctset: 447493  subsumptions: 0 
+00100#1=>#000##1 total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 15 cov: 1.5625% of dataset Pdel: 0.0128%  tp: 70.5 msa: 105 ns: 43.3702 origin: ga  created: 441072  last in correctset: 447780  subsumptions: 0 
+101###1=>0#10#0# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 12 cov: 6.25% of dataset Pdel: 0.0146%  tp: 56.4 msa: 84 ns: 49.3346 origin: ga  created: 446197  last in correctset: 447761  subsumptions: 0 
+00000##=>#001001 total macro fit: 0.0167 fit: 0.0167 num: 1 exp: 20 cov: 3.125% of dataset Pdel: 0.0035%  tp: 93 msa: 140 ns: 11.6495 origin: ga  created: 443149  last in correctset: 447542  subsumptions: 0 
+0000#00=>101#### total macro fit: 0.015 fit: 0.015 num: 1 exp: 17 cov: 1.5625% of dataset Pdel: 0.0155%  tp: 78.2 msa: 119 ns: 52.4595 origin: ga  created: 440462  last in correctset: 447773  subsumptions: 0 
+00010#1=>#100##1 total macro fit: 0.0017 fit: 0.0017 num: 1 exp: 18 cov: 1.5625% of dataset Pdel: 0.0137%  tp: 66.6 msa: 126 ns: 46.2874 origin: ga  created: 439280  last in correctset: 446955  subsumptions: 0 
+000010#=>#0#1011 total macro fit: 0.0001 fit: 0.0001 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0149%  tp: 33.6 msa: 84 ns: 50.2311 origin: ga  created: 442864  last in correctset: 447773  subsumptions: 0 
+01#1###=>0100010 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 13.7931% of dataset Pdel: 0.0142%  tp: 24 msa: 28 ns: 47.8272 origin: ga  created: 447597  last in correctset: 447639  subsumptions: 0 
+001####=>#0#00## total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 13.6364% of dataset Pdel: 0.0095%  tp: 39.6 msa: 42 ns: 32.1023 origin: ga  created: 447493  last in correctset: 447780  subsumptions: 0 
+000####=>0#00### total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 10.8434% of dataset Pdel: 0.012%  tp: 55.4 msa: 63 ns: 40.5098 origin: ga  created: 447219  last in correctset: 447786  subsumptions: 0 
+0101###=>1001000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 9.4595% of dataset Pdel: 0.0192%  tp: 28 msa: 49 ns: 64.9215 origin: ga  created: 447282  last in correctset: 447319  subsumptions: 0 
+0#001##=>000#100 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 8.3333% of dataset Pdel: 0.0117%  tp: 40.3 msa: 49 ns: 39.5911 origin: ga  created: 447216  last in correctset: 447773  subsumptions: 0 
+0000###=>0010#0# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 7.1429% of dataset Pdel: 0.0112%  tp: 33.8 msa: 42 ns: 37.8863 origin: ga  created: 447212  last in correctset: 447773  subsumptions: 0 
+00####1=>0#10### total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 7.1429% of dataset Pdel: 0.0027%  tp: 6.6 msa: 7 ns: 9.2 origin: ga  created: 447702  last in correctset: 447779  subsumptions: 0 
+0101###=>0101000 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 6.9565% of dataset Pdel: 0.02%  tp: 48 msa: 56 ns: 67.4028 origin: ga  created: 446995  last in correctset: 447639  subsumptions: 0 
+0000###=>0#0000# total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 6.25% of dataset Pdel: 0.0082%  tp: 48.4 msa: 56 ns: 27.5711 origin: ga  created: 446877  last in correctset: 447772  subsumptions: 0 
+0000###=>000000# total macro fit: 0 fit: 0 num: 2 exp: 5 cov: 6.0241% of dataset Pdel: 0.0064%  tp: 31.5 msa: 35 ns: 21.471 origin: ga  created: 447219  last in correctset: 447773  subsumptions: 1 
+0000###=>0000#00 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 5.8824% of dataset Pdel: 0.0036%  tp: 46.3 msa: 49 ns: 12.0987 origin: ga  created: 446967  last in correctset: 447773  subsumptions: 0 
+0001###=>00#0000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 5.7851% of dataset Pdel: 0.0109%  tp: 41.3 msa: 49 ns: 36.7806 origin: ga  created: 446955  last in correctset: 447786  subsumptions: 0 
+00101##=>0010#0# total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 4.6512% of dataset Pdel: 0.0078%  tp: 27.2 msa: 28 ns: 26.36 origin: ga  created: 447198  last in correctset: 447493  subsumptions: 0 
+0001###=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 4.0541% of dataset Pdel: 0.0065%  tp: 18 msa: 21 ns: 21.824 origin: ga  created: 447282  last in correctset: 447786  subsumptions: 0 
+0000###=>01#0#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 4% of dataset Pdel: 0.0031%  tp: 5.7 msa: 7 ns: 10.6 origin: ga  created: 447625  last in correctset: 447772  subsumptions: 0 
+0000###=>1000#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 4% of dataset Pdel: 0.0031%  tp: 5.8 msa: 7 ns: 10.6 origin: ga  created: 447625  last in correctset: 447773  subsumptions: 0 
+00001##=>#000101 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 3.5714% of dataset Pdel: 0.0014%  tp: 17.7 msa: 21 ns: 4.744 origin: ga  created: 447216  last in correctset: 447773  subsumptions: 0 
+00001##=>00##000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.0031%  tp: 40.6 msa: 49 ns: 10.6143 origin: ga  created: 446320  last in correctset: 447773  subsumptions: 0 
+00001##=>0#0#10# total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.0019%  tp: 46.9 msa: 49 ns: 6.4103 origin: ga  created: 446320  last in correctset: 447772  subsumptions: 0 
+00000##=>0000#1# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0058%  tp: 37.8 msa: 42 ns: 19.5693 origin: ga  created: 446442  last in correctset: 447625  subsumptions: 0 
+00001##=>100#100 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.8571% of dataset Pdel: 0.0008%  tp: 5.9 msa: 7 ns: 2.6 origin: ga  created: 447559  last in correctset: 447773  subsumptions: 0 
+00010##=>0000#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.7027% of dataset Pdel: 0.0028%  tp: 5.8 msa: 7 ns: 9.6 origin: ga  created: 447542  last in correctset: 447786  subsumptions: 0 
+000011#=>#010100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 1.5625% of dataset Pdel: 0.0016%  tp: 47.2 msa: 56 ns: 5.5294 origin: ga  created: 443975  last in correctset: 447220  subsumptions: 0 
+00000#1=>000000# total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 1.5625% of dataset Pdel: 0.0036%  tp: 45.3 msa: 49 ns: 12.1429 origin: ga  created: 444279  last in correctset: 447342  subsumptions: 0 
+000000#=>#1#0001 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 1.5625% of dataset Pdel: 0.0029%  tp: 36.6 msa: 49 ns: 9.7902 origin: ga  created: 444656  last in correctset: 447342  subsumptions: 0 
+000000#=>#0#0001 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 1.5625% of dataset Pdel: 0.0022%  tp: 18.4 msa: 21 ns: 7.272 origin: ga  created: 446446  last in correctset: 447542  subsumptions: 0 
+000100#=>00#0001 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 1.5152% of dataset Pdel: 0.0029%  tp: 4.9 msa: 7 ns: 9.8 origin: ga  created: 447342  last in correctset: 447786  subsumptions: 0 
+000001#=>00#0001 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 1.5152% of dataset Pdel: 0.0008%  tp: 4.9 msa: 7 ns: 2.8 origin: ga  created: 447342  last in correctset: 447625  subsumptions: 0 
+0000010=>0000#1# total macro fit: 0 fit: 0 num: 3 exp: 9 cov: 0.7812% of dataset Pdel: 0.0013%  tp: 61.2 msa: 63 ns: 4.4344 origin: ga  created: 439566  last in correctset: 447625  subsumptions: 2 
+0000#1#=>0000#1# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 447773  last in correctset: 0  subsumptions: 0 
+0010###=>#0#0000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 447780  last in correctset: 0  subsumptions: 0 
+
+600th repetition:
+
+Population size: 101
+Timestamp: 537377
+Number of classifiers in population covered :0
+Number of classifiers in population ga-ed :101
+Covers occured: 29
+Number of subsumptions: 17994
+
+1######=>10##000 total macro fit: 207052.3744 fit: 393.6357 num: 526 exp: 31825 cov: 50% of dataset Pdel: 0.0874%  tp: 216410 msa: 222775 ns: 591.1215 origin: ga  created: 91917  last in correctset: 537364  subsumptions: 5584 
+01#0###=>0100000 total macro fit: 5184 fit: 72 num: 72 exp: 5586 cov: 12.5% of dataset Pdel: 0.3411%  tp: 39102 msa: 39102 ns: 75.1867 origin: ga  created: 224614  last in correctset: 537133  subsumptions: 2547 
+01#1###=>0100000 total macro fit: 5041 fit: 71 num: 71 exp: 5493 cov: 12.5% of dataset Pdel: 0.3416%  tp: 38451 msa: 38451 ns: 73.122 origin: ga  created: 229845  last in correctset: 537245  subsumptions: 2594 
+1######=>1000000 total macro fit: 4160 fit: 64 num: 65 exp: 23569 cov: 50% of dataset Pdel: 0.3372%  tp: 164983 msa: 164983 ns: 65.7082 origin: ga  created: 207484  last in correctset: 537364  subsumptions: 2039 
+0001###=>0001000 total macro fit: 2303 fit: 47 num: 49 exp: 2570 cov: 6.25% of dataset Pdel: 0.3481%  tp: 17990 msa: 17990 ns: 50.2119 origin: ga  created: 249549  last in correctset: 537357  subsumptions: 1912 
+001####=>#0##000 total macro fit: 956.3477 fit: 24.5217 num: 39 exp: 3174 cov: 12.5% of dataset Pdel: 0.569%  tp: 21265.8 msa: 22218 ns: 42.3389 origin: ga  created: 359719  last in correctset: 537351  subsumptions: 1290 
+00001##=>0000100 total macro fit: 899 fit: 29 num: 31 exp: 212 cov: 3.125% of dataset Pdel: 0.414%  tp: 1484 msa: 1484 ns: 36.7874 origin: ga  created: 489872  last in correctset: 537343  subsumptions: 151 
+001####=>0#10#0# total macro fit: 745.977 fit: 21.9405 num: 34 exp: 3850 cov: 12.5% of dataset Pdel: 0.6233%  tp: 25795 msa: 26950 ns: 41.4963 origin: ga  created: 321930  last in correctset: 537350  subsumptions: 1829 
+000001#=>0000010 total macro fit: 121 fit: 11 num: 11 exp: 50 cov: 1.5625% of dataset Pdel: 0.5593%  tp: 350 msa: 350 ns: 18.8403 origin: ga  created: 514800  last in correctset: 537196  subsumptions: 36 
+01#####=>0100000 total macro fit: 4 fit: 2 num: 2 exp: 20 cov: 30.7692% of dataset Pdel: 0.011%  tp: 140 msa: 140 ns: 74.5494 origin: ga  created: 536916  last in correctset: 537245  subsumptions: 1 
+000000#=>0#0#10# total macro fit: 2.0506 fit: 0.5127 num: 4 exp: 18 cov: 1.5625% of dataset Pdel: 0.0024%  tp: 102.6 msa: 126 ns: 16.4922 origin: ga  created: 529052  last in correctset: 537112  subsumptions: 3 
+#0001##=>0000100 total macro fit: 1.764 fit: 0.588 num: 3 exp: 19 cov: 6.25% of dataset Pdel: 0.0078%  tp: 113 msa: 133 ns: 52.5624 origin: ga  created: 535334  last in correctset: 537343  subsumptions: 2 
+000001#=>0#0#00# total macro fit: 1.1535 fit: 0.3845 num: 3 exp: 17 cov: 1.5625% of dataset Pdel: 0.0035%  tp: 96.9 msa: 119 ns: 23.3752 origin: ga  created: 529944  last in correctset: 537196  subsumptions: 2 
+#01#0##=>#0##00# total macro fit: 0.5552 fit: 0.5552 num: 1 exp: 12 cov: 11.8812% of dataset Pdel: 0.0316%  tp: 79.2 msa: 84 ns: 213.8861 origin: ga  created: 536665  last in correctset: 537351  subsumptions: 0 
+001####=>0#00#0# total macro fit: 0.5127 fit: 0.2563 num: 2 exp: 17 cov: 12.5% of dataset Pdel: 0.0064%  tp: 96.9 msa: 119 ns: 42.9366 origin: ga  created: 536377  last in correctset: 537350  subsumptions: 1 
+000001#=>0001010 total macro fit: 0.4281 fit: 0.2141 num: 2 exp: 10 cov: 1.5625% of dataset Pdel: 0.0024%  tp: 60 msa: 70 ns: 16.2077 origin: ga  created: 532716  last in correctset: 537196  subsumptions: 1 
+0#1####=>0#10#0# total macro fit: 0.3693 fit: 0.3693 num: 1 exp: 11 cov: 24.4444% of dataset Pdel: 0.0076%  tp: 69.7 msa: 77 ns: 51.2944 origin: ga  created: 537056  last in correctset: 537350  subsumptions: 0 
+0#1#0##=>#1##000 total macro fit: 0.2971 fit: 0.2971 num: 1 exp: 18 cov: 12.5% of dataset Pdel: 0.0089%  tp: 111.6 msa: 126 ns: 60.4375 origin: ga  created: 536378  last in correctset: 536704  subsumptions: 0 
+000000#=>0#1#00# total macro fit: 0.2563 fit: 0.2563 num: 1 exp: 22 cov: 1.5625% of dataset Pdel: 15.7758%  tp: 125.4 msa: 154 ns: 12.5901 origin: ga  created: 527258  last in correctset: 537112  subsumptions: 2 
+00##1##=>0#10#0# total macro fit: 0.2263 fit: 0.2263 num: 1 exp: 12 cov: 13.9535% of dataset Pdel: 0.0061%  tp: 72.4 msa: 84 ns: 41.0387 origin: ga  created: 536769  last in correctset: 537343  subsumptions: 0 
+#1#0###=>1100000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 18 cov: 26.4706% of dataset Pdel: 0.0101%  tp: 108 msa: 126 ns: 68.5784 origin: ga  created: 536895  last in correctset: 537364  subsumptions: 0 
+01#1###=>0101000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 11 cov: 15.942% of dataset Pdel: 0.01%  tp: 66 msa: 77 ns: 67.7273 origin: ga  created: 536888  last in correctset: 537245  subsumptions: 0 
+01#0###=>1100000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 20 cov: 12.5% of dataset Pdel: 0.0112%  tp: 120 msa: 140 ns: 75.5277 origin: ga  created: 536237  last in correctset: 536287  subsumptions: 0 
+01#0#0#=>0100100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 19 cov: 6.25% of dataset Pdel: 0.011%  tp: 114 msa: 133 ns: 74.3668 origin: ga  created: 535299  last in correctset: 537133  subsumptions: 0 
+01#10##=>0101000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 18 cov: 6.25% of dataset Pdel: 0.0105%  tp: 108 msa: 126 ns: 70.7261 origin: ga  created: 535376  last in correctset: 537210  subsumptions: 0 
+00#01##=>0000100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.006%  tp: 96 msa: 112 ns: 40.818 origin: ga  created: 535556  last in correctset: 537343  subsumptions: 0 
+00010##=>0001100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 21 cov: 3.125% of dataset Pdel: 80.0332%  tp: 126 msa: 147 ns: 52.5813 origin: ga  created: 532373  last in correctset: 537357  subsumptions: 0 
+00#01#0=>0000100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.0057%  tp: 72 msa: 84 ns: 38.4098 origin: ga  created: 534655  last in correctset: 537343  subsumptions: 0 
+00001#1=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 17 cov: 1.5625% of dataset Pdel: 0.0051%  tp: 102 msa: 119 ns: 34.7188 origin: ga  created: 529615  last in correctset: 537126  subsumptions: 0 
+000001#=>0100010 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0026%  tp: 84 msa: 98 ns: 17.7436 origin: ga  created: 530924  last in correctset: 537196  subsumptions: 0 
+000001#=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.0026%  tp: 60 msa: 70 ns: 17.3672 origin: ga  created: 532716  last in correctset: 537196  subsumptions: 0 
+0#0#10#=>0#0#10# total macro fit: 0.209 fit: 0.209 num: 1 exp: 14 cov: 6.25% of dataset Pdel: 0.0081%  tp: 83.8 msa: 98 ns: 54.5202 origin: ga  created: 536013  last in correctset: 537343  subsumptions: 0 
+01001##=>000#000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.0103%  tp: 70.8 msa: 84 ns: 69.6704 origin: ga  created: 534655  last in correctset: 537133  subsumptions: 0 
+00011##=>0000#00 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0071%  tp: 59 msa: 70 ns: 48.2926 origin: ga  created: 534998  last in correctset: 537070  subsumptions: 0 
+0000###=>0#0#00# total macro fit: 0.1754 fit: 0.1754 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.0042%  tp: 64.7 msa: 77 ns: 28.5227 origin: ga  created: 536216  last in correctset: 537343  subsumptions: 0 
+100000#=>0#0#000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 18 cov: 1.5625% of dataset Pdel: 0.009%  tp: 104.4 msa: 126 ns: 61.1721 origin: ga  created: 528845  last in correctset: 535679  subsumptions: 0 
+0010###=>10##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 10 cov: 6.25% of dataset Pdel: 0.0057%  tp: 58 msa: 70 ns: 38.5706 origin: ga  created: 536357  last in correctset: 537351  subsumptions: 0 
+001#0##=>#0##010 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 20 cov: 6.25% of dataset Pdel: 0.0063%  tp: 114 msa: 140 ns: 42.5214 origin: ga  created: 535090  last in correctset: 537351  subsumptions: 0 
+000000#=>0#0#01# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 17 cov: 1.5625% of dataset Pdel: 0.0018%  tp: 96.9 msa: 119 ns: 12.4866 origin: ga  created: 529741  last in correctset: 537112  subsumptions: 0 
+001###1=>#1##000 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 15 cov: 6.25% of dataset Pdel: 0.0062%  tp: 85.5 msa: 105 ns: 41.9021 origin: ga  created: 535769  last in correctset: 536458  subsumptions: 0 
+0010###=>0#10#1# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 14 cov: 6.25% of dataset Pdel: 0.0059%  tp: 79.8 msa: 98 ns: 40.1247 origin: ga  created: 536064  last in correctset: 537350  subsumptions: 0 
+000#00#=>0#0#10# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 14 cov: 3.125% of dataset Pdel: 0.0052%  tp: 79.8 msa: 98 ns: 35.2229 origin: ga  created: 534221  last in correctset: 537357  subsumptions: 0 
+000#00#=>0#0#010 total macro fit: 0.0953 fit: 0.0953 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0046%  tp: 83 msa: 105 ns: 31.3459 origin: ga  created: 533850  last in correctset: 537357  subsumptions: 0 
+00000#0=>0000100 total macro fit: 0.0844 fit: 0.0844 num: 1 exp: 15 cov: 1.5625% of dataset Pdel: 0.0019%  tp: 82 msa: 105 ns: 12.6665 origin: ga  created: 530843  last in correctset: 537196  subsumptions: 0 
+000000#=>0#00011 total macro fit: 0.0746 fit: 0.0746 num: 1 exp: 18 cov: 1.5625% of dataset Pdel: 0.0006%  tp: 97.2 msa: 126 ns: 3.904 origin: ga  created: 529048  last in correctset: 537112  subsumptions: 0 
+000##0#=>0#0#01# total macro fit: 0.0725 fit: 0.0725 num: 1 exp: 19 cov: 6.25% of dataset Pdel: 0.0059%  tp: 102.3 msa: 133 ns: 40.0118 origin: ga  created: 535320  last in correctset: 537357  subsumptions: 0 
+000####=>0#10#0# total macro fit: 0.0558 fit: 0.0558 num: 1 exp: 11 cov: 10.8911% of dataset Pdel: 0.0056%  tp: 57.7 msa: 77 ns: 37.673 origin: ga  created: 536667  last in correctset: 537357  subsumptions: 0 
+000#1##=>0#10### total macro fit: 0.0484 fit: 0.0484 num: 1 exp: 14 cov: 6.25% of dataset Pdel: 0.0067%  tp: 72.4 msa: 98 ns: 45.0436 origin: ga  created: 535873  last in correctset: 537343  subsumptions: 0 
+0######=>10##000 total macro fit: 0.0467 fit: 0.0467 num: 1 exp: 17 cov: 53.125% of dataset Pdel: 0.0086%  tp: 87.6 msa: 119 ns: 58.4567 origin: ga  created: 537147  last in correctset: 537351  subsumptions: 0 
+10010##=>0000010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.0092%  tp: 85 msa: 119 ns: 62.4847 origin: ga  created: 533326  last in correctset: 536155  subsumptions: 0 
+00011##=>0000100 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0076%  tp: 65 msa: 91 ns: 51.397 origin: ga  created: 534439  last in correctset: 537070  subsumptions: 0 
+00101##=>0000100 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.0062%  tp: 60 msa: 84 ns: 42.1148 origin: ga  created: 534991  last in correctset: 537063  subsumptions: 0 
+000001#=>1000110 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 17 cov: 1.5625% of dataset Pdel: 0.0027%  tp: 85 msa: 119 ns: 18.2408 origin: ga  created: 529370  last in correctset: 536539  subsumptions: 0 
+010001#=>0000010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 16 cov: 1.5625% of dataset Pdel: 0.0108%  tp: 80 msa: 112 ns: 73.2447 origin: ga  created: 530266  last in correctset: 536650  subsumptions: 0 
+1001###=>00#1000 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 10 cov: 6.25% of dataset Pdel: 0.0786%  tp: 49 msa: 70 ns: 531.435 origin: ga  created: 536174  last in correctset: 536203  subsumptions: 0 
+101####=>0#10#0# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.0095%  tp: 75.2 msa: 112 ns: 64.3861 origin: ga  created: 536454  last in correctset: 536709  subsumptions: 0 
+010000#=>0#1#01# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 13 cov: 1.5625% of dataset Pdel: 0.0105%  tp: 61.1 msa: 91 ns: 71.1065 origin: ga  created: 531736  last in correctset: 536321  subsumptions: 0 
+0#01###=>0001100 total macro fit: 0.015 fit: 0.015 num: 1 exp: 10 cov: 13.5135% of dataset Pdel: 0.0086%  tp: 46 msa: 70 ns: 58.3563 origin: ga  created: 536853  last in correctset: 537357  subsumptions: 0 
+0000###=>0#01010 total macro fit: 0.0125 fit: 0.0125 num: 1 exp: 13 cov: 6.25% of dataset Pdel: 0.0039%  tp: 58.7 msa: 91 ns: 26.5054 origin: ga  created: 535957  last in correctset: 537343  subsumptions: 0 
+11#1###=>0100010 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.0095%  tp: 64 msa: 112 ns: 64.2673 origin: ga  created: 536412  last in correctset: 536737  subsumptions: 0 
+00101##=>0001100 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0065%  tp: 60 msa: 105 ns: 43.6101 origin: ga  created: 534438  last in correctset: 537063  subsumptions: 0 
+01#1###=>0100100 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 13.7931% of dataset Pdel: 0.0067%  tp: 24 msa: 28 ns: 45.2048 origin: ga  created: 537168  last in correctset: 537245  subsumptions: 0 
+01#1###=>0100010 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 13.0435% of dataset Pdel: 0.0056%  tp: 18 msa: 21 ns: 37.832 origin: ga  created: 537210  last in correctset: 537245  subsumptions: 0 
+11#0###=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 11.2903% of dataset Pdel: 0.0078%  tp: 35 msa: 49 ns: 52.434 origin: ga  created: 536937  last in correctset: 537016  subsumptions: 0 
+11#1###=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 9.375% of dataset Pdel: 0.0085%  tp: 45 msa: 63 ns: 57.6641 origin: ga  created: 536704  last in correctset: 536737  subsumptions: 0 
+11#1###=>01#0000 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 9.375% of dataset Pdel: 0.0087%  tp: 44.1 msa: 63 ns: 58.4963 origin: ga  created: 536704  last in correctset: 536737  subsumptions: 0 
+01#1#0#=>0100100 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 7.2464% of dataset Pdel: 0.0072%  tp: 30 msa: 35 ns: 48.4662 origin: ga  created: 536888  last in correctset: 536916  subsumptions: 0 
+0010###=>0#11#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 7.1429% of dataset Pdel: 0.0013%  tp: 5.7 msa: 7 ns: 8.8 origin: ga  created: 537273  last in correctset: 537350  subsumptions: 0 
+001##1#=>0#11#0# total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 6.9307% of dataset Pdel: 0.005%  tp: 39.9 msa: 49 ns: 33.7265 origin: ga  created: 536664  last in correctset: 537273  subsumptions: 0 
+0101###=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 6.25% of dataset Pdel: 0.0093%  tp: 45 msa: 63 ns: 63.1853 origin: ga  created: 536349  last in correctset: 537245  subsumptions: 0 
+00100##=>0#1#000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 5.4054% of dataset Pdel: 0.0023%  tp: 13.6 msa: 14 ns: 15.36 origin: ga  created: 537112  last in correctset: 537350  subsumptions: 0 
+0001###=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 4.0541% of dataset Pdel: 0.0037%  tp: 18 msa: 21 ns: 24.696 origin: ga  created: 536853  last in correctset: 537357  subsumptions: 0 
+00001##=>1001100 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 3.5714% of dataset Pdel: 0.0029%  tp: 15 msa: 21 ns: 19.744 origin: ga  created: 536783  last in correctset: 536791  subsumptions: 0 
+10101##=>000#000 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.0081%  tp: 53.1 msa: 63 ns: 54.9757 origin: ga  created: 534998  last in correctset: 535160  subsumptions: 0 
+00000##=>0100100 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.0018%  tp: 38 msa: 63 ns: 11.8767 origin: ga  created: 535335  last in correctset: 537196  subsumptions: 0 
+00#001#=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.0042%  tp: 53 msa: 63 ns: 28.4731 origin: ga  created: 535404  last in correctset: 537273  subsumptions: 0 
+00001##=>0000101 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0047%  tp: 48 msa: 56 ns: 32.0445 origin: ga  created: 535556  last in correctset: 537343  subsumptions: 0 
+00001##=>0010100 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.0045%  tp: 42 msa: 49 ns: 30.5345 origin: ga  created: 535887  last in correctset: 537343  subsumptions: 0 
+00000##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 3.125% of dataset Pdel: 0.0013%  tp: 26 msa: 35 ns: 9.1139 origin: ga  created: 536230  last in correctset: 537196  subsumptions: 0 
+00000#0=>000010# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.7027% of dataset Pdel: 0.0007%  tp: 4.9 msa: 7 ns: 5 origin: ga  created: 537112  last in correctset: 537196  subsumptions: 0 
+100000#=>0#00010 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 1.5625% of dataset Pdel: 0.0076%  tp: 39.2 msa: 56 ns: 51.5465 origin: ga  created: 533528  last in correctset: 535679  subsumptions: 0 
+100001#=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 1.5625% of dataset Pdel: 0.0075%  tp: 40 msa: 56 ns: 50.9901 origin: ga  created: 533612  last in correctset: 536680  subsumptions: 0 
+000000#=>0#0##0# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 1.5625% of dataset Pdel: 0.0019%  tp: 39.6 msa: 42 ns: 12.9158 origin: ga  created: 534424  last in correctset: 537112  subsumptions: 0 
+000011#=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 1.5625% of dataset Pdel: 0.0041%  tp: 30 msa: 42 ns: 27.5066 origin: ga  created: 534508  last in correctset: 536791  subsumptions: 0 
+010001#=>#000010 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 1.5625% of dataset Pdel: 0.0084%  tp: 29.4 msa: 42 ns: 56.6186 origin: ga  created: 534746  last in correctset: 534860  subsumptions: 0 
+001001#=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 1.5625% of dataset Pdel: 0.0047%  tp: 25 msa: 35 ns: 31.583 origin: ga  created: 534747  last in correctset: 537273  subsumptions: 0 
+000000#=>0#1#10# total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 1.5625% of dataset Pdel: 0.0018%  tp: 23.5 msa: 35 ns: 12.3885 origin: ga  created: 535117  last in correctset: 537112  subsumptions: 0 
+100000#=>0#0#00# total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 1.5625% of dataset Pdel: 0.0058%  tp: 22.8 msa: 28 ns: 39.2224 origin: ga  created: 535320  last in correctset: 535679  subsumptions: 0 
+00001#1=>0000110 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 1.5625% of dataset Pdel: 0.0028%  tp: 18 msa: 21 ns: 19.224 origin: ga  created: 535894  last in correctset: 537126  subsumptions: 0 
+010000#=>0#0#10# total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 1.5625% of dataset Pdel: 0.0056%  tp: 17.1 msa: 21 ns: 37.896 origin: ga  created: 536013  last in correctset: 536321  subsumptions: 0 
+001000#=>0#0#10# total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 1.5625% of dataset Pdel: 0.0032%  tp: 14.1 msa: 21 ns: 21.752 origin: ga  created: 536216  last in correctset: 537350  subsumptions: 0 
+00000#1=>#001000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 1.5625% of dataset Pdel: 0.0008%  tp: 9.8 msa: 14 ns: 5.2 origin: ga  created: 536014  last in correctset: 536539  subsumptions: 0 
+000001#=>0000011 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 1.5625% of dataset Pdel: 0.0011%  tp: 12 msa: 14 ns: 7.28 origin: ga  created: 536300  last in correctset: 537196  subsumptions: 0 
+000000#=>0#0#00# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 1.5152% of dataset Pdel: 0.0004%  tp: 6.7 msa: 7 ns: 2.8 origin: ga  created: 536909  last in correctset: 537112  subsumptions: 0 
+0000010=>0000011 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 0.7812% of dataset Pdel: 0.0024%  tp: 54 msa: 63 ns: 16.4831 origin: ga  created: 529132  last in correctset: 537196  subsumptions: 0 
+0100010=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 0.7812% of dataset Pdel: 0.0088%  tp: 35 msa: 49 ns: 59.5592 origin: ga  created: 531163  last in correctset: 536650  subsumptions: 0 
+0000001=>##0#10# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 536909  last in correctset: 0  subsumptions: 0 
+000001#=>1000010 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 537196  last in correctset: 0  subsumptions: 0 
+001##1#=>0010#0# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 537273  last in correctset: 0  subsumptions: 0 
+001####=>0010#0# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 537350  last in correctset: 0  subsumptions: 0 
+001####=>#0##010 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 537351  last in correctset: 0  subsumptions: 0 
+
+700th repetition:
+
+Population size: 109
+Timestamp: 626956
+Number of classifiers in population covered :0
+Number of classifiers in population ga-ed :109
+Covers occured: 21
+Number of subsumptions: 24112
+
+1######=>10##000 total macro fit: 191227.6209 fit: 377.9202 num: 506 exp: 38225 cov: 50% of dataset Pdel: 1.8311%  tp: 259930 msa: 267575 ns: 569.6289 origin: ga  created: 91917  last in correctset: 626943  subsumptions: 6783 
+01#1###=>0100000 total macro fit: 5041 fit: 71 num: 71 exp: 7093 cov: 12.5% of dataset Pdel: 6.5483%  tp: 49651 msa: 49651 ns: 74.699 origin: ga  created: 229845  last in correctset: 626889  subsumptions: 3444 
+01#0###=>0100000 total macro fit: 4830 fit: 70 num: 69 exp: 7186 cov: 12.5% of dataset Pdel: 6.979%  tp: 50302 msa: 50302 ns: 75.3382 origin: ga  created: 224614  last in correctset: 626712  subsumptions: 3350 
+1######=>1000000 total macro fit: 3844 fit: 62 num: 62 exp: 29969 cov: 50% of dataset Pdel: 6.5669%  tp: 209783 msa: 209783 ns: 64.9157 origin: ga  created: 207484  last in correctset: 626943  subsumptions: 2589 
+00001##=>0000100 total macro fit: 2304 fit: 48 num: 48 exp: 612 cov: 3.125% of dataset Pdel: 6.7969%  tp: 4284 msa: 4284 ns: 50.7801 origin: ga  created: 489872  last in correctset: 626922  subsumptions: 589 
+0001###=>0001000 total macro fit: 1332 fit: 36 num: 37 exp: 3370 cov: 6.25% of dataset Pdel: 7.4774%  tp: 23590 msa: 23590 ns: 42.4012 origin: ga  created: 249549  last in correctset: 626936  subsumptions: 2489 
+001####=>#0##000 total macro fit: 1193.1761 fit: 27.7483 num: 43 exp: 4774 cov: 12.5% of dataset Pdel: 11.386%  tp: 31985.8 msa: 33418 ns: 49.7461 origin: ga  created: 359719  last in correctset: 626832  subsumptions: 1966 
+001####=>0#10#0# total macro fit: 1192.5308 fit: 27.103 num: 44 exp: 5450 cov: 12.5% of dataset Pdel: 10.3416%  tp: 36515 msa: 38150 ns: 44.1326 origin: ga  created: 321930  last in correctset: 626929  subsumptions: 2608 
+0000000=>0000000 total macro fit: 49 fit: 7 num: 7 exp: 18 cov: 0.7812% of dataset Pdel: 0.053%  tp: 126 msa: 126 ns: 16.4926 origin: ga  created: 611262  last in correctset: 626691  subsumptions: 6 
+000001#=>0000010 total macro fit: 20 fit: 4 num: 5 exp: 250 cov: 1.5625% of dataset Pdel: 30.1876%  tp: 1750 msa: 1750 ns: 18.4882 origin: ga  created: 514800  last in correctset: 626777  subsumptions: 279 
+01#####=>0100000 total macro fit: 4 fit: 2 num: 2 exp: 13 cov: 26.5306% of dataset Pdel: 0.2288%  tp: 91 msa: 91 ns: 71.1913 origin: ga  created: 626607  last in correctset: 626889  subsumptions: 1 
+000####=>#0##000 total macro fit: 1.1042 fit: 0.5521 num: 2 exp: 11 cov: 12.7907% of dataset Pdel: 0.1285%  tp: 67.7 msa: 77 ns: 39.9699 origin: ga  created: 626349  last in correctset: 626363  subsumptions: 1 
+0000000=>00000#0 total macro fit: 0.866 fit: 0.866 num: 1 exp: 17 cov: 0.7812% of dataset Pdel: 0.063%  tp: 117.3 msa: 119 ns: 19.6019 origin: ga  created: 612154  last in correctset: 626691  subsumptions: 0 
+01#1###=>0000000 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 19 cov: 12.5% of dataset Pdel: 0.24%  tp: 114 msa: 133 ns: 74.6733 origin: ga  created: 625893  last in correctset: 626889  subsumptions: 1 
+00001##=>1000100 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 16 cov: 3.125% of dataset Pdel: 0.1591%  tp: 96 msa: 112 ns: 49.4861 origin: ga  created: 623339  last in correctset: 626363  subsumptions: 1 
+000001#=>0000000 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 15 cov: 1.5625% of dataset Pdel: 0.076%  tp: 90 msa: 105 ns: 23.6352 origin: ga  created: 619847  last in correctset: 626777  subsumptions: 1 
+000001#=>0000011 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 13 cov: 1.5625% of dataset Pdel: 0.0549%  tp: 78 msa: 91 ns: 17.0888 origin: ga  created: 620744  last in correctset: 626777  subsumptions: 1 
+00#0000=>0000000 total macro fit: 0.4766 fit: 0.4766 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.1004%  tp: 91 msa: 98 ns: 31.2476 origin: ga  created: 620421  last in correctset: 626691  subsumptions: 0 
+000000#=>#000000 total macro fit: 0.4081 fit: 0.4081 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.0435%  tp: 64 msa: 70 ns: 13.5308 origin: ga  created: 622212  last in correctset: 625796  subsumptions: 0 
+00#00#0=>0000000 total macro fit: 0.3079 fit: 0.3079 num: 1 exp: 18 cov: 3.125% of dataset Pdel: 0.119%  tp: 112 msa: 126 ns: 37.0226 origin: ga  created: 623108  last in correctset: 626852  subsumptions: 0 
+00000##=>0#00010 total macro fit: 0.2903 fit: 0.2903 num: 1 exp: 14 cov: 3.125% of dataset Pdel: 0.0578%  tp: 86.6 msa: 98 ns: 17.994 origin: ga  created: 623803  last in correctset: 626777  subsumptions: 0 
+#1#0###=>0100000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 12 cov: 25.5319% of dataset Pdel: 0.207%  tp: 72 msa: 84 ns: 64.3829 origin: ga  created: 626621  last in correctset: 626712  subsumptions: 0 
+01#0###=>0101000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 18 cov: 12.5% of dataset Pdel: 0.2381%  tp: 108 msa: 126 ns: 74.0577 origin: ga  created: 625928  last in correctset: 626712  subsumptions: 0 
+0001###=>0011000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 18 cov: 6.25% of dataset Pdel: 0.1341%  tp: 108 msa: 126 ns: 41.7273 origin: ga  created: 624857  last in correctset: 626936  subsumptions: 0 
+01#10##=>0100010 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 13 cov: 6.25% of dataset Pdel: 0.2292%  tp: 78 msa: 91 ns: 71.313 origin: ga  created: 625480  last in correctset: 626376  subsumptions: 0 
+00010##=>0001001 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.1344%  tp: 102 msa: 119 ns: 41.8148 origin: ga  created: 623066  last in correctset: 626936  subsumptions: 0 
+00001##=>0100100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.1589%  tp: 96 msa: 112 ns: 49.4442 origin: ga  created: 623339  last in correctset: 626922  subsumptions: 0 
+00001##=>0000110 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.1579%  tp: 90 msa: 105 ns: 49.1134 origin: ga  created: 623675  last in correctset: 626922  subsumptions: 0 
+000101#=>0001100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 13 cov: 1.5625% of dataset Pdel: 0.1364%  tp: 78 msa: 91 ns: 42.4389 origin: ga  created: 620827  last in correctset: 626432  subsumptions: 0 
+00000#1=>0000010 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0447%  tp: 72 msa: 84 ns: 13.9181 origin: ga  created: 621114  last in correctset: 626488  subsumptions: 0 
+#001###=>0001000 total macro fit: 0.1914 fit: 0.1914 num: 1 exp: 15 cov: 12.3967% of dataset Pdel: 0.166%  tp: 89 msa: 105 ns: 51.6561 origin: ga  created: 626103  last in correctset: 626936  subsumptions: 0 
+00101##=>1010#00 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 19 cov: 3.125% of dataset Pdel: 0.145%  tp: 112.1 msa: 133 ns: 45.1215 origin: ga  created: 623122  last in correctset: 626832  subsumptions: 0 
+00000#1=>000##00 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 16 cov: 1.5625% of dataset Pdel: 0.0533%  tp: 92.8 msa: 112 ns: 16.5963 origin: ga  created: 619322  last in correctset: 626488  subsumptions: 0 
+000001#=>1001010 total macro fit: 0.1383 fit: 0.0691 num: 2 exp: 13 cov: 1.5625% of dataset Pdel: 0.0549%  tp: 65 msa: 91 ns: 17.0888 origin: ga  created: 620743  last in correctset: 626777  subsumptions: 1 
+001####=>#0##001 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.1555%  tp: 91.2 msa: 112 ns: 48.3892 origin: ga  created: 626034  last in correctset: 626832  subsumptions: 0 
+001#1##=>#1##000 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 15 cov: 6.25% of dataset Pdel: 0.1554%  tp: 85.5 msa: 105 ns: 48.3419 origin: ga  created: 625229  last in correctset: 626816  subsumptions: 0 
+001##1#=>0#11#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 13 cov: 6.25% of dataset Pdel: 0.1374%  tp: 74.1 msa: 91 ns: 42.7553 origin: ga  created: 625564  last in correctset: 626852  subsumptions: 0 
+00#0###=>01#0000 total macro fit: 0.1074 fit: 0.1074 num: 1 exp: 10 cov: 15.1515% of dataset Pdel: 0.141%  tp: 56 msa: 70 ns: 43.8665 origin: ga  created: 626488  last in correctset: 626929  subsumptions: 0 
+00000#0=>0100010 total macro fit: 0.0946 fit: 0.0946 num: 1 exp: 17 cov: 1.5625% of dataset Pdel: 0.0637%  tp: 94 msa: 119 ns: 19.8139 origin: ga  created: 619525  last in correctset: 626777  subsumptions: 0 
+#00####=>0001000 total macro fit: 0.0897 fit: 0.0897 num: 1 exp: 10 cov: 23.2558% of dataset Pdel: 0.1523%  tp: 55 msa: 70 ns: 47.3928 origin: ga  created: 626649  last in correctset: 626936  subsumptions: 0 
+000000#=>0000010 total macro fit: 0.0897 fit: 0.0897 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.0506%  tp: 55 msa: 70 ns: 15.7457 origin: ga  created: 622299  last in correctset: 626691  subsumptions: 0 
+00000#0=>001001# total macro fit: 0.0788 fit: 0.0788 num: 1 exp: 17 cov: 1.5625% of dataset Pdel: 0.0617%  tp: 92.3 msa: 119 ns: 19.1817 origin: ga  created: 619525  last in correctset: 626775  subsumptions: 0 
+00000##=>0#10000 total macro fit: 0.0512 fit: 0.0512 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0619%  tp: 52 msa: 70 ns: 19.2592 origin: ga  created: 624696  last in correctset: 626775  subsumptions: 0 
+00#00##=>0100000 total macro fit: 0.0421 fit: 0.0421 num: 1 exp: 10 cov: 6.25% of dataset Pdel: 0.1121%  tp: 51 msa: 70 ns: 34.8766 origin: ga  created: 625942  last in correctset: 626929  subsumptions: 0 
+00#0###=>01000#0 total macro fit: 0.0377 fit: 0.0377 num: 1 exp: 14 cov: 13.5922% of dataset Pdel: 0.1495%  tp: 70.6 msa: 98 ns: 46.4943 origin: ga  created: 626229  last in correctset: 626929  subsumptions: 0 
+11#0###=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 12 cov: 13.6364% of dataset Pdel: 0.1959%  tp: 60 msa: 84 ns: 60.9368 origin: ga  created: 626334  last in correctset: 626665  subsumptions: 0 
+01#1###=>0100101 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 13 cov: 13.5417% of dataset Pdel: 0.2269%  tp: 65 msa: 91 ns: 70.5827 origin: ga  created: 626278  last in correctset: 626889  subsumptions: 0 
+0011###=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 13 cov: 6.25% of dataset Pdel: 0.1387%  tp: 65 msa: 91 ns: 43.1462 origin: ga  created: 625536  last in correctset: 626636  subsumptions: 0 
+10001##=>0000100 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 20 cov: 3.125% of dataset Pdel: 0.2087%  tp: 100 msa: 140 ns: 64.9219 origin: ga  created: 622443  last in correctset: 626900  subsumptions: 0 
+100011#=>0000010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 15 cov: 1.5625% of dataset Pdel: 0.2057%  tp: 75 msa: 105 ns: 64.0009 origin: ga  created: 620505  last in correctset: 626900  subsumptions: 0 
+000101#=>0000010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.1438%  tp: 70 msa: 98 ns: 44.7391 origin: ga  created: 620505  last in correctset: 626432  subsumptions: 0 
+000011#=>0000010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.1622%  tp: 70 msa: 98 ns: 50.4472 origin: ga  created: 620743  last in correctset: 626363  subsumptions: 0 
+00010#1=>0000100 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.1359%  tp: 60 msa: 84 ns: 42.2842 origin: ga  created: 621114  last in correctset: 626432  subsumptions: 0 
+000001#=>0000100 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0729%  tp: 60 msa: 84 ns: 22.6918 origin: ga  created: 621401  last in correctset: 626777  subsumptions: 0 
+000001#=>##101#0 total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 19 cov: 1.5625% of dataset Pdel: 0.0833%  tp: 89.3 msa: 133 ns: 25.9059 origin: ga  created: 618055  last in correctset: 622299  subsumptions: 0 
+101####=>0#10#0# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 18 cov: 12.5% of dataset Pdel: 0.2053%  tp: 84.6 msa: 126 ns: 63.8528 origin: ga  created: 625956  last in correctset: 626876  subsumptions: 0 
+101#1##=>0#10#0# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.1933%  tp: 51.7 msa: 77 ns: 60.1263 origin: ga  created: 625585  last in correctset: 626876  subsumptions: 0 
+0000###=>1000010 total macro fit: 0.0167 fit: 0.0167 num: 1 exp: 20 cov: 6.25% of dataset Pdel: 0.1233%  tp: 93 msa: 140 ns: 38.3524 origin: ga  created: 624699  last in correctset: 626777  subsumptions: 0 
+11#1###=>0110000 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.2025%  tp: 64 msa: 112 ns: 62.9922 origin: ga  created: 625995  last in correctset: 626064  subsumptions: 0 
+000101#=>0100010 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.1459%  tp: 56 msa: 98 ns: 45.3745 origin: ga  created: 620744  last in correctset: 626432  subsumptions: 0 
+010001#=>1000010 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.2177%  tp: 40 msa: 70 ns: 67.7118 origin: ga  created: 622534  last in correctset: 622648  subsumptions: 0 
+0######=>1000000 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 45.4545% of dataset Pdel: 0.1334%  tp: 25 msa: 35 ns: 41.4957 origin: ga  created: 626876  last in correctset: 626889  subsumptions: 0 
+#01####=>#0##0#0 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 25% of dataset Pdel: 0.592%  tp: 33 msa: 35 ns: 184.1709 origin: ga  created: 626816  last in correctset: 626832  subsumptions: 0 
+01#0###=>0100010 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 14.2857% of dataset Pdel: 0.2037%  tp: 48 msa: 56 ns: 63.3801 origin: ga  created: 626558  last in correctset: 626712  subsumptions: 0 
+0#1####=>0#10#0# total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 14.2857% of dataset Pdel: 0.0743%  tp: 12.4 msa: 14 ns: 23.12 origin: ga  created: 626852  last in correctset: 626929  subsumptions: 0 
+001####=>#0#0000 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 13.5593% of dataset Pdel: 0.1336%  tp: 54.4 msa: 56 ns: 41.5701 origin: ga  created: 626538  last in correctset: 626832  subsumptions: 0 
+0#1##0#=>#0##000 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 13.3333% of dataset Pdel: 0.1541%  tp: 37.2 msa: 42 ns: 47.9343 origin: ga  created: 626636  last in correctset: 626832  subsumptions: 0 
+11#0###=>01000#0 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 13.2075% of dataset Pdel: 0.1661%  tp: 34.3 msa: 49 ns: 51.6866 origin: ga  created: 626579  last in correctset: 626665  subsumptions: 0 
+01#0###=>0100100 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 12.5% of dataset Pdel: 0.1676%  tp: 30 msa: 35 ns: 52.1363 origin: ga  created: 626672  last in correctset: 626712  subsumptions: 0 
+01#0###=>0110#00 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 12.5% of dataset Pdel: 0.1676%  tp: 29.5 msa: 35 ns: 52.1363 origin: ga  created: 626674  last in correctset: 626712  subsumptions: 0 
+11#####=>10#0001 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 12.5% of dataset Pdel: 0.0444%  tp: 5.9 msa: 7 ns: 13.8 origin: ga  created: 626900  last in correctset: 626943  subsumptions: 0 
+0#00###=>#100000 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 11.7647% of dataset Pdel: 0.1202%  tp: 23.6 msa: 28 ns: 37.3904 origin: ga  created: 626712  last in correctset: 626777  subsumptions: 0 
+00#01##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 11.4286% of dataset Pdel: 0.0973%  tp: 22 msa: 28 ns: 30.256 origin: ga  created: 626705  last in correctset: 626922  subsumptions: 0 
+10#1#0#=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 7.3171% of dataset Pdel: 0.1533%  tp: 30 msa: 42 ns: 47.6944 origin: ga  created: 626376  last in correctset: 626441  subsumptions: 0 
+0001###=>0001100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 6.25% of dataset Pdel: 0.1155%  tp: 48 msa: 56 ns: 35.934 origin: ga  created: 626040  last in correctset: 626936  subsumptions: 0 
+00#00##=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 6.0606% of dataset Pdel: 0.074%  tp: 23 msa: 28 ns: 23.0208 origin: ga  created: 626488  last in correctset: 626929  subsumptions: 0 
+000###1=>#0##0#0 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 5.814% of dataset Pdel: 0.0953%  tp: 30 msa: 35 ns: 29.6586 origin: ga  created: 626349  last in correctset: 626363  subsumptions: 0 
+0001###=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 5.7851% of dataset Pdel: 0.1138%  tp: 42 msa: 49 ns: 35.3921 origin: ga  created: 626103  last in correctset: 626936  subsumptions: 0 
+01001##=>0000#00 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 4.7619% of dataset Pdel: 0.1465%  tp: 23.6 msa: 28 ns: 45.5648 origin: ga  created: 626362  last in correctset: 626712  subsumptions: 0 
+00##01#=>000001# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 4% of dataset Pdel: 0.0366%  tp: 4.9 msa: 7 ns: 11.4 origin: ga  created: 626777  last in correctset: 626852  subsumptions: 0 
+0001##1=>0011100 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.119%  tp: 45 msa: 63 ns: 37.0071 origin: ga  created: 624640  last in correctset: 626649  subsumptions: 0 
+00001##=>0000#01 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 3.125% of dataset Pdel: 0.1524%  tp: 53.1 msa: 63 ns: 47.4001 origin: ga  created: 624913  last in correctset: 626922  subsumptions: 0 
+00000##=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0567%  tp: 50 msa: 56 ns: 17.6253 origin: ga  created: 624984  last in correctset: 626777  subsumptions: 0 
+00100##=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.1205%  tp: 30 msa: 42 ns: 37.4776 origin: ga  created: 625592  last in correctset: 626929  subsumptions: 0 
+00000##=>001#0#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0565%  tp: 33.8 msa: 42 ns: 17.5908 origin: ga  created: 625593  last in correctset: 626775  subsumptions: 0 
+#00001#=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0744%  tp: 24 msa: 28 ns: 23.1376 origin: ga  created: 625880  last in correctset: 626777  subsumptions: 0 
+0001000=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.7027% of dataset Pdel: 0.0302%  tp: 5 msa: 7 ns: 9.4 origin: ga  created: 626691  last in correctset: 626936  subsumptions: 0 
+00001#0=>0101010 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 1.5625% of dataset Pdel: 0.1532%  tp: 27 msa: 63 ns: 47.6545 origin: ga  created: 623108  last in correctset: 626922  subsumptions: 0 
+000101#=>0001010 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 1.5625% of dataset Pdel: 0.1192%  tp: 48 msa: 56 ns: 37.0816 origin: ga  created: 623430  last in correctset: 626432  subsumptions: 0 
+000001#=>0010010 total macro fit: 0 fit: 0 num: 2 exp: 7 cov: 1.5625% of dataset Pdel: 0.045%  tp: 42 msa: 49 ns: 14.0076 origin: ga  created: 623435  last in correctset: 626775  subsumptions: 1 
+00011#0=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 1.5625% of dataset Pdel: 0.1054%  tp: 42 msa: 49 ns: 32.7937 origin: ga  created: 623682  last in correctset: 625011  subsumptions: 0 
+011001#=>0000#10 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 1.5625% of dataset Pdel: 0.1823%  tp: 29.4 msa: 42 ns: 56.7009 origin: ga  created: 624087  last in correctset: 626390  subsumptions: 0 
+000001#=>1000010 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 1.5625% of dataset Pdel: 0.0394%  tp: 30 msa: 35 ns: 12.2512 origin: ga  created: 624325  last in correctset: 626777  subsumptions: 0 
+00000#0=>0001001 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 1.5625% of dataset Pdel: 0.0507%  tp: 22 msa: 35 ns: 15.7712 origin: ga  created: 624899  last in correctset: 626777  subsumptions: 0 
+0#00000=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 1.5625% of dataset Pdel: 0.0554%  tp: 11 msa: 14 ns: 17.24 origin: ga  created: 625795  last in correctset: 626691  subsumptions: 0 
+01#0000=>00#0000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 1.5625% of dataset Pdel: 0.089%  tp: 11.8 msa: 14 ns: 27.68 origin: ga  created: 625795  last in correctset: 626674  subsumptions: 0 
+011001#=>0000011 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 1.5625% of dataset Pdel: 0.0891%  tp: 8 msa: 14 ns: 27.72 origin: ga  created: 625879  last in correctset: 626390  subsumptions: 0 
+000001#=>1000000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 1.5625% of dataset Pdel: 0.033%  tp: 10 msa: 14 ns: 10.28 origin: ga  created: 625880  last in correctset: 626777  subsumptions: 0 
+0001##1=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 1.3514% of dataset Pdel: 0.0302%  tp: 6 msa: 7 ns: 9.4 origin: ga  created: 626432  last in correctset: 626649  subsumptions: 0 
+0000100=>010#100 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 0.7812% of dataset Pdel: 0.11%  tp: 29.5 msa: 35 ns: 34.2099 origin: ga  created: 623109  last in correctset: 626922  subsumptions: 0 
+0100000=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 0.7812% of dataset Pdel: 0.0892%  tp: 12 msa: 14 ns: 27.76 origin: ga  created: 624899  last in correctset: 626334  subsumptions: 0 
+0000000=>1000000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 0.7812% of dataset Pdel: 0.0261%  tp: 12 msa: 14 ns: 8.12 origin: ga  created: 624900  last in correctset: 625796  subsumptions: 0 
+0000100=>0000000 total macro fit: 0 fit: 0 num: 2 exp: 2 cov: 0.7812% of dataset Pdel: 0.0678%  tp: 12 msa: 14 ns: 21.08 origin: ga  created: 625796  last in correctset: 626922  subsumptions: 1 
+0000011=>00000#1 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 0.7812% of dataset Pdel: 0.0212%  tp: 5.9 msa: 7 ns: 6.6 origin: ga  created: 625592  last in correctset: 626118  subsumptions: 0 
+000101#=>0000000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 626775  last in correctset: 0  subsumptions: 0 
+000###1=>0#10#0# total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 626852  last in correctset: 0  subsumptions: 0 
+0#001##=>00#0101 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 626922  last in correctset: 0  subsumptions: 0 
+000####=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 626936  last in correctset: 0  subsumptions: 0 
+1######=>10##001 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 626943  last in correctset: 0  subsumptions: 0 
+
+800th repetition:
+
+Population size: 93
+Timestamp: 716541
+Number of classifiers in population covered :0
+Number of classifiers in population ga-ed :93
+Covers occured: 15
+Number of subsumptions: 29964
+
+1######=>10##000 total macro fit: 148859.3989 fit: 333.0188 num: 447 exp: 44625 cov: 50% of dataset Pdel: 0.0905%  tp: 303450 msa: 312375 ns: 509.1774 origin: ga  created: 91917  last in correctset: 716528  subsumptions: 7996 
+01#1###=>0100000 total macro fit: 9604 fit: 98 num: 98 exp: 8693 cov: 12.5% of dataset Pdel: 0.3449%  tp: 60851 msa: 60851 ns: 99.2098 origin: ga  created: 229845  last in correctset: 716375  subsumptions: 4259 
+01#0###=>0100000 total macro fit: 6723 fit: 83 num: 81 exp: 8786 cov: 12.5% of dataset Pdel: 0.3667%  tp: 61502 msa: 61502 ns: 84.3235 origin: ga  created: 224614  last in correctset: 716444  subsumptions: 4183 
+0001###=>0001000 total macro fit: 4692 fit: 68 num: 69 exp: 4170 cov: 6.25% of dataset Pdel: 0.3641%  tp: 29190 msa: 29190 ns: 72.0748 origin: ga  created: 249549  last in correctset: 716521  subsumptions: 3105 
+1######=>1000000 total macro fit: 3969 fit: 63 num: 63 exp: 36369 cov: 50% of dataset Pdel: 0.3431%  tp: 254583 msa: 254583 ns: 63.6224 origin: ga  created: 207484  last in correctset: 716528  subsumptions: 3149 
+00001##=>0000100 total macro fit: 1681 fit: 41 num: 41 exp: 1012 cov: 3.125% of dataset Pdel: 0.4095%  tp: 7084 msa: 7084 ns: 47.7618 origin: ga  created: 489872  last in correctset: 716507  subsumptions: 1031 
+001####=>0#10#0# total macro fit: 1306.7504 fit: 29.0389 num: 45 exp: 7050 cov: 12.5% of dataset Pdel: 0.5752%  tp: 47235 msa: 49350 ns: 48.0608 origin: ga  created: 321930  last in correctset: 716418  subsumptions: 3372 
+001####=>#0##000 total macro fit: 1220.9244 fit: 27.7483 num: 44 exp: 6374 cov: 12.5% of dataset Pdel: 0.635%  tp: 42705.8 msa: 44618 ns: 50.6928 origin: ga  created: 359719  last in correctset: 716518  subsumptions: 2612 
+00000##=>00000#0 total macro fit: 263.4443 fit: 11.9747 num: 22 exp: 180 cov: 3.125% of dataset Pdel: 0.9992%  tp: 1197 msa: 1260 ns: 34.7676 origin: ga  created: 676043  last in correctset: 716363  subsumptions: 241 
+00#001#=>#0#0#1# total macro fit: 1.5152 fit: 0.7576 num: 2 exp: 22 cov: 3.125% of dataset Pdel: 16.2492%  tp: 134.2 msa: 154 ns: 34.5036 origin: ga  created: 711228  last in correctset: 716438  subsumptions: 2 
+000001#=>#0#0#1# total macro fit: 1.1104 fit: 1.1104 num: 1 exp: 29 cov: 1.5625% of dataset Pdel: 4.365%  tp: 191.4 msa: 203 ns: 14.0844 origin: ga  created: 703164  last in correctset: 716363  subsumptions: 9 
+00001##=>1000100 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 20 cov: 3.125% of dataset Pdel: 0.0084%  tp: 120 msa: 140 ns: 47.4204 origin: ga  created: 712027  last in correctset: 715612  subsumptions: 1 
+001####=>#0##010 total macro fit: 0.5127 fit: 0.2563 num: 2 exp: 12 cov: 13.9535% of dataset Pdel: 0.0084%  tp: 68.4 msa: 84 ns: 47.5233 origin: ga  created: 715934  last in correctset: 716518  subsumptions: 1 
+00000##=>00010#0 total macro fit: 0.4586 fit: 0.2293 num: 2 exp: 19 cov: 3.125% of dataset Pdel: 0.0062%  tp: 107.1 msa: 133 ns: 34.6796 origin: ga  created: 712118  last in correctset: 716360  subsumptions: 1 
+00000##=>0000010 total macro fit: 0.3487 fit: 0.3487 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0037%  tp: 63 msa: 70 ns: 20.8127 origin: ga  created: 714284  last in correctset: 716363  subsumptions: 0 
+000#0##=>00010#0 total macro fit: 0.3316 fit: 0.3316 num: 1 exp: 19 cov: 6.25% of dataset Pdel: 0.0092%  tp: 119.1 msa: 133 ns: 51.9164 origin: ga  created: 714282  last in correctset: 716521  subsumptions: 0 
+00#####=>0010#0# total macro fit: 0.2543 fit: 0.2543 num: 1 exp: 23 cov: 26.7442% of dataset Pdel: 74.6385%  tp: 140.4 msa: 161 ns: 55.2558 origin: ga  created: 715933  last in correctset: 716521  subsumptions: 0 
+#00001#=>#0#0#1# total macro fit: 0.2525 fit: 0.2525 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.006%  tp: 61 msa: 70 ns: 33.9037 origin: ga  created: 713915  last in correctset: 716363  subsumptions: 0 
+01#1###=>1100000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 21 cov: 12.5% of dataset Pdel: 157.546%  tp: 126 msa: 147 ns: 98.9831 origin: ga  created: 715401  last in correctset: 716375  subsumptions: 0 
+01#0##0=>0110000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 18 cov: 6.25% of dataset Pdel: 0.0153%  tp: 108 msa: 126 ns: 86.2455 origin: ga  created: 714414  last in correctset: 716255  subsumptions: 0 
+0001###=>0011000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 15 cov: 6.25% of dataset Pdel: 0.0124%  tp: 90 msa: 105 ns: 69.7118 origin: ga  created: 714797  last in correctset: 716521  subsumptions: 0 
+00001##=>0000110 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0083%  tp: 96 msa: 112 ns: 46.7009 origin: ga  created: 712924  last in correctset: 716507  subsumptions: 0 
+0001#11=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.0115%  tp: 60 msa: 70 ns: 64.8169 origin: ga  created: 711754  last in correctset: 716017  subsumptions: 0 
+00000##=>###0#1# total macro fit: 0.1984 fit: 0.1984 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.0039%  tp: 65.5 msa: 77 ns: 21.6814 origin: ga  created: 713915  last in correctset: 716363  subsumptions: 0 
+00100##=>00000#0 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 18 cov: 3.125% of dataset Pdel: 0.0086%  tp: 106.2 msa: 126 ns: 48.454 origin: ga  created: 712489  last in correctset: 716518  subsumptions: 0 
+0001###=>100100# total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 14 cov: 6.25% of dataset Pdel: 0.0123%  tp: 82.6 msa: 98 ns: 69.4505 origin: ga  created: 714834  last in correctset: 715493  subsumptions: 0 
+00001#1=>0#00110 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 14 cov: 1.5625% of dataset Pdel: 0.0079%  tp: 82.6 msa: 98 ns: 44.2547 origin: ga  created: 710236  last in correctset: 716290  subsumptions: 0 
+00001##=>01001#0 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.008%  tp: 70.8 msa: 84 ns: 44.932 origin: ga  created: 713819  last in correctset: 716507  subsumptions: 0 
+000####=>0#10#0# total macro fit: 0.1536 fit: 0.0768 num: 2 exp: 17 cov: 12.5% of dataset Pdel: 0.0101%  tp: 85.9 msa: 119 ns: 57.1154 origin: ga  created: 715618  last in correctset: 716521  subsumptions: 1 
+001####=>10##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.0088%  tp: 92.8 msa: 112 ns: 49.4685 origin: ga  created: 715619  last in correctset: 716518  subsumptions: 0 
+00001##=>010#10# total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.008%  tp: 69.6 msa: 84 ns: 45.06 origin: ga  created: 713819  last in correctset: 716507  subsumptions: 0 
+001#0##=>10##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.0084%  tp: 63.8 msa: 77 ns: 47.0993 origin: ga  created: 715325  last in correctset: 716518  subsumptions: 0 
+00#01##=>000010# total macro fit: 0.1359 fit: 0.1359 num: 1 exp: 12 cov: 6.25% of dataset Pdel: 0.0082%  tp: 68.8 msa: 84 ns: 46.3844 origin: ga  created: 715394  last in correctset: 716507  subsumptions: 0 
+011####=>0#10#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 20 cov: 12.5% of dataset Pdel: 0.0165%  tp: 114 msa: 140 ns: 93.0766 origin: ga  created: 715331  last in correctset: 716255  subsumptions: 0 
+011###1=>0#10#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 14 cov: 6.25% of dataset Pdel: 0.0161%  tp: 79.8 msa: 98 ns: 90.8281 origin: ga  created: 715037  last in correctset: 715863  subsumptions: 0 
+001####=>0#00#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 13 cov: 12.8713% of dataset Pdel: 0.0086%  tp: 74.1 msa: 91 ns: 48.2807 origin: ga  created: 715828  last in correctset: 716395  subsumptions: 0 
+001####=>0#11#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 13 cov: 12.8713% of dataset Pdel: 0.0081%  tp: 74.1 msa: 91 ns: 45.3458 origin: ga  created: 715828  last in correctset: 716418  subsumptions: 0 
+0000011=>#1##010 total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 13 cov: 0.7812% of dataset Pdel: 0.0023%  tp: 74.1 msa: 91 ns: 13.0071 origin: ga  created: 704060  last in correctset: 714811  subsumptions: 0 
+000001#=>#1#0#1# total macro fit: 0.1074 fit: 0.1074 num: 1 exp: 19 cov: 1.5625% of dataset Pdel: 0.0025%  tp: 106.4 msa: 133 ns: 14.0049 origin: ga  created: 707644  last in correctset: 716363  subsumptions: 0 
+00000##=>0#001#0 total macro fit: 0.1016 fit: 0.1016 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0059%  tp: 72.4 msa: 91 ns: 32.9349 origin: ga  created: 713588  last in correctset: 716363  subsumptions: 0 
+00000##=>00#10#0 total macro fit: 0.0982 fit: 0.0982 num: 1 exp: 20 cov: 3.125% of dataset Pdel: 0.0063%  tp: 111 msa: 140 ns: 35.6382 origin: ga  created: 711881  last in correctset: 716360  subsumptions: 0 
+00###1#=>#0#0#1# total macro fit: 0.0807 fit: 0.0807 num: 1 exp: 19 cov: 12.5% of dataset Pdel: 0.0094%  tp: 103.4 msa: 133 ns: 52.7799 origin: ga  created: 715469  last in correctset: 716438  subsumptions: 0 
+00#1###=>0101000 total macro fit: 0.0384 fit: 0.0384 num: 1 exp: 19 cov: 12.5% of dataset Pdel: 0.011%  tp: 96 msa: 133 ns: 61.9309 origin: ga  created: 715338  last in correctset: 716521  subsumptions: 0 
+01#10##=>0100110 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 21 cov: 6.25% of dataset Pdel: 965.9435%  tp: 105 msa: 147 ns: 98.0151 origin: ga  created: 714288  last in correctset: 716375  subsumptions: 0 
+01#0#0#=>0000100 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 19 cov: 6.25% of dataset Pdel: 0.0152%  tp: 95 msa: 133 ns: 85.6273 origin: ga  created: 714463  last in correctset: 716255  subsumptions: 0 
+00001##=>1000000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 20 cov: 3.125% of dataset Pdel: 0.0087%  tp: 100 msa: 140 ns: 49.0573 origin: ga  created: 712027  last in correctset: 715612  subsumptions: 0 
+00001##=>1000101 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0083%  tp: 80 msa: 112 ns: 46.9108 origin: ga  created: 712923  last in correctset: 715612  subsumptions: 0 
+0000011=>11#0010 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 18 cov: 0.7812% of dataset Pdel: 0.0023%  tp: 88.2 msa: 126 ns: 13.1581 origin: ga  created: 699580  last in correctset: 714811  subsumptions: 0 
+00001##=>1000#10 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.0088%  tp: 83.3 msa: 119 ns: 49.3497 origin: ga  created: 712706  last in correctset: 715612  subsumptions: 0 
+00011##=>00001#0 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.0123%  tp: 83.3 msa: 119 ns: 69.4481 origin: ga  created: 712706  last in correctset: 716234  subsumptions: 0 
+1000011=>11#0010 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 14 cov: 0.7812% of dataset Pdel: 0.0121%  tp: 68.6 msa: 98 ns: 67.9627 origin: ga  created: 704060  last in correctset: 714949  subsumptions: 0 
+010011#=>0#01100 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 10 cov: 1.5625% of dataset Pdel: 0.0146%  tp: 49 msa: 70 ns: 82.2446 origin: ga  created: 712364  last in correctset: 716444  subsumptions: 0 
+00100##=>000#0#1 total macro fit: 0.023 fit: 0.023 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.0081%  tp: 52.8 msa: 77 ns: 45.6228 origin: ga  created: 713910  last in correctset: 716518  subsumptions: 0 
+101####=>0#10#0# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 16 cov: 12.5% of dataset Pdel: 0.0111%  tp: 75.2 msa: 112 ns: 62.7135 origin: ga  created: 715618  last in correctset: 715873  subsumptions: 0 
+0111###=>0001001 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 13 cov: 6.25% of dataset Pdel: 0.0168%  tp: 52 msa: 91 ns: 94.6018 origin: ga  created: 715121  last in correctset: 715863  subsumptions: 0 
+10001##=>0010100 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.0111%  tp: 48 msa: 84 ns: 62.214 origin: ga  created: 713824  last in correctset: 715584  subsumptions: 0 
+00101##=>0100100 total macro fit: 0.0037 fit: 0.0037 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.008%  tp: 48 msa: 84 ns: 45.0926 origin: ga  created: 713824  last in correctset: 716395  subsumptions: 0 
+00000##=>0001101 total macro fit: 0.0023 fit: 0.0023 num: 1 exp: 11 cov: 3.125% of dataset Pdel: 0.0034%  tp: 42 msa: 77 ns: 19.01 origin: ga  created: 714155  last in correctset: 716360  subsumptions: 0 
+00#0###=>0110010 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 22.5% of dataset Pdel: 0.0072%  tp: 40 msa: 63 ns: 40.2432 origin: ga  created: 716255  last in correctset: 716518  subsumptions: 0 
+1######=>1010000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 20% of dataset Pdel: 0.0024%  tp: 6 msa: 7 ns: 13.6 origin: ga  created: 716502  last in correctset: 716528  subsumptions: 0 
+001####=>1#10#0# total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 15% of dataset Pdel: 0.0043%  tp: 17.1 msa: 21 ns: 24.456 origin: ga  created: 716395  last in correctset: 716418  subsumptions: 0 
+01#1###=>#100010 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 13.7931% of dataset Pdel: 0.0106%  tp: 23.6 msa: 28 ns: 59.9376 origin: ga  created: 716332  last in correctset: 716375  subsumptions: 0 
+000####=>0011000 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 10.8108% of dataset Pdel: 0.0081%  tp: 39 msa: 56 ns: 45.3129 origin: ga  created: 716017  last in correctset: 716521  subsumptions: 0 
+011####=>0#00#0# total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 8.8889% of dataset Pdel: 0.0096%  tp: 26.8 msa: 28 ns: 54.296 origin: ga  created: 716220  last in correctset: 716255  subsumptions: 0 
+0000###=>000010# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 7.1429% of dataset Pdel: 0.0049%  tp: 37.4 msa: 42 ns: 27.4104 origin: ga  created: 715947  last in correctset: 716507  subsumptions: 0 
+001####=>#1##000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 7.1429% of dataset Pdel: 0.002%  tp: 5.7 msa: 7 ns: 11 origin: ga  created: 716438  last in correctset: 716518  subsumptions: 0 
+0000###=>#0#1#00 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 6.3291% of dataset Pdel: 0.0046%  tp: 26.5 msa: 35 ns: 25.6886 origin: ga  created: 715983  last in correctset: 716074  subsumptions: 0 
+0001###=>0001001 total macro fit: 0 fit: 0 num: 2 exp: 9 cov: 6.25% of dataset Pdel: 0.0112%  tp: 54 msa: 63 ns: 63.1625 origin: ga  created: 715493  last in correctset: 716521  subsumptions: 1 
+10#00##=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 6.25% of dataset Pdel: 0.0097%  tp: 40 msa: 56 ns: 54.689 origin: ga  created: 715382  last in correctset: 715670  subsumptions: 0 
+0000###=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 6.25% of dataset Pdel: 0.0055%  tp: 49 msa: 56 ns: 31.235 origin: ga  created: 715612  last in correctset: 716507  subsumptions: 0 
+00#00##=>00001#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 5.042% of dataset Pdel: 0.0059%  tp: 31.4 msa: 42 ns: 33.3194 origin: ga  created: 715703  last in correctset: 716438  subsumptions: 0 
+10000##=>0000##0 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0098%  tp: 46.4 msa: 56 ns: 55.1749 origin: ga  created: 714282  last in correctset: 714949  subsumptions: 0 
+00000##=>010#010 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0035%  tp: 41.2 msa: 56 ns: 19.8983 origin: ga  created: 714569  last in correctset: 716360  subsumptions: 0 
+10001##=>0000101 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0098%  tp: 32 msa: 56 ns: 55.0186 origin: ga  created: 714715  last in correctset: 716502  subsumptions: 0 
+0101##1=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0146%  tp: 40 msa: 56 ns: 82.3322 origin: ga  created: 714849  last in correctset: 716054  subsumptions: 0 
+00101##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0073%  tp: 40 msa: 56 ns: 40.8561 origin: ga  created: 715051  last in correctset: 716395  subsumptions: 0 
+00010##=>00000#0 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.0104%  tp: 41.3 msa: 49 ns: 58.5144 origin: ga  created: 714806  last in correctset: 716521  subsumptions: 0 
+00000##=>#1000#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0046%  tp: 33.8 msa: 42 ns: 25.7008 origin: ga  created: 715177  last in correctset: 716363  subsumptions: 0 
+00#001#=>00000#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0058%  tp: 38.4 msa: 42 ns: 32.4191 origin: ga  created: 715177  last in correctset: 716438  subsumptions: 0 
+10001##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0087%  tp: 30 msa: 42 ns: 48.7481 origin: ga  created: 715394  last in correctset: 716502  subsumptions: 0 
+00001##=>0000101 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0053%  tp: 24 msa: 28 ns: 29.7968 origin: ga  created: 715611  last in correctset: 716507  subsumptions: 0 
+00010##=>0#000#0 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 2.521% of dataset Pdel: 0.0065%  tp: 17.4 msa: 21 ns: 36.464 origin: ga  created: 715702  last in correctset: 716521  subsumptions: 0 
+00001##=>0#00000 total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 2.4096% of dataset Pdel: 0.0035%  tp: 11.8 msa: 14 ns: 19.72 origin: ga  created: 715954  last in correctset: 716507  subsumptions: 0 
+000000#=>#0###1# total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 1.5625% of dataset Pdel: 0.005%  tp: 33 msa: 42 ns: 27.8719 origin: ga  created: 713677  last in correctset: 716074  subsumptions: 0 
+0000#1#=>00000#0 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 1.5152% of dataset Pdel: 0.0014%  tp: 6.9 msa: 7 ns: 7.8 origin: ga  created: 716074  last in correctset: 716363  subsumptions: 0 
+0000011=>10#0#10 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 0.7812% of dataset Pdel: 0.0006%  tp: 5.8 msa: 7 ns: 3.6 origin: ga  created: 715469  last in correctset: 715703  subsumptions: 0 
+00000##=>0#010#1 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 716360  last in correctset: 0  subsumptions: 0 
+01#0###=>1100000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 716444  last in correctset: 0  subsumptions: 0 
+01#0###=>0100010 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 716444  last in correctset: 0  subsumptions: 0 
+0000###=>000#100 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 716507  last in correctset: 0  subsumptions: 0 
+000#1##=>00##100 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 716507  last in correctset: 0  subsumptions: 0 
+#01####=>#0##000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 716518  last in correctset: 0  subsumptions: 0 
+1001###=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 716521  last in correctset: 0  subsumptions: 0 
+
+900th repetition:
+
+Population size: 65
+Timestamp: 806120
+Number of classifiers in population covered :0
+Number of classifiers in population ga-ed :65
+Covers occured: 21
+Number of subsumptions: 36255
+
+1######=>10##000 total macro fit: 207840.3942 fit: 394.384 num: 527 exp: 51025 cov: 50% of dataset Pdel: 0.0601%  tp: 346970 msa: 357175 ns: 581.4291 origin: ga  created: 91917  last in correctset: 806009  subsumptions: 9200 
+01#0###=>0100000 total macro fit: 6724 fit: 82 num: 82 exp: 10386 cov: 12.5% of dataset Pdel: 0.3777%  tp: 72702 msa: 72702 ns: 84.6381 origin: ga  created: 224614  last in correctset: 805876  subsumptions: 5012 
+01#1###=>0100000 total macro fit: 4970 fit: 70 num: 71 exp: 10293 cov: 12.5% of dataset Pdel: 0.3902%  tp: 72051 msa: 72051 ns: 74.5763 origin: ga  created: 229845  last in correctset: 806114  subsumptions: 5044 
+0001###=>0001000 total macro fit: 3906 fit: 62 num: 63 exp: 4970 cov: 6.25% of dataset Pdel: 0.3782%  tp: 34790 msa: 34790 ns: 63.9584 origin: ga  created: 249549  last in correctset: 806100  subsumptions: 3709 
+1######=>1000000 total macro fit: 2916 fit: 54 num: 54 exp: 42769 cov: 50% of dataset Pdel: 0.3791%  tp: 299383 msa: 299383 ns: 55.8402 origin: ga  created: 207484  last in correctset: 806009  subsumptions: 3748 
+001####=>0#10#0# total macro fit: 1987.5513 fit: 35.492 num: 56 exp: 8650 cov: 12.5% of dataset Pdel: 0.5995%  tp: 57955 msa: 60550 ns: 57.1088 origin: ga  created: 321930  last in correctset: 806093  subsumptions: 4156 
+00001##=>0000100 total macro fit: 1155 fit: 33 num: 35 exp: 1412 cov: 3.125% of dataset Pdel: 0.4126%  tp: 9884 msa: 9884 ns: 37.1339 origin: ga  created: 489872  last in correctset: 806086  subsumptions: 1434 
+001####=>#0##000 total macro fit: 767.9175 fit: 22.5858 num: 34 exp: 7974 cov: 12.5% of dataset Pdel: 0.6055%  tp: 53425.8 msa: 55818 ns: 36.71 origin: ga  created: 359719  last in correctset: 806017  subsumptions: 3263 
+00000##=>00000#0 total macro fit: 204.768 fit: 11.376 num: 18 exp: 580 cov: 3.125% of dataset Pdel: 0.9309%  tp: 3857 msa: 4060 ns: 29.4555 origin: ga  created: 676043  last in correctset: 805856  subsumptions: 685 
+01#0###=>0100001 total macro fit: 0.8562 fit: 0.4281 num: 2 exp: 12 cov: 13.6364% of dataset Pdel: 0.0082%  tp: 72 msa: 84 ns: 79.3787 origin: ga  created: 805502  last in correctset: 805876  subsumptions: 1 
+001####=>0##000# total macro fit: 0.6453 fit: 0.6453 num: 1 exp: 11 cov: 13.9241% of dataset Pdel: 0.0035%  tp: 73.7 msa: 77 ns: 34.3313 origin: ga  created: 805561  last in correctset: 806093  subsumptions: 0 
+00000##=>00001#0 total macro fit: 0.4586 fit: 0.2293 num: 2 exp: 19 cov: 3.125% of dataset Pdel: 0.003%  tp: 107.1 msa: 133 ns: 29.1869 origin: ga  created: 801697  last in correctset: 805856  subsumptions: 1 
+00#001#=>00000#0 total macro fit: 0.3843 fit: 0.3843 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0033%  tp: 82.7 msa: 91 ns: 32.082 origin: ga  created: 803251  last in correctset: 806017  subsumptions: 0 
+000#0##=>00000#0 total macro fit: 0.3801 fit: 0.3801 num: 1 exp: 11 cov: 6.25% of dataset Pdel: 0.0045%  tp: 69.9 msa: 77 ns: 43.2227 origin: ga  created: 804757  last in correctset: 806100  subsumptions: 0 
+0##1###=>0100000 total macro fit: 0.322 fit: 0.322 num: 1 exp: 16 cov: 24.6154% of dataset Pdel: 0.0069%  tp: 100 msa: 112 ns: 66.5439 origin: ga  created: 805659  last in correctset: 806114  subsumptions: 0 
+00000##=>0000010 total macro fit: 0.2971 fit: 0.2971 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0016%  tp: 93 msa: 105 ns: 15.0094 origin: ga  created: 802593  last in correctset: 805856  subsumptions: 0 
+01#0#0#=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 20 cov: 6.25% of dataset Pdel: 0.0087%  tp: 120 msa: 140 ns: 84.1706 origin: ga  created: 803993  last in correctset: 805876  subsumptions: 0 
+00001##=>0010100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.0036%  tp: 72 msa: 84 ns: 34.6488 origin: ga  created: 803398  last in correctset: 806086  subsumptions: 0 
+#01####=>0#10#0# total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 20 cov: 23.2558% of dataset Pdel: 0.0059%  tp: 118 msa: 140 ns: 56.9053 origin: ga  created: 805512  last in correctset: 806093  subsumptions: 0 
+00010##=>00000#0 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.0068%  tp: 100.3 msa: 119 ns: 65.59 origin: ga  created: 802355  last in correctset: 806100  subsumptions: 0 
+01000##=>000#0#0 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 20 cov: 3.125% of dataset Pdel: 0.0087%  tp: 116 msa: 140 ns: 83.9899 origin: ga  created: 801697  last in correctset: 805502  subsumptions: 0 
+10000#1=>0000##0 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0055%  tp: 69.6 msa: 84 ns: 53.2091 origin: ga  created: 800276  last in correctset: 803526  subsumptions: 0 
+011####=>0#10#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 17 cov: 12.5% of dataset Pdel: 0.0083%  tp: 96.9 msa: 119 ns: 80.2267 origin: ga  created: 805120  last in correctset: 806114  subsumptions: 0 
+00000##=>10000#0 total macro fit: 0.1174 fit: 0.1174 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.003%  tp: 90.4 msa: 112 ns: 29.1011 origin: ga  created: 802355  last in correctset: 805856  subsumptions: 0 
+00000##=>#1000#0 total macro fit: 0.1032 fit: 0.1032 num: 1 exp: 18 cov: 3.125% of dataset Pdel: 0.0031%  tp: 100.4 msa: 126 ns: 29.7245 origin: ga  created: 802068  last in correctset: 805045  subsumptions: 0 
+00000##=>0#100#0 total macro fit: 0.0953 fit: 0.0953 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.003%  tp: 83 msa: 105 ns: 28.646 origin: ga  created: 802593  last in correctset: 805652  subsumptions: 0 
+101####=>0#10#0# total macro fit: 0.0745 fit: 0.0372 num: 2 exp: 19 cov: 12.5% of dataset Pdel: 0.0058%  tp: 89.3 msa: 133 ns: 56.4122 origin: ga  created: 804910  last in correctset: 805452  subsumptions: 1 
+00000##=>1000010 total macro fit: 0.0619 fit: 0.0619 num: 1 exp: 10 cov: 3.125% of dataset Pdel: 0.0015%  tp: 53 msa: 70 ns: 14.0903 origin: ga  created: 803860  last in correctset: 805856  subsumptions: 0 
+0000###=>0001000 total macro fit: 0.048 fit: 0.048 num: 1 exp: 12 cov: 6.25% of dataset Pdel: 0.0029%  tp: 62 msa: 84 ns: 28.1197 origin: ga  created: 804917  last in correctset: 806086  subsumptions: 0 
+0######=>1000000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 10 cov: 52.6316% of dataset Pdel: 0.0056%  tp: 50 msa: 70 ns: 53.9279 origin: ga  created: 805981  last in correctset: 806017  subsumptions: 0 
+00#1#1#=>0001010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.0051%  tp: 80 msa: 112 ns: 49.6054 origin: ga  created: 804308  last in correctset: 805596  subsumptions: 0 
+0101###=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 13 cov: 6.25% of dataset Pdel: 0.0075%  tp: 65 msa: 91 ns: 72.9531 origin: ga  created: 804917  last in correctset: 805990  subsumptions: 0 
+00000#1=>#000100 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 20 cov: 1.5625% of dataset Pdel: 0.0018%  tp: 98 msa: 140 ns: 17.5537 origin: ga  created: 797126  last in correctset: 805282  subsumptions: 0 
+01001##=>0010100 total macro fit: 0.0148 fit: 0.0074 num: 2 exp: 18 cov: 3.125% of dataset Pdel: 0.0087%  tp: 72 msa: 126 ns: 84.1865 origin: ga  created: 802285  last in correctset: 805876  subsumptions: 1 
+000#0#1=>0000101 total macro fit: 0.0121 fit: 0.0121 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0038%  tp: 72 msa: 112 ns: 36.6805 origin: ga  created: 802074  last in correctset: 805652  subsumptions: 0 
+101####=>0#10#01 total macro fit: 0.0022 fit: 0.0022 num: 1 exp: 11 cov: 10.8911% of dataset Pdel: 0.0054%  tp: 41.8 msa: 77 ns: 52.3257 origin: ga  created: 805407  last in correctset: 805452  subsumptions: 0 
+01#1###=>0101000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 50% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 806114  last in correctset: 0  subsumptions: 0 
+1######=>100#001 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 47.3684% of dataset Pdel: 0.0051%  tp: 53.1 msa: 63 ns: 49.1921 origin: ga  created: 805981  last in correctset: 806009  subsumptions: 0 
+1##0###=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 20.5882% of dataset Pdel: 0.0047%  tp: 35 msa: 49 ns: 45.099 origin: ga  created: 805876  last in correctset: 805934  subsumptions: 0 
+001####=>0010#0# total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 15.5556% of dataset Pdel: 0.003%  tp: 47.6 msa: 49 ns: 29.0486 origin: ga  created: 805799  last in correctset: 806093  subsumptions: 0 
+11#0###=>0100011 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 14.7059% of dataset Pdel: 0.004%  tp: 15 msa: 35 ns: 38.8547 origin: ga  created: 805876  last in correctset: 805934  subsumptions: 0 
+001####=>0#00#0# total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 13.5593% of dataset Pdel: 0.0052%  tp: 45.6 msa: 56 ns: 50.4258 origin: ga  created: 805701  last in correctset: 806093  subsumptions: 0 
+01#0###=>0101000 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 12.766% of dataset Pdel: 0.0066%  tp: 36 msa: 42 ns: 63.4317 origin: ga  created: 805785  last in correctset: 805876  subsumptions: 0 
+0#001##=>0000110 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 8.5714% of dataset Pdel: 0.0034%  tp: 14 msa: 21 ns: 33.024 origin: ga  created: 805869  last in correctset: 806086  subsumptions: 0 
+001####=>0#11#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 7.1429% of dataset Pdel: 0.0013%  tp: 5.7 msa: 7 ns: 12.6 origin: ga  created: 806016  last in correctset: 806093  subsumptions: 0 
+0011###=>0001001 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 6.7568% of dataset Pdel: 0.0027%  tp: 20 msa: 35 ns: 25.7402 origin: ga  created: 805596  last in correctset: 805800  subsumptions: 0 
+0000###=>#0010#0 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 6.6116% of dataset Pdel: 0.0031%  tp: 41.4 msa: 56 ns: 29.7978 origin: ga  created: 805271  last in correctset: 805856  subsumptions: 0 
+000#1##=>00#0100 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 5.9524% of dataset Pdel: 0.0034%  tp: 30.5 msa: 35 ns: 32.7475 origin: ga  created: 805526  last in correctset: 806086  subsumptions: 0 
+0#000##=>0000010 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 5.8824% of dataset Pdel: 0.0045%  tp: 38 msa: 49 ns: 43.4438 origin: ga  created: 805282  last in correctset: 805856  subsumptions: 0 
+01#1#0#=>0100100 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 5.5556% of dataset Pdel: 0.0016%  tp: 6 msa: 7 ns: 15.2 origin: ga  created: 805990  last in correctset: 806114  subsumptions: 0 
+00000##=>000#101 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0016%  tp: 37.2 msa: 56 ns: 15.0746 origin: ga  created: 804294  last in correctset: 805856  subsumptions: 0 
+01001##=>0000011 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0073%  tp: 32 msa: 56 ns: 71.1208 origin: ga  created: 804756  last in correctset: 805876  subsumptions: 0 
+00011##=>00001#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0051%  tp: 29.4 msa: 42 ns: 49.4136 origin: ga  created: 804630  last in correctset: 805813  subsumptions: 0 
+01000##=>00000#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0065%  tp: 35.4 msa: 42 ns: 62.7664 origin: ga  created: 804756  last in correctset: 805502  subsumptions: 0 
+00100##=>01101#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.0029%  tp: 29.4 msa: 42 ns: 28.1516 origin: ga  created: 804757  last in correctset: 806093  subsumptions: 0 
+00001##=>000#000 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 3.125% of dataset Pdel: 0.0028%  tp: 29.5 msa: 35 ns: 26.6605 origin: ga  created: 804973  last in correctset: 806086  subsumptions: 0 
+01000##=>00#00#0 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 3.125% of dataset Pdel: 0.006%  tp: 29 msa: 35 ns: 57.9958 origin: ga  created: 805045  last in correctset: 805502  subsumptions: 0 
+00000##=>01000#0 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.002%  tp: 22.6 msa: 28 ns: 18.88 origin: ga  created: 805045  last in correctset: 805652  subsumptions: 0 
+10001##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0034%  tp: 20 msa: 28 ns: 33.0112 origin: ga  created: 805190  last in correctset: 805751  subsumptions: 0 
+00000##=>01#00#0 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 2.521% of dataset Pdel: 0.0016%  tp: 16.4 msa: 21 ns: 15.808 origin: ga  created: 805281  last in correctset: 805652  subsumptions: 0 
+00000##=>00000#1 total macro fit: 0 fit: 0 num: 1 exp: 3 cov: 2.521% of dataset Pdel: 0.0012%  tp: 18.7 msa: 21 ns: 12.096 origin: ga  created: 805282  last in correctset: 805856  subsumptions: 0 
+00011#1=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 1.5625% of dataset Pdel: 0.0055%  tp: 35 msa: 49 ns: 53.2418 origin: ga  created: 802838  last in correctset: 805813  subsumptions: 0 
+000011#=>00000#0 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 1.5625% of dataset Pdel: 0.003%  tp: 35.4 msa: 42 ns: 29.5036 origin: ga  created: 802964  last in correctset: 805533  subsumptions: 0 
+0000##1=>00000#0 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 1.5152% of dataset Pdel: 0.0009%  tp: 5.9 msa: 7 ns: 8.4 origin: ga  created: 805652  last in correctset: 805869  subsumptions: 0 
+001####=>0#10#01 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 806093  last in correctset: 0  subsumptions: 0 
+
+1000th repetition:
+
+Population size: 61
+Timestamp: 895675
+Number of classifiers in population covered :2
+Number of classifiers in population ga-ed :59
+Covers occured: 45
+Number of subsumptions: 41576
+
+1######=>10##000 total macro fit: 225552.5036 fit: 412.3446 num: 547 exp: 57425 cov: 50% of dataset Pdel: 11.7494%  tp: 390490 msa: 401975 ns: 592.9481 origin: ga  created: 91917  last in correctset: 895662  subsumptions: 10380 
+01#0###=>0100000 total macro fit: 9025 fit: 95 num: 95 exp: 11986 cov: 12.5% of dataset Pdel: 8.083%  tp: 83902 msa: 83902 ns: 97.0763 origin: ga  created: 224614  last in correctset: 895515  subsumptions: 5849 
+01#1###=>0100000 total macro fit: 5254 fit: 71 num: 74 exp: 11893 cov: 12.5% of dataset Pdel: 8.1901%  tp: 83251 msa: 83251 ns: 72.5158 origin: ga  created: 229845  last in correctset: 895675  subsumptions: 5915 
+00001##=>0000100 total macro fit: 1935 fit: 43 num: 45 exp: 1812 cov: 3.125% of dataset Pdel: 8.3488%  tp: 12684 msa: 12684 ns: 45.4392 origin: ga  created: 489872  last in correctset: 895641  subsumptions: 1843 
+1######=>1000000 total macro fit: 1681 fit: 41 num: 41 exp: 49169 cov: 50% of dataset Pdel: 8.3705%  tp: 344183 msa: 344183 ns: 42.0028 origin: ga  created: 207484  last in correctset: 895662  subsumptions: 4257 
+0001###=>0001000 total macro fit: 1638 fit: 39 num: 42 exp: 5770 cov: 6.25% of dataset Pdel: 8.3879%  tp: 40390 msa: 40390 ns: 39.3485 origin: ga  created: 249549  last in correctset: 895656  subsumptions: 4344 
+001####=>0#10#0# total macro fit: 1335.7893 fit: 29.0389 num: 46 exp: 10250 cov: 12.5% of dataset Pdel: 13.1358%  tp: 68675 msa: 71750 ns: 46.6762 origin: ga  created: 321930  last in correctset: 895648  subsumptions: 4941 
+001####=>#0##000 total macro fit: 1192.5308 fit: 28.3936 num: 42 exp: 9574 cov: 12.5% of dataset Pdel: 13.4332%  tp: 64145.8 msa: 67018 ns: 46.6722 origin: ga  created: 359719  last in correctset: 895572  subsumptions: 3941 
+00000##=>00000## total macro fit: 126.4723 fit: 9.7286 num: 13 exp: 119 cov: 3.125% of dataset Pdel: 16.9336%  tp: 809.2 msa: 833 ns: 21.032 origin: ga  created: 868864  last in correctset: 895495  subsumptions: 103 
+0010###=>#0#0000 total macro fit: 0.7484 fit: 0.7484 num: 1 exp: 17 cov: 6.25% of dataset Pdel: 0.0877%  tp: 115.6 msa: 119 ns: 45.3496 origin: ga  created: 893784  last in correctset: 895572  subsumptions: 0 
+00000##=>00000#0 total macro fit: 0.6163 fit: 0.6163 num: 1 exp: 13 cov: 3.125% of dataset Pdel: 0.0157%  tp: 86.7 msa: 91 ns: 8.1278 origin: ga  created: 892727  last in correctset: 895495  subsumptions: 0 
+10000##=>00000## total macro fit: 0.61 fit: 0.305 num: 2 exp: 20 cov: 3.125% of dataset Pdel: 0.0824%  tp: 116 msa: 140 ns: 42.6024 origin: ga  created: 890732  last in correctset: 893982  subsumptions: 1 
+00000##=>00010## total macro fit: 0.61 fit: 0.305 num: 2 exp: 18 cov: 3.125% of dataset Pdel: 0.0398%  tp: 104.4 msa: 126 ns: 20.5638 origin: ga  created: 891629  last in correctset: 895495  subsumptions: 1 
+#0000##=>00000## total macro fit: 0.3807 fit: 0.3807 num: 1 exp: 18 cov: 6.25% of dataset Pdel: 0.0534%  tp: 114.4 msa: 126 ns: 27.5963 origin: ga  created: 893420  last in correctset: 895495  subsumptions: 0 
+0#000##=>0100### total macro fit: 0.2971 fit: 0.2971 num: 1 exp: 12 cov: 6.25% of dataset Pdel: 0.1108%  tp: 74.4 msa: 84 ns: 57.2853 origin: ga  created: 894315  last in correctset: 895515  subsumptions: 0 
+000#101=>#0##000 total macro fit: 0.2971 fit: 0.2971 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0818%  tp: 74.4 msa: 84 ns: 42.2958 origin: ga  created: 890726  last in correctset: 891846  subsumptions: 0 
+0##0###=>01#0000 total macro fit: 0.2866 fit: 0.2866 num: 1 exp: 18 cov: 32.1429% of dataset Pdel: 0.1163%  tp: 111.2 msa: 126 ns: 60.1222 origin: ga  created: 895278  last in correctset: 895648  subsumptions: 0 
+01#0###=>1100000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 10 cov: 14.7059% of dataset Pdel: 0.1682%  tp: 60 msa: 70 ns: 87.0022 origin: ga  created: 895194  last in correctset: 895237  subsumptions: 0 
+00001##=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.09%  tp: 96 msa: 112 ns: 46.522 origin: ga  created: 892062  last in correctset: 895641  subsumptions: 0 
+000011#=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 12 cov: 1.5625% of dataset Pdel: 0.0889%  tp: 72 msa: 84 ns: 45.9892 origin: ga  created: 890270  last in correctset: 895082  subsumptions: 0 
+00001##=>#000000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 18 cov: 3.125% of dataset Pdel: 0.0909%  tp: 106.2 msa: 126 ns: 47.0208 origin: ga  created: 891509  last in correctset: 893638  subsumptions: 0 
+00001##=>0001#00 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 14 cov: 3.125% of dataset Pdel: 0.0914%  tp: 82.6 msa: 98 ns: 47.269 origin: ga  created: 892405  last in correctset: 895641  subsumptions: 0 
+00000##=>01000## total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 17 cov: 3.125% of dataset Pdel: 0.0395%  tp: 98.6 msa: 119 ns: 20.4467 origin: ga  created: 891831  last in correctset: 895495  subsumptions: 0 
+001##01=>10##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0871%  tp: 87 msa: 105 ns: 45.062 origin: ga  created: 892497  last in correctset: 895440  subsumptions: 0 
+00#1###=>0100000 total macro fit: 0.1383 fit: 0.0691 num: 2 exp: 14 cov: 12.069% of dataset Pdel: 0.0819%  tp: 70 msa: 98 ns: 42.3452 origin: ga  created: 894858  last in correctset: 895655  subsumptions: 1 
+1001###=>000#0## total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 20 cov: 6.25% of dataset Pdel: 0.0795%  tp: 114 msa: 140 ns: 41.1276 origin: ga  created: 893364  last in correctset: 893372  subsumptions: 0 
+001###1=>0#00#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 17 cov: 6.25% of dataset Pdel: 0.0941%  tp: 96.9 msa: 119 ns: 48.6378 origin: ga  created: 893741  last in correctset: 895648  subsumptions: 0 
+00000##=>0100### total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 15 cov: 3.125% of dataset Pdel: 0.0471%  tp: 85.5 msa: 105 ns: 24.3662 origin: ga  created: 892153  last in correctset: 895495  subsumptions: 0 
+001####=>0#00#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 13 cov: 12.8713% of dataset Pdel: 0.0907%  tp: 74.1 msa: 91 ns: 46.8965 origin: ga  created: 894963  last in correctset: 895648  subsumptions: 0 
+00000##=>000010# total macro fit: 0.0746 fit: 0.0746 num: 1 exp: 14 cov: 3.125% of dataset Pdel: 0.0269%  tp: 75.6 msa: 98 ns: 13.9238 origin: ga  created: 892524  last in correctset: 895495  subsumptions: 0 
+01#0###=>0101010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 20 cov: 12.5% of dataset Pdel: 0.1874%  tp: 100 msa: 140 ns: 96.9213 origin: ga  created: 894538  last in correctset: 895515  subsumptions: 0 
+11#1###=>0100000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 19 cov: 12.5% of dataset Pdel: 0.0792%  tp: 95 msa: 133 ns: 40.9487 origin: ga  created: 894573  last in correctset: 895231  subsumptions: 0 
+00110##=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 16 cov: 3.125% of dataset Pdel: 0.0877%  tp: 80 msa: 112 ns: 45.3274 origin: ga  created: 891943  last in correctset: 895258  subsumptions: 0 
+000100#=>000001# total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 19 cov: 1.5625% of dataset Pdel: 0.081%  tp: 93.1 msa: 133 ns: 41.8876 origin: ga  created: 887351  last in correctset: 895656  subsumptions: 0 
+01001##=>00001#0 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 12 cov: 3.125% of dataset Pdel: 0.1751%  tp: 58.8 msa: 84 ns: 90.5484 origin: ga  created: 892958  last in correctset: 895278  subsumptions: 0 
+0011###=>0#0100# total macro fit: 0.023 fit: 0.023 num: 1 exp: 16 cov: 6.25% of dataset Pdel: 0.0903%  tp: 76.8 msa: 112 ns: 46.705 origin: ga  created: 893932  last in correctset: 895355  subsumptions: 0 
+011####=>0#10#1# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 20 cov: 12.5% of dataset Pdel: 0.1667%  tp: 94 msa: 140 ns: 86.1806 origin: ga  created: 894468  last in correctset: 895194  subsumptions: 0 
+#####0#=>10####0 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 100% of dataset Pdel: 0.0298%  tp: 4.6 msa: 7 ns: 15.4 origin: ga  created: 895662  last in correctset: 895675  subsumptions: 0 
+01#1###=>0#01000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 50% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 895675  last in correctset: 0  subsumptions: 0 
+11#0###=>0100000 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 18.1818% of dataset Pdel: 0.0491%  tp: 20 msa: 28 ns: 25.392 origin: ga  created: 895515  last in correctset: 895538  subsumptions: 0 
+01#0###=>0111000 total macro fit: 0 fit: 0 num: 1 exp: 9 cov: 14.5161% of dataset Pdel: 0.1633%  tp: 45 msa: 63 ns: 84.452 origin: ga  created: 895237  last in correctset: 895515  subsumptions: 0 
+#0100##=>0000### total macro fit: 0 fit: 0 num: 1 exp: 2 cov: 8% of dataset Pdel: 0.0346%  tp: 11.4 msa: 14 ns: 17.88 origin: ga  created: 895495  last in correctset: 895648  subsumptions: 0 
+001###1=>0#11#0# total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 7.1429% of dataset Pdel: 0.0193%  tp: 5.7 msa: 7 ns: 10 origin: ga  created: 895571  last in correctset: 895648  subsumptions: 0 
+011####=>####000 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 7.1429% of dataset Pdel: 0.0294%  tp: 6.6 msa: 7 ns: 15.2 origin: ga  created: 895572  last in correctset: 895675  subsumptions: 0 
+0000###=>0001000 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 6.7568% of dataset Pdel: 0.0343%  tp: 26 msa: 35 ns: 17.759 origin: ga  created: 895152  last in correctset: 895641  subsumptions: 0 
+0#000##=>0000##0 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 5.8824% of dataset Pdel: 0.0875%  tp: 42.6 msa: 49 ns: 45.2577 origin: cover  created: 894842  last in correctset: 895515  subsumptions: 0 
+0001###=>0#01001 total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 5.2174% of dataset Pdel: 0.0584%  tp: 35.4 msa: 42 ns: 30.2053 origin: ga  created: 894865  last in correctset: 895655  subsumptions: 0 
+0001###=>00#1001 total macro fit: 0 fit: 0 num: 1 exp: 5 cov: 4.4248% of dataset Pdel: 0.0532%  tp: 29.5 msa: 35 ns: 27.5181 origin: ga  created: 894879  last in correctset: 895656  subsumptions: 0 
+0##001#=>#0#0010 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 4% of dataset Pdel: 0.0197%  tp: 5.8 msa: 7 ns: 10.2 origin: cover  created: 895499  last in correctset: 895572  subsumptions: 0 
+01000##=>00100## total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.3613% of dataset Pdel: 0.1142%  tp: 19.2 msa: 28 ns: 59.0544 origin: ga  created: 894838  last in correctset: 895515  subsumptions: 0 
+00001##=>0001100 total macro fit: 0 fit: 0 num: 1 exp: 8 cov: 3.125% of dataset Pdel: 0.0734%  tp: 48 msa: 56 ns: 37.9788 origin: ga  created: 893853  last in correctset: 895641  subsumptions: 0 
+00101##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 7 cov: 3.125% of dataset Pdel: 0.0725%  tp: 35 msa: 49 ns: 37.5149 origin: ga  created: 894531  last in correctset: 895440  subsumptions: 0 
+01000##=>00000## total macro fit: 0 fit: 0 num: 1 exp: 6 cov: 3.125% of dataset Pdel: 0.141%  tp: 34.8 msa: 42 ns: 72.9119 origin: ga  created: 894315  last in correctset: 895515  subsumptions: 0 
+1101#0#=>01000#0 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0489%  tp: 19.6 msa: 28 ns: 25.2896 origin: ga  created: 894653  last in correctset: 894895  subsumptions: 0 
+00000##=>0000100 total macro fit: 0 fit: 0 num: 1 exp: 4 cov: 3.125% of dataset Pdel: 0.0059%  tp: 21 msa: 28 ns: 3.0432 origin: ga  created: 894747  last in correctset: 895495  subsumptions: 0 
+00001##=>0000101 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.8571% of dataset Pdel: 0.019%  tp: 6 msa: 7 ns: 9.8 origin: ga  created: 895425  last in correctset: 895641  subsumptions: 0 
+00000#0=>01000## total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 2.7027% of dataset Pdel: 0.0097%  tp: 5.8 msa: 7 ns: 5 origin: ga  created: 895412  last in correctset: 895495  subsumptions: 0 
+00010##=>#001100 total macro fit: 0 fit: 0 num: 1 exp: 1 cov: 1.3514% of dataset Pdel: 0.0178%  tp: 5.9 msa: 7 ns: 9.2 origin: ga  created: 895152  last in correctset: 895656  subsumptions: 0 
+10000##=>000#0## total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 895208  last in correctset: 0  subsumptions: 0 
+10100#0=>000#0## total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 895412  last in correctset: 0  subsumptions: 0 
+0#01#1#=>#001000 total macro fit: 0 fit: 0 num: 1 exp: 0 cov: 0% of dataset Pdel: 0%  tp: 0 msa: 0 ns: 1 origin: ga  created: 895656  last in correctset: 0  subsumptions: 0 
+
+100th repetition:
+
+Population size: 61
+Timestamp: 895675
+Number of classifiers in population covered :2
+Number of classifiers in population ga-ed :59
+Covers occured: 0
+Number of subsumptions: 41576
+
+1######=>10##000 total macro fit: 223915.0989 fit: 409.3512 num: 547 exp: 63825 cov: 50% of dataset Pdel: 0.0004%  tp: 434010 msa: 446775 ns: 588.1325 origin: ga  created: 91917  last in correctset: 895662  subsumptions: 10380 
+01#0###=>0100000 total macro fit: 9025 fit: 95 num: 95 exp: 13586 cov: 12.5% of dataset Pdel: 0.0025%  tp: 95102 msa: 95102 ns: 97.5748 origin: ga  created: 224614  last in correctset: 895515  subsumptions: 5849 
+01#1###=>0100000 total macro fit: 5476 fit: 74 num: 74 exp: 13493 cov: 12.5% of dataset Pdel: 0.0024%  tp: 94451 msa: 94451 ns: 74 origin: ga  created: 229845  last in correctset: 895675  subsumptions: 5915 
+00001##=>0000100 total macro fit: 2025 fit: 45 num: 45 exp: 2212 cov: 3.125% of dataset Pdel: 0.0025%  tp: 15484 msa: 15484 ns: 47 origin: ga  created: 489872  last in correctset: 895641  subsumptions: 1843 
+0001###=>0001000 total macro fit: 1764 fit: 42 num: 42 exp: 6570 cov: 6.25% of dataset Pdel: 0.0026%  tp: 45990 msa: 45990 ns: 44.5122 origin: ga  created: 249549  last in correctset: 895656  subsumptions: 4344 
+1######=>1000000 total macro fit: 1681 fit: 41 num: 41 exp: 55569 cov: 50% of dataset Pdel: 0.0025%  tp: 388983 msa: 388983 ns: 41.4654 origin: ga  created: 207484  last in correctset: 895662  subsumptions: 4257 
+001####=>0#10#0# total macro fit: 1365.4735 fit: 29.6842 num: 46 exp: 11850 cov: 12.5% of dataset Pdel: 0.0038%  tp: 79395 msa: 82950 ns: 46.5495 origin: ga  created: 321930  last in correctset: 895648  subsumptions: 4941 
+001####=>#0##000 total macro fit: 1138.3248 fit: 27.103 num: 42 exp: 11174 cov: 12.5% of dataset Pdel: 0.004%  tp: 74865.8 msa: 78218 ns: 44.3064 origin: ga  created: 359719  last in correctset: 895572  subsumptions: 3941 
+00000##=>00000## total macro fit: 126.4723 fit: 9.7286 num: 13 exp: 519 cov: 3.125% of dataset Pdel: 0.0053%  tp: 3529.2 msa: 3633 ns: 21.122 origin: ga  created: 868864  last in correctset: 895495  subsumptions: 103 
+0010###=>#0#0000 total macro fit: 0.7484 fit: 0.7484 num: 1 exp: 817 cov: 6.25% of dataset Pdel: 0.1453%  tp: 5555.6 msa: 5719 ns: 44.5814 origin: ga  created: 893784  last in correctset: 895572  subsumptions: 0 
+10000##=>00000## total macro fit: 0.61 fit: 0.305 num: 2 exp: 420 cov: 3.125% of dataset Pdel: 0.3518%  tp: 2436 msa: 2940 ns: 44 origin: ga  created: 890732  last in correctset: 893982  subsumptions: 1 
+00000##=>00010## total macro fit: 0.61 fit: 0.305 num: 2 exp: 418 cov: 3.125% of dataset Pdel: 0.1689%  tp: 2424.4 msa: 2926 ns: 21.122 origin: ga  created: 891629  last in correctset: 895495  subsumptions: 1 
+00000##=>00000#0 total macro fit: 0.5993 fit: 0.5993 num: 1 exp: 413 cov: 3.125% of dataset Pdel: 0.0368%  tp: 2746.7 msa: 2891 ns: 9.0352 origin: ga  created: 892727  last in correctset: 895495  subsumptions: 0 
+011####=>####000 total macro fit: 0.5552 fit: 0.5552 num: 1 exp: 1601 cov: 12.5% of dataset Pdel: 0.387%  tp: 10566.6 msa: 11207 ns: 88.1072 origin: ga  created: 895572  last in correctset: 895675  subsumptions: 0 
+#0000##=>00000## total macro fit: 0.3494 fit: 0.3494 num: 1 exp: 818 cov: 6.25% of dataset Pdel: 0.2035%  tp: 5154.4 msa: 5726 ns: 29.1509 origin: ga  created: 893420  last in correctset: 895495  subsumptions: 0 
+000#101=>#0##000 total macro fit: 0.2971 fit: 0.2971 num: 1 exp: 212 cov: 1.5625% of dataset Pdel: 0.4059%  tp: 1314.4 msa: 1484 ns: 49.4444 origin: ga  created: 890726  last in correctset: 891846  subsumptions: 0 
+0#000##=>0100### total macro fit: 0.2971 fit: 0.2971 num: 1 exp: 812 cov: 6.25% of dataset Pdel: 0.5088%  tp: 5034.4 msa: 5684 ns: 61.9871 origin: ga  created: 894315  last in correctset: 895515  subsumptions: 0 
+0##0###=>01#0000 total macro fit: 0.2882 fit: 0.2882 num: 1 exp: 3218 cov: 25% of dataset Pdel: 0.5168%  tp: 19891.2 msa: 22526 ns: 61.0767 origin: ga  created: 895278  last in correctset: 895648  subsumptions: 0 
+0#000##=>0000##0 total macro fit: 0.285 fit: 0.285 num: 1 exp: 807 cov: 6.25% of dataset Pdel: 0.4711%  tp: 4982.6 msa: 5649 ns: 55.0551 origin: cover  created: 894842  last in correctset: 895515  subsumptions: 0 
+01#0###=>1100000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 1610 cov: 12.5% of dataset Pdel: 1.1117%  tp: 9660 msa: 11270 ns: 97.5748 origin: ga  created: 895194  last in correctset: 895237  subsumptions: 0 
+00001##=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 416 cov: 3.125% of dataset Pdel: 0.5627%  tp: 2496 msa: 2912 ns: 49.3902 origin: ga  created: 892062  last in correctset: 895641  subsumptions: 0 
+00001##=>0001100 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 408 cov: 3.125% of dataset Pdel: 0.5355%  tp: 2448 msa: 2856 ns: 47 origin: ga  created: 893853  last in correctset: 895641  subsumptions: 0 
+00001##=>0000101 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 401 cov: 3.125% of dataset Pdel: 0.5355%  tp: 2406 msa: 2807 ns: 47 origin: ga  created: 895425  last in correctset: 895641  subsumptions: 0 
+000011#=>0000000 total macro fit: 0.2141 fit: 0.2141 num: 1 exp: 212 cov: 1.5625% of dataset Pdel: 0.5697%  tp: 1272 msa: 1484 ns: 50 origin: ga  created: 890270  last in correctset: 895082  subsumptions: 0 
+00001##=>#000000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 418 cov: 3.125% of dataset Pdel: 0.6657%  tp: 2466.2 msa: 2926 ns: 49.3902 origin: ga  created: 891509  last in correctset: 893638  subsumptions: 0 
+00001##=>0001#00 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 414 cov: 3.125% of dataset Pdel: 0.6927%  tp: 2442.6 msa: 2898 ns: 51.3902 origin: ga  created: 892405  last in correctset: 895641  subsumptions: 0 
+00010##=>#001100 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 401 cov: 3.125% of dataset Pdel: 0.6065%  tp: 2365.9 msa: 2807 ns: 45 origin: ga  created: 895152  last in correctset: 895656  subsumptions: 0 
+0#01#1#=>#001000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 800 cov: 6.25% of dataset Pdel: 0.8771%  tp: 4720 msa: 5600 ns: 65.0714 origin: ga  created: 895656  last in correctset: 0  subsumptions: 0 
+0001###=>0#01001 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 806 cov: 6.25% of dataset Pdel: 0.6064%  tp: 4755.4 msa: 5642 ns: 44.9889 origin: ga  created: 894865  last in correctset: 895655  subsumptions: 0 
+0001###=>00#1001 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 805 cov: 6.25% of dataset Pdel: 0.6%  tp: 4749.5 msa: 5635 ns: 44.5122 origin: ga  created: 894879  last in correctset: 895656  subsumptions: 0 
+01#1###=>0#01000 total macro fit: 0.1809 fit: 0.1809 num: 1 exp: 1600 cov: 12.5% of dataset Pdel: 1.0109%  tp: 9440 msa: 11200 ns: 75 origin: ga  created: 895675  last in correctset: 0  subsumptions: 0 
+#####0#=>10####0 total macro fit: 0.1617 fit: 0.1617 num: 1 exp: 6401 cov: 50% of dataset Pdel: 3.3074%  tp: 37344.6 msa: 44807 ns: 219.3371 origin: ga  created: 895662  last in correctset: 895675  subsumptions: 0 
+00000##=>01000## total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 417 cov: 3.125% of dataset Pdel: 0.3378%  tp: 2418.6 msa: 2919 ns: 21.122 origin: ga  created: 891831  last in correctset: 895495  subsumptions: 0 
+001##01=>10##000 total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 415 cov: 3.125% of dataset Pdel: 0.7162%  tp: 2407 msa: 2905 ns: 44.7832 origin: ga  created: 892497  last in correctset: 895440  subsumptions: 0 
+01000##=>00000## total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 406 cov: 3.125% of dataset Pdel: 1.5992%  tp: 2354.8 msa: 2842 ns: 100 origin: ga  created: 894315  last in correctset: 895515  subsumptions: 0 
+00000#0=>01000## total macro fit: 0.1525 fit: 0.1525 num: 1 exp: 201 cov: 1.5625% of dataset Pdel: 0.3447%  tp: 1165.8 msa: 1407 ns: 21.5556 origin: ga  created: 895412  last in correctset: 895495  subsumptions: 0 
+00#1###=>0100000 total macro fit: 0.1383 fit: 0.0691 num: 2 exp: 1614 cov: 12.5% of dataset Pdel: 1.6024%  tp: 8070 msa: 11298 ns: 45.4272 origin: ga  created: 894858  last in correctset: 895655  subsumptions: 1 
+00000##=>0100### total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 415 cov: 3.125% of dataset Pdel: 0.44%  tp: 2365.5 msa: 2905 ns: 23.122 origin: ga  created: 892153  last in correctset: 895495  subsumptions: 0 
+10000##=>000#0## total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 400 cov: 3.125% of dataset Pdel: 0.8563%  tp: 2280 msa: 2800 ns: 45 origin: ga  created: 895208  last in correctset: 0  subsumptions: 0 
+001###1=>0#11#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 801 cov: 6.25% of dataset Pdel: 0.8944%  tp: 4565.7 msa: 5607 ns: 47 origin: ga  created: 895571  last in correctset: 895648  subsumptions: 0 
+#0100##=>0000### total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 802 cov: 6.25% of dataset Pdel: 0.837%  tp: 4571.4 msa: 5614 ns: 43.9845 origin: ga  created: 895495  last in correctset: 895648  subsumptions: 0 
+001###1=>0#00#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 817 cov: 6.25% of dataset Pdel: 0.9636%  tp: 4656.9 msa: 5719 ns: 50.6368 origin: ga  created: 893741  last in correctset: 895648  subsumptions: 0 
+1001###=>000#0## total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 820 cov: 6.25% of dataset Pdel: 0.7992%  tp: 4674 msa: 5740 ns: 42 origin: ga  created: 893364  last in correctset: 893372  subsumptions: 0 
+10100#0=>000#0## total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 200 cov: 1.5625% of dataset Pdel: 0.8183%  tp: 1140 msa: 1400 ns: 43 origin: ga  created: 895412  last in correctset: 0  subsumptions: 0 
+001####=>0#00#0# total macro fit: 0.1282 fit: 0.1282 num: 1 exp: 1613 cov: 12.5% of dataset Pdel: 0.9506%  tp: 9194.1 msa: 11291 ns: 49.9522 origin: ga  created: 894963  last in correctset: 895648  subsumptions: 0 
+0##001#=>#0#0010 total macro fit: 0.0982 fit: 0.0982 num: 1 exp: 801 cov: 6.25% of dataset Pdel: 1.4573%  tp: 4445.8 msa: 5607 ns: 58.69 origin: cover  created: 895499  last in correctset: 895572  subsumptions: 0 
+00000##=>000010# total macro fit: 0.0746 fit: 0.0746 num: 1 exp: 414 cov: 3.125% of dataset Pdel: 0.432%  tp: 2235.6 msa: 2898 ns: 13.2195 origin: ga  created: 892524  last in correctset: 895495  subsumptions: 0 
+00000##=>0000100 total macro fit: 0.0563 fit: 0.0563 num: 1 exp: 404 cov: 3.125% of dataset Pdel: 0.2176%  tp: 2121 msa: 2828 ns: 5.0244 origin: ga  created: 894747  last in correctset: 895495  subsumptions: 0 
+0000###=>0001000 total macro fit: 0.0443 fit: 0.0443 num: 1 exp: 805 cov: 6.25% of dataset Pdel: 1.6415%  tp: 4126 msa: 5635 ns: 29.8129 origin: ga  created: 895152  last in correctset: 895641  subsumptions: 0 
+01#0###=>0101010 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 1620 cov: 12.5% of dataset Pdel: 6.9112%  tp: 8100 msa: 11340 ns: 97.9673 origin: ga  created: 894538  last in correctset: 895515  subsumptions: 0 
+11#1###=>0100000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 1619 cov: 12.5% of dataset Pdel: 2.9737%  tp: 8095 msa: 11333 ns: 42.1522 origin: ga  created: 894573  last in correctset: 895231  subsumptions: 0 
+01#0###=>0111000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 1609 cov: 12.5% of dataset Pdel: 6.9435%  tp: 8045 msa: 11263 ns: 98.4252 origin: ga  created: 895237  last in correctset: 895515  subsumptions: 0 
+11#0###=>0100000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 1604 cov: 12.5% of dataset Pdel: 2.9629%  tp: 8020 msa: 11228 ns: 42 origin: ga  created: 895515  last in correctset: 895538  subsumptions: 0 
+00110##=>0001000 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 416 cov: 3.125% of dataset Pdel: 3.0832%  tp: 2080 msa: 2912 ns: 43.7046 origin: ga  created: 891943  last in correctset: 895258  subsumptions: 0 
+00101##=>0000100 total macro fit: 0.0346 fit: 0.0346 num: 1 exp: 407 cov: 3.125% of dataset Pdel: 3.1585%  tp: 2035 msa: 2849 ns: 44.7724 origin: ga  created: 894531  last in correctset: 895440  subsumptions: 0 
+01001##=>00001#0 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 412 cov: 3.125% of dataset Pdel: 8.4613%  tp: 2018.8 msa: 2884 ns: 98 origin: ga  created: 892958  last in correctset: 895278  subsumptions: 0 
+1101#0#=>01000#0 total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 404 cov: 3.125% of dataset Pdel: 3.7126%  tp: 1979.6 msa: 2828 ns: 43 origin: ga  created: 894653  last in correctset: 894895  subsumptions: 0 
+000100#=>000001# total macro fit: 0.0282 fit: 0.0282 num: 1 exp: 219 cov: 1.5625% of dataset Pdel: 3.9716%  tp: 1073.1 msa: 1533 ns: 46 origin: ga  created: 887351  last in correctset: 895656  subsumptions: 0 
+0011###=>0#0100# total macro fit: 0.023 fit: 0.023 num: 1 exp: 816 cov: 6.25% of dataset Pdel: 4.8664%  tp: 3916.8 msa: 5712 ns: 45.862 origin: ga  created: 893932  last in correctset: 895355  subsumptions: 0 
+01000##=>00100## total macro fit: 0.023 fit: 0.023 num: 1 exp: 404 cov: 3.125% of dataset Pdel: 10.7643%  tp: 1939.2 msa: 2828 ns: 101.4444 origin: ga  created: 894838  last in correctset: 895515  subsumptions: 0 
+011####=>0#10#1# total macro fit: 0.0186 fit: 0.0186 num: 1 exp: 1620 cov: 12.5% of dataset Pdel: 11.4291%  tp: 7614 msa: 11340 ns: 87.2611 origin: ga  created: 894468  last in correctset: 895194  subsumptions: 0 
+
