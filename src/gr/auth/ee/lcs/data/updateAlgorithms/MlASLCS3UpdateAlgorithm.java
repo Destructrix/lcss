@@ -374,7 +374,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		// For each classifier in the matchset
 		for (int i = 0; i < matchSetSize; i++) { // gia ka9e macroclassifier
-			
+			//double temp = 1;
 			final Macroclassifier cl = matchSet.getMacroclassifier(i); // getMacroclassifier => fernei to copy, oxi ton idio ton macroclassifier
 			
 			int minCurrentNs = Integer.MAX_VALUE;
@@ -385,9 +385,11 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				// Get classification ability for label l. an anikei dld sto labelCorrectSet me alla logia.
 				final float classificationAbility = cl.myClassifier.classifyLabelCorrectly(instanceIndex, l);
 
-				if (classificationAbility == 0) // an proekupse apo adiaforia
+				if (classificationAbility == 0) {// an proekupse apo adiaforia
 					data.tp += 0.9;
+				}
 				else if (classificationAbility > 0) { // an proekupse apo 9etiki apofasi (yper)
+					//temp = (double) Math.pow((data.tp/data.msa),n) * temp;
 					data.tp += 1;
 					leniency++;
 					final int labelNs = labelCorrectSets[l].getTotalNumerosity();
@@ -423,7 +425,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			switch (FITNESS_MODE) {
 			
 			case FITNESS_MODE_SIMPLE:
-				data.fitness =  Math.pow((data.tp) / (data.msa), n);
+				data.fitness =  /*temp **/ Math.pow((data.tp) / (data.msa), n);
 				updateSubsumption(cl.myClassifier);
 				break;
 			case FITNESS_MODE_COMPLEX:

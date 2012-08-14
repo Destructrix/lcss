@@ -120,7 +120,7 @@ public class ClassifierSet implements Serializable {
 	 * The total numerosity of all classifiers in set.
 	 * @uml.property  name="totalNumerosity"
 	 */
-	private int totalNumerosity = 0;
+	public int totalNumerosity = 0;
 
 	/**
 	 * Macroclassifier vector.
@@ -195,8 +195,11 @@ public class ClassifierSet implements Serializable {
 					}
 					return;
 				}
+
 			}
+
 		}
+		
 
 		/*
 		 * No matching or subsumable more general classifier found. Add and
@@ -397,6 +400,15 @@ public class ClassifierSet implements Serializable {
 	}
 	
 	
+	
+	/**
+	 * returns the vector of macroclassifiers 
+	 * 
+	 */
+	public Vector<Macroclassifier> getMacroclassifiersVector() {
+		return myMacroclassifiers;
+	}
+	
 	/**
 	 * Returns the actual (not a copy as the aboce method) macroclassifier at the given index.
 	 * 
@@ -410,6 +422,27 @@ public class ClassifierSet implements Serializable {
 	public Macroclassifier getActualMacroclassifier(final int index) {
 		return this.myMacroclassifiers.elementAt(index);
 	}
+	
+	/**
+	 * Returns the actual (not a copy as the aboce method) macroclassifier that corresponds to the aClassifier classifier.
+	 * 
+	 * @param aClassifier
+	 *            the classifier whose corresponding Macroclassifier we wish to obtain
+	 * @return the macroclassifier
+	 * 
+	 * @author alexandros filotheou
+	 */
+		
+	
+	public Macroclassifier getActualMacroclassifier(final Classifier aClassifier) {
+		
+		for (int i = 0; i < myMacroclassifiers.size(); i++) {
+			if (myMacroclassifiers.elementAt(i).myClassifier.getSerial() == aClassifier.getSerial()) 
+				return this.myMacroclassifiers.elementAt(i);
+		}
+		return null;	
+	}
+
 
 	/**
 	 * Getter.
@@ -646,8 +679,7 @@ public class ClassifierSet implements Serializable {
 					+ " fit: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION))
 					+ " num: " + myMacroclassifiers.elementAt(i).numerosity
 					+ " exp: " + myMacroclassifiers.elementAt(i).myClassifier.experience 
-					+ " cov: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getCoverage()) + "% of dataset"
-					+ " Pdel: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_DELETION)) + "% ");
+					+ " cov: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getCoverage()) + "% of dataset");
 			
 			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
 			

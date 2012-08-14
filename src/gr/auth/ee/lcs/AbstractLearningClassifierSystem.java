@@ -121,7 +121,7 @@ public abstract class AbstractLearningClassifierSystem {
 	/**
 	 * Constructor.
 	 * 
-	 */
+	 */ 	
 	protected AbstractLearningClassifierSystem() {
 		try {
 			SettingsLoader.loadSettings();
@@ -130,6 +130,43 @@ public abstract class AbstractLearningClassifierSystem {
 		}
 		hooks = new Vector<ILCSMetric>();
 		hookCallbackRate = (int) SettingsLoader.getNumericSetting("callbackRate", 100);
+	}
+	
+	
+	public void absorbDuplicateClassifiers(ClassifierSet rulePopulation, 
+											final boolean evolve) {
+		if (evolve) {
+			// if subsumption is only made by the parents and not the whole population, merge classifiers to avoid duplicates
+			if (!SettingsLoader.getStringSetting("THOROUGHLY_CHECK_WITH_POPULATION", "true").equals("true")) {
+		
+				for (int j = rulePopulation.getNumberOfMacroclassifiers() - 1; j >= 0 ; j--) {
+					
+					final Classifier aClassifier = rulePopulation.getMacroclassifiersVector().elementAt(j).myClassifier;
+					for (int i = rulePopulation.getNumberOfMacroclassifiers() - 1; i >= 0 ; i--) {
+						
+						final Classifier theClassifier = rulePopulation.getMacroclassifiersVector().elementAt(i).myClassifier;
+						
+						if (theClassifier.equals(aClassifier)) { 
+							double aClassifierFitness = rulePopulation.getMacroclassifiersVector().elementAt(j).numerosity * getUpdateStrategy().getComparisonValue(aClassifier, AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+							double theClassifierFitness = rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity * getUpdateStrategy().getComparisonValue(theClassifier, AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+							
+							if (theClassifierFitness >= aClassifierFitness) {
+								rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity += rulePopulation.getMacroclassifiersVector().elementAt(j).numerosity;
+								rulePopulation.getMacroclassifiersVector().elementAt(i).numberOfSubsumptions++;
+								rulePopulation.deleteMacroclassifier(j);
+							}
+							else{
+								rulePopulation.getMacroclassifiersVector().elementAt(j).numerosity += rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity;
+								rulePopulation.getMacroclassifiersVector().elementAt(j).numberOfSubsumptions++;
+								rulePopulation.deleteMacroclassifier(i);
+							}
+	
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -522,10 +559,11 @@ public abstract class AbstractLearningClassifierSystem {
 		
 		int trainsBeforeHook = 0;
 		//final double instanceProb = (1. / (numInstances));
-
-		while (repetition < iterations) { 												  // train  me olo to trainset gia {iterations} fores
+		while (repetition < iterations) { 		
+			System.out.print("[");
+			// train  me olo to trainset gia {iterations} fores
 			while ((trainsBeforeHook < hookCallbackRate) && (repetition < iterations)) { // ap! allios 9a ksefeuge kai anti na ekteleito gia iterations
-				System.out.print('.');													  // 9a ekteleito gia iterations * hookCallBackRate
+				System.out.print('/');													  // 9a ekteleito gia iterations * hookCallBackRate
 				for (int i = 0; i < numInstances; i++) {
 					trainWithInstance(population, i, evolve); // i pio kato sunartisi
 					/*if (Math.random() < instanceProb) // 1/numInstances. ka9e pote prepei na ginetai? skepsou
@@ -534,10 +572,16 @@ public abstract class AbstractLearningClassifierSystem {
 				repetition++;
 				trainsBeforeHook++;
 			}
-			if (hookCallbackRate < iterations) System.out.print(repetition + "/" + iterations);	
+			// check for duplicities every {hookCallbackRate}
+			
+			if (hookCallbackRate < iterations) {
+				System.out.print("] ");
+				System.out.print(repetition + "/" + iterations);	
+			}
 			executeCallbacks(population, repetition); 
 			trainsBeforeHook = 0;
 		}
+		absorbDuplicateClassifiers(rulePopulation, evolve);
 
 	}
 
@@ -553,11 +597,11 @@ public abstract class AbstractLearningClassifierSystem {
 	 *            whether to evolve the set or just train by updating it
 	 */
 	public final void trainWithInstance(final ClassifierSet population, final int dataInstanceIndex, final boolean evolve) {
-
+		
 		final ClassifierSet matchSet = population.generateMatchSet(dataInstanceIndex);
 
 		getUpdateStrategy().updateSet(population, matchSet, dataInstanceIndex, evolve);
-
+		
 	}
 
 	/**

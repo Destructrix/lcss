@@ -24,12 +24,14 @@ package gr.auth.ee.lcs.geneticalgorithm.algorithms;
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
+import gr.auth.ee.lcs.classifiers.IPopulationControlStrategy;
 import gr.auth.ee.lcs.classifiers.Macroclassifier;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.geneticalgorithm.IBinaryGeneticOperator;
 import gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy;
 import gr.auth.ee.lcs.geneticalgorithm.IRuleSelector;
 import gr.auth.ee.lcs.geneticalgorithm.IUnaryGeneticOperator;
+import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 /**
  * A steady-stage GA that selects two individuals from a set (with probability
@@ -92,7 +94,87 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	 */
 	private final AbstractLearningClassifierSystem myLcs;
 	
+	
+	private final boolean THOROUGHLY_CHECK_WITH_POPULATION = SettingsLoader.getStringSetting("THOROUGHLY_CHECK_WITH_POPULATION", "true").equals("true");
 
+	
+	/**
+	 * Parents' subsumption method.
+	 * @param population
+	 * 			the rule population
+	 * @param parentA
+	 * 			parent #1
+	 * @param indexA
+	 * 			the position of parentA as a macroclassifier inside the myClassifiers vector
+	 * @param parentB
+	 * 			parent #2
+	 * @param indexB
+	 * 			the position of parentB as a macroclassifier inside the myClassifiers vector
+	 * @param child
+	 * 			the child produced by the GA
+	 * 
+	 * @author alexandros filotheou
+	 */
+	public boolean letParentsSubsume (ClassifierSet population, 
+			Classifier parentA,
+			final int indexA,
+			Classifier parentB,
+			final int indexB,
+			final Classifier child) {
+
+		final IPopulationControlStrategy theControlStrategy = population.getPopulationControlStrategy();
+
+
+
+		// let parentA subsume
+		if (parentA.canSubsume()) {
+			if (parentA.isMoreGeneral(child)) {
+				// Subsume and control size...
+				population.getMacroclassifiersVector().elementAt(indexA).numerosity++; // get vector
+				population.getMacroclassifiersVector().elementAt(indexA).numberOfSubsumptions++;
+				population.totalNumerosity++;
+				theControlStrategy.controlPopulation(population);
+				return true;
+			}
+		} else if (parentA.equals(child)) { // Or it can't
+											 // subsume but
+											 // it is equal
+		
+			population.getMacroclassifiersVector().elementAt(indexA).numerosity++;
+			population.getMacroclassifiersVector().elementAt(indexA).numberOfSubsumptions++;
+			population.totalNumerosity++;
+			theControlStrategy.controlPopulation(population);
+			return true;
+		}
+
+		// parentA couldn't subsume. let's see about parentB
+		if (parentB.canSubsume()) {
+			if (parentB.isMoreGeneral(child)) {
+				// Subsume and control size...
+		
+				population.getMacroclassifiersVector().elementAt(indexB).numerosity++;
+				population.getMacroclassifiersVector().elementAt(indexB).numberOfSubsumptions++;
+				population.totalNumerosity++;
+				theControlStrategy.controlPopulation(population);
+				return true;
+			}
+		} 
+		else if (parentB.equals(child)) {  // Or it can't
+											// subsume but
+											// it is equal
+		
+			population.getMacroclassifiersVector().elementAt(indexB).numerosity++;
+			population.getMacroclassifiersVector().elementAt(indexB).numberOfSubsumptions++;
+			population.totalNumerosity++;
+			theControlStrategy.controlPopulation(population);
+			return true;
+		}
+		//neither parent could subsume
+		return false;
+	} // ekleise i letParentsSubsume
+	
+	
+	
 	/**
 	 * Default constructor.
 	 * 
@@ -159,7 +241,20 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		gaSelector.select(1, evolveSet, parents);
 		final Classifier parentB = parents.getClassifier(0);
 		parents.deleteClassifier(0);
+		
+		
+		// find the indices of the parents, inside the myMacroclassifiers vector.
+		int indexA = 0;
+		int indexB = 0;
+		
+		for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++){
+			if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getSerial() == parentA.getSerial()) 
+				indexA = i;
+			if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getSerial() == parentB.getSerial()) 
+				indexB = i;
+		}
 
+		
 		// Reproduce
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
 			Classifier child;
@@ -180,8 +275,28 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			child.setClassifierOrigin("ga");
 			//child.timestamp = timestamp;
 			child.created = timestamp; // tote dimiourgi9ike apo ga o classifier
-			population.addClassifier(new Macroclassifier(child, 1), true); // elegxei gia subsumption tautoxrona (true orisma)
+			
 
+			
+
+			 //check subsumption by parents
+
+			boolean parentsSubsumed = letParentsSubsume(population, parentA, indexA, parentB, indexB, child);
+			if (!parentsSubsumed) {	
+			// parents couldn't subsume, should i check with the population?
+				if (THOROUGHLY_CHECK_WITH_POPULATION) {
+					population.addClassifier(new Macroclassifier(child, 1), true); // elegxei gia subsumption tautoxrona (true orisma)
+				}
+				else {
+				// if none of parentA or parentB can successfully subsume the child and population susbumption is switched off, introduce it to the population
+					population.totalNumerosity++;
+					population.getMacroclassifiersVector().add(new Macroclassifier(child, 1));
+					final IPopulationControlStrategy theControlStrategy = population.getPopulationControlStrategy();
+					if (theControlStrategy != null) {
+						theControlStrategy.controlPopulation(population);
+					}
+				} // kleinei to if - else
+			}
 		}
 
 	}
@@ -221,4 +336,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	public int getTimestamp() {
 		return this.timestamp;
 	}
+	
+	
+	
 }
