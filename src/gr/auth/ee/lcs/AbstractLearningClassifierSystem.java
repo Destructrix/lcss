@@ -135,39 +135,81 @@ public abstract class AbstractLearningClassifierSystem {
 	
 	public void absorbDuplicateClassifiers(ClassifierSet rulePopulation, 
 											final boolean evolve) {
-		if (evolve) {
+		//if (evolve) {
 			// if subsumption is only made by the parents and not the whole population, merge classifiers to avoid duplicates
 			if (!SettingsLoader.getStringSetting("THOROUGHLY_CHECK_WITH_POPULATION", "true").equals("true")) {
 		
-				for (int j = rulePopulation.getNumberOfMacroclassifiers() - 1; j >= 0 ; j--) {
-					
+				for (int j = 0; j < rulePopulation.getNumberOfMacroclassifiers() ; j++) {
+				//for (int j = rulePopulation.getNumberOfMacroclassifiers() -1; j >= 0 ; j--) {
+
+					Vector<Integer> indicesOfDuplicates    = new Vector<Integer>();
+					Vector<Float> 	fitnessOfDuplicates    = new Vector<Float>();
+					Vector<Integer> experienceOfDuplicates = new Vector<Integer>();
+
 					final Classifier aClassifier = rulePopulation.getMacroclassifiersVector().elementAt(j).myClassifier;
+					
 					for (int i = rulePopulation.getNumberOfMacroclassifiers() - 1; i >= 0 ; i--) {
-						
-						final Classifier theClassifier = rulePopulation.getMacroclassifiersVector().elementAt(i).myClassifier;
+					//for (int i = 0; i < rulePopulation.getNumberOfMacroclassifiers(); i++) {
+
+						Classifier theClassifier = rulePopulation.getMacroclassifiersVector().elementAt(i).myClassifier;
 						
 						if (theClassifier.equals(aClassifier)) { 
-							double aClassifierFitness = rulePopulation.getMacroclassifiersVector().elementAt(j).numerosity * getUpdateStrategy().getComparisonValue(aClassifier, AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
-							double theClassifierFitness = rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity * getUpdateStrategy().getComparisonValue(theClassifier, AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
-							
-							if (theClassifierFitness >= aClassifierFitness) {
-								rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity += rulePopulation.getMacroclassifiersVector().elementAt(j).numerosity;
-								rulePopulation.getMacroclassifiersVector().elementAt(i).numberOfSubsumptions++;
-								rulePopulation.deleteMacroclassifier(j);
-							}
-							else{
-								rulePopulation.getMacroclassifiersVector().elementAt(j).numerosity += rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity;
-								rulePopulation.getMacroclassifiersVector().elementAt(j).numberOfSubsumptions++;
-								rulePopulation.deleteMacroclassifier(i);
-							}
-	
-							break;
+							indicesOfDuplicates.add(i);
+							float theClassifierFitness = (float) (rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity 
+									* getUpdateStrategy().getComparisonValue(theClassifier, AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+							fitnessOfDuplicates.add(theClassifierFitness);
+							experienceOfDuplicates.add(theClassifier.experience);
+
 						}
+					} // exo brei ta indexes ton diplon kanonon sto vector myMacroclassifiers
+					
+					/*an bro enan mono, simainei oti aClassifier == theClassifier, opote den exei noima na ginei afomoiosi
+					 * an bro duo i kai perissoterous simainei oti prepei na epilekso poios apo olous 9a afomoiosei olous tous allous.
+					 * opoios exei megalutero fitness afomoionei tous upoloipous. an duo exoun to idio fitness, 9a afomoiosei autos me to megalutero experience
+					 * */
+					if (indicesOfDuplicates.size() >= 2) { 
+						
+						int indexOfSurvivor = 0;
+						float maxFitness = 0;
+						int indexOfClassifierWithMaxFitnessUpTillNow = 0;
+						for(int k = 0; k < indicesOfDuplicates.size(); k++) {
+							if (fitnessOfDuplicates.elementAt(k) > maxFitness) {
+								indexOfSurvivor = k;
+								indexOfClassifierWithMaxFitnessUpTillNow = k;
+							}
+							else if (fitnessOfDuplicates.elementAt(k) == maxFitness) {
+								if (experienceOfDuplicates.elementAt(k) >= experienceOfDuplicates.elementAt(indexOfClassifierWithMaxFitnessUpTillNow)) {
+									indexOfSurvivor = k;
+									indexOfClassifierWithMaxFitnessUpTillNow = k;
+								}
+									
+							}
+						}
+						// exo brei poios 9a einai o epizon classifier. initiate absorbance
+						//for (int k = indicesOfDuplicates.size() -1; k >= 0 ; k--) {
+						for (int k = 0; k < indicesOfDuplicates.size() ; k++) {
+
+							if (k != indexOfSurvivor) {
+								rulePopulation.getMacroclassifiersVector().elementAt(indicesOfDuplicates.elementAt(indexOfSurvivor)).numerosity += 
+									rulePopulation.getMacroclassifiersVector().elementAt(indicesOfDuplicates.elementAt(k)).numerosity;
+								rulePopulation.getMacroclassifiersVector().elementAt(indicesOfDuplicates.elementAt(indexOfSurvivor)).numberOfSubsumptions++;
+								rulePopulation.deleteMacroclassifier(indicesOfDuplicates.elementAt(k));
+							}
+						}
+						
+					}	
+					
+					if (indicesOfDuplicates.size() != 0) {
+						indicesOfDuplicates.clear();
+						fitnessOfDuplicates.clear();
+						experienceOfDuplicates.clear();
 					}
-				}
+					
+				}				
 			}
-		}
+		//}
 	}
+	
 
 	/**
 	 * Classify a single instance.
@@ -571,18 +613,18 @@ public abstract class AbstractLearningClassifierSystem {
 				}
 				repetition++;
 				trainsBeforeHook++;
+				absorbDuplicateClassifiers(rulePopulation, evolve);
 			}
 			// check for duplicities every {hookCallbackRate}
-			
+			//absorbDuplicateClassifiers(rulePopulation, evolve);
+
 			if (hookCallbackRate < iterations) {
 				System.out.print("] ");
-				System.out.print(repetition + "/" + iterations);	
+				System.out.print("(" + repetition + "/" + iterations + ")");	
 			}
 			executeCallbacks(population, repetition); 
 			trainsBeforeHook = 0;
 		}
-		absorbDuplicateClassifiers(rulePopulation, evolve);
-
 	}
 
 	/**

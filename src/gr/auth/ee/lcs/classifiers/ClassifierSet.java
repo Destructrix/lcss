@@ -402,7 +402,9 @@ public class ClassifierSet implements Serializable {
 	
 	
 	/**
-	 * returns the vector of macroclassifiers 
+	 * returns the myMacroclassifiers vector
+	 * 
+	 * @author alexandros filotheou
 	 * 
 	 */
 	public Vector<Macroclassifier> getMacroclassifiersVector() {
