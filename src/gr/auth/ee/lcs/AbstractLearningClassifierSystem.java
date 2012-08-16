@@ -174,6 +174,7 @@ public abstract class AbstractLearningClassifierSystem {
 						int indexOfClassifierWithMaxFitnessUpTillNow = 0;
 						for(int k = 0; k < indicesOfDuplicates.size(); k++) {
 							if (fitnessOfDuplicates.elementAt(k) > maxFitness) {
+								maxFitness = fitnessOfDuplicates.elementAt(k);
 								indexOfSurvivor = k;
 								indexOfClassifierWithMaxFitnessUpTillNow = k;
 							}
