@@ -44,6 +44,8 @@ populationSize = 8000
 crossoverRate = .8
 mutationRate = .04
 thetaGA = 3000
+gaPerLabel = false
+
 
 AttributeGeneralizationRate = 0.4
 LabelGeneralizationRate = 0.1
@@ -90,6 +92,13 @@ FITNESS_MODE = 0
 # 1 for (cl.myClassifier.experience > THETA_DEL) && (Math.pow(data.fitness,n) < DELTA * meanPopulationFitness)
 
 DELETION_MODE = 0
+
+
+## update mode ##
+# 0 for adding offsprings and controlling immediately
+# 1 for adding all offsprings to the population and controlling once at the end of the evolution
+
+UPDATE_MODE = 1
 
 
 ## check for subsumption against the population ##

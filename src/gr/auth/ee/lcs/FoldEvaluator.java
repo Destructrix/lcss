@@ -118,15 +118,9 @@ public class FoldEvaluator {
 				AbstractLearningClassifierSystem foldLCS = prototype.createNew(); // foldLCS = new AbstractLearningClassifierSystem
 				System.out.println("Training Fold " + i);
 				
-				//instances.setClassIndex(instances.numAttributes() - numberOfLabels); 
-				//instances.stratify(numOfFolds);
-								
-				try {
-					InstancesUtility.splitDatasetIntoFolds(foldLCS, instances, numOfFolds);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+
 				loadMlStratifiedFold(i, foldLCS);
+				
 
 				//loadFold(i, foldLCS); // mou dinei to trainSet kai to testSet
 				
@@ -246,10 +240,6 @@ public class FoldEvaluator {
 			lcs.instances = InstancesUtility.convertIntancesToDouble(trainSet);
 			testSet = testInstances;
 			lcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
-			
-			
-			//System.out.println("trainset: \n" + trainSet);
-			//System.out.println("testSet: \n" + testSet);
 
 		}
 	}
@@ -314,6 +304,12 @@ public class FoldEvaluator {
 		instances.randomize(new Random());
 		int numOfThreads = (int) SettingsLoader.getNumericSetting("numOfThreads", 1);
 		threadPool = Executors.newFixedThreadPool(numOfThreads);
+		
+		try {
+			InstancesUtility.splitDatasetIntoFolds(myLcs, instances, numOfFolds);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 
 	}
 

@@ -159,6 +159,12 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	
 	
 	/**
+	 * The update mode, 0 for adding offsprings and controlling per offspring, 1 for adding all offsprings and controlling once. 0 As default.
+	 */
+	public final int UPDATE_MODE = (int) SettingsLoader.getNumericSetting("UPDATE_MODE", 0);
+	
+	
+	/**
 	 * do classifiers that don't decide clearly for the label, participate in the correct sets?
 	 * */
 	public final boolean wildCardsParticipateInCorrectSets = SettingsLoader.getStringSetting("wildCardsParticipateInCorrectSets", "false").equals("true");
@@ -280,6 +286,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		System.out.println("Update algorithm states: ");
 		System.out.println("fitness mode: " + FITNESS_MODE);
 		System.out.println("deletion mode: " + DELETION_MODE);
+		System.out.println("update mode: " + UPDATE_MODE);
 		System.out.print("# => [C] " + wildCardsParticipateInCorrectSets);
 		if (wildCardsParticipateInCorrectSets) 
 			System.out.println(", balance [C]: " + balanceCorrectSets + "\n");
@@ -1090,7 +1097,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			for ( int i = 0; i < indicesToSubsume.size() ; i++ )
 			{
-				population.getMacroclassifiersVector().elementAt(indicesToSubsume.elementAt(i)).numerosity++; // get vector
+				population.getMacroclassifiersVector().elementAt(indicesToSubsume.elementAt(i)).numerosity++; 
+				population.getMacroclassifiersVector().elementAt(indicesToSubsume.elementAt(i)).numberOfSubsumptions++; 
 				population.totalNumerosity++;
 			}
 			

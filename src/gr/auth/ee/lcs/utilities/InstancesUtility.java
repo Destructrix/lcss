@@ -513,9 +513,7 @@ public final class InstancesUtility {
 			for (int j = 0; j < numberOfFolds; j++) {
 				System.out.print("_" + testInstances.elementAt(i)[j].numInstances() + "|");
 			}
-			System.out.println();*/
-			
-			
+			System.out.println();*/	
 		}
 		
 		
