@@ -356,20 +356,21 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			else if (DELETION_MODE == DELETION_MODE_MILTOS) {
 
 				// miltos original
-/*				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
-							: Math.exp(-data.ns  + 1)) );*/
-				double acc = data.tp / data.msa;
-			
+				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
+							: Math.exp(-data.ns  + 1)) );
 				
-				if (cl.myClassifier.experience < THETA_DEL) 
-					data.d = 0;//1 / (100 * (Double.isNaN(data.fitness) ? 1 : data.fitness)); // protect the new classifiers
-				
-				else if (acc >= ACC_0 * (1 - DELTA)) 
-					data.d = Math.exp(data.ns / data.fitness * DELTA + 1);
-				
-				else 
-					data.d = Math.exp(data.ns / data.fitness + 1);
-					//data.d = Math.pow(data.ns * DELTA, data.ns + 1);
+//				double acc = data.tp / data.msa;
+//			
+//				
+//				if (cl.myClassifier.experience < THETA_DEL) 
+//					data.d = 0;//1 / (100 * (Double.isNaN(data.fitness) ? 1 : data.fitness)); // protect the new classifiers
+//				
+//				else if (acc >= ACC_0 * (1 - DELTA)) 
+//					data.d = Math.exp(data.ns / data.fitness * DELTA + 1);
+//				
+//				else 
+//					data.d = Math.exp(data.ns / data.fitness + 1);
+//					//data.d = Math.pow(data.ns * DELTA, data.ns + 1);
 			}
 		}	
 	}
@@ -859,19 +860,39 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 				
 			} 
-		}	
+		}
 		
-
+		evolutionTime = 0;
+		
+		numberOfEvolutionsConducted = 0;
+		numberOfSubsumptionsConducted = 0;
+		numberOfDeletionsConducted = 0;
+		numberOfNewClassifiers = 0;
+		subsumptionTime = 0;
+		deletionTime = 0;
 			
 		if (evolve) {
+			evolutionTime = -System.currentTimeMillis();
 			for (int l = 0; l < numberOfLabels; l++) {
 				if (labelCorrectSets[l].getNumberOfMacroclassifiers() > 0) {
 					ga.evolveSet(labelCorrectSets[l], population);
 					population.totalGAInvocations = ga.getTimestamp();
+					
+					numberOfEvolutionsConducted += ga.evolutionConducted();
+					numberOfSubsumptionsConducted += ga.getNumberOfSubsumptionsConducted();
+					numberOfNewClassifiers += ga.getNumberOfNewClassifiers();
+					subsumptionTime += ga.getSubsumptionTime();
+					deletionTime += ga.getDeletionTime();
+					numberOfDeletionsConducted += ga.getNumberOfDeletionsConducted();
 				} else {
 					this.cover(population, instanceIndex);
+					numberOfNewClassifiers++;
+					IPopulationControlStrategy theControlStrategy = population.getPopulationControlStrategy();
+					numberOfDeletionsConducted += theControlStrategy.getNumberOfDeletionsConducted(); 
+					deletionTime += theControlStrategy.getDeletionTime();
 				}
 			}
+			evolutionTime += System.currentTimeMillis();
 		}
 		
 		
@@ -1023,8 +1044,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 				
 			} 
-		}	
-		
+		}
 		
 		numberOfEvolutionsConducted = 0;
 		numberOfSubsumptionsConducted = 0;
@@ -1073,9 +1093,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 					ga.evolveSetNew(labelCorrectSets[l],population);
 					indicesToSubsume.addAll(ga.getIndicesToSubsume());
 					newClassifiersSet.merge(ga.getNewClassifiersSet());
-					
-					//numberOfSubsumptionsConducted += ga.getIndicesToSubsume().size();
-					//numberOfNewClassifiers += ga.getNewClassifiersSet().getNumberOfMacroclassifiers();
 					
 					subsumptionTime += ga.getSubsumptionTime();
 					

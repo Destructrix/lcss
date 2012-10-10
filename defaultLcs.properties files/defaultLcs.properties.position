@@ -1,9 +1,9 @@
 # Input filename sidairfoil.johngalt
-filename = /home/li9i/Dropbox/thesis/auth/java_workspace/lcss/datasets/mlTestbeds/mlposition7.arff
+filename = C:/Users/vag/Desktop/diplwmatiki/kwdikas/mlposition7.arff
 
 
 # Input testFile
-testFile = /home/li9i/Dropbox/thesis/auth/java_workspace/lcss/datasets/mlTestbeds/mlposition7.arff
+# testFile = C:/Users/vag/Desktop/diplwmatiki/kwdikas/mlposition7.arff
 
 
 
@@ -97,7 +97,7 @@ DELETION_MODE = 2
 # 0 for adding offsprings and controlling immediately
 # 1 for adding all offsprings to the population and controlling once at the end of the evolution
 
-UPDATE_MODE = 1
+UPDATE_MODE = 0
 
 
 ## check for subsumption against the population ##

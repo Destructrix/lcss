@@ -776,10 +776,16 @@ public class ClassifierSet implements Serializable {
 						
 						public void finish() throws Exception
 						{
-							deleteIndicesSmp2.addAll(deleteIndices_thread);
-							matchSetSmp2.merge(matchSet_thread);
-						}
-						
+							region().critical( new ParallelSection() {								
+								public void run()
+								{
+									deleteIndicesSmp2.addAll(deleteIndices_thread);
+									matchSetSmp2.merge(matchSet_thread);
+								}
+								
+							});
+
+						}						
 						
 					});
 					
@@ -796,7 +802,7 @@ public class ClassifierSet implements Serializable {
 		
 		for (int i = deleteIndicesSmp2.size()-1; i >=0 ; i--)
 		{
-			this.deleteClassifier(deleteIndicesSmp2.elementAt(i));
+			this.deleteMacroclassifier(deleteIndicesSmp2.elementAt(i));
 		}
 		
 		return matchSetSmp2;
@@ -1054,11 +1060,23 @@ public class ClassifierSet implements Serializable {
 				
 			}
 			
+			// if subsumable:
 			if (howManyGenerals != 0 || howManyEquals != 0) {
-				return indexOfSurvivor;
+				
+				int toBeReturned = indicesVector.elementAt(indexOfSurvivor);
+				
+				indicesVector.clear();
+				originVector.clear();
+				fitnessVector.clear();
+				experienceVector.clear();
+				
+				return toBeReturned;
 			}
-		} // /thoroughadd		
+			
+		} // /thoroughadd
+		
 		return -1;
+		
 	}
 
 	
@@ -1214,6 +1232,8 @@ public class ClassifierSet implements Serializable {
 		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
 
 
+//		String foo = null;
+//		return foo;
 		return response.toString();
 	}
 

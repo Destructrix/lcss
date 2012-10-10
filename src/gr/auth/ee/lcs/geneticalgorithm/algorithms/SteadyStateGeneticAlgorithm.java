@@ -239,6 +239,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			Classifier parentB,
 			final Classifier child) {
 		
+		final IPopulationControlStrategy theControlStrategy = population.getPopulationControlStrategy();
+		
 		// find the indices of the parents, inside the myMacroclassifiers vector.
 		int indexA = -1;
 		int indexB = -1;
@@ -250,29 +252,68 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				indexB = i;
 		}
 
-		// let parentA subsume
-		if (indexA >= 0) {
-			if (parentA.canSubsume()) {
-				if (parentA.isMoreGeneral(child)) {
-					return indexA;
+/*		System.out.println("----------------");
+		System.out.println("indexA: " + indexA);
+		System.out.println("indexB: " + indexB);
+		System.out.println(parentA);
+		System.out.println(parentB);
+		System.out.println("macroSize: " + population.getMacroclassifiersVector().size());*/
+
+		
+		Classifier subsumer = null;	
+		int index = -1;
+		
+		boolean parentACanSubsume = (parentA.canSubsume() && parentA.isMoreGeneral(child)) || parentA.equals(child);
+		double fitnessA = parentA.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+		int experienceA = parentA.experience;
+		
+		boolean parentBCanSubsume = (parentB.canSubsume() && parentB.isMoreGeneral(child)) || parentB.equals(child);
+		double fitnessB = parentB.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+		int experienceB = parentB.experience;
+		
+		
+		
+		if (indexA >= 0 && indexB >= 0) {
+			if (indexA != indexB) {
+				if (parentACanSubsume && parentBCanSubsume) {
+					subsumer = (fitnessA > fitnessB) ? parentA : parentB;
+					if (fitnessA == fitnessB) subsumer = (experienceA > experienceB) ? parentA : parentB;
+					// exo brei poios 9a kanei to subsumption
+					// kai auto einai to index tou mesa sto vector ton macroclassifiers
+					index = (subsumer.equals(parentA)) ? indexA : indexB;
 				}
-			} else if (parentA.equals(child)) {
-				return indexA;
+				else if (parentACanSubsume) {
+					subsumer = parentA;
+					index = indexA;
+				}
+				else if (parentBCanSubsume) {
+					subsumer = parentB;
+					index = indexB;
+				}
+			}
+			else // indexA = indexB opote parentA = parentB, sunepos arkei o enas apo tous duo, esto o parentA
+				if (parentACanSubsume) {
+					subsumer = parentA;
+					index = indexA;
+				}
+		}
+		// indexA < 0 OR indexB < 0
+		else if (indexA >= 0) {
+			if (parentACanSubsume) {
+				subsumer = parentA;
+				index = indexA;
 			}
 		}
-
-		// parentA couldn't subsume. let's see about parentB
-		if (indexB >= 0) {
-			if (parentB.canSubsume()) {
-				if (parentB.isMoreGeneral(child)) {
-					return indexB;
-				}
-			} 
-			else if (parentB.equals(child)) {
-				return indexB;
+		else if (indexB >= 0) {
+			if (parentBCanSubsume) {
+				subsumer = parentB;
+				index = indexB;
 			}
+		}	
+		
+		if (subsumer != null) {
+				return index;
 		}
-
 		return -1;
 		
 	}
@@ -325,6 +366,13 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 								  final ClassifierSet population) {
 
 		timestamp++;
+		
+		evolutionConducted = 0;
+		subsumptionTime = 0;
+		numberOfSubsumptions = 0;
+		numberOfNewClassifiers = 0;
+		numberOfDeletions = 0;
+		deletionTime = 0;
 
 		
 		final int meanAge = getMeanAge(evolveSet); // i mesi ilikia tou sunolou ton macroclassifiers tou classifierSet
@@ -332,6 +380,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		if (timestamp - meanAge < this.gaActivationAge) {
 			return;
 		}
+		
+		evolutionConducted = 1;
 
 		final int evolveSetSize = evolveSet.getNumberOfMacroclassifiers();
 		
@@ -383,16 +433,36 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			child.setClassifierOrigin("ga");
 			
 			child.created = myLcs.totalRepetition; //timestamp; // tote dimiourgi9ike apo ga o classifier
-						
+			
+			long time1 = -System.currentTimeMillis();
+			
 			//check subsumption by parents
-			//boolean parentsSubsumed = letParentsSubsume(population, parentA, parentB, child);
-			boolean parentsSubsumed = false;
+			boolean parentsSubsumed = letParentsSubsume(population, parentA, parentB, child);
 			if (!parentsSubsumed) {	
 				// parents couldn't subsume, should i check with the population?
 				population.addClassifier(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION);
+			
+				if (population.subsumed)
+					numberOfSubsumptions++;
+				else
+					numberOfNewClassifiers++;
+				
 			}
+			else
+				numberOfSubsumptions++;
+			
+			time1 += System.currentTimeMillis();
+			
+			subsumptionTime += time1;
+			
+			deletionTime += population.getPopulationControlStrategy().getDeletionTime();
+			
+			numberOfDeletions += population.getPopulationControlStrategy().getNumberOfDeletionsConducted(); 
 			
 		}
+		
+		subsumptionTime -= deletionTime;
+		
 	}
 	
 	
@@ -441,14 +511,14 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			long time1 = -System.currentTimeMillis();
 			
 			int parentIndex = letParentsSubsumeNew(population, parentA, parentB, child);
-			
+						
 			if ( parentIndex >= 0 )
 			{
 				indicesToSubsume.add(parentIndex);
 			}
 			else
 			{
-				int populationIndex = population.letPopulationSubsume(new Macroclassifier(child, 1), true);
+				int populationIndex = population.letPopulationSubsume(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION);
 				
 				if ( populationIndex >= 0 )
 				{

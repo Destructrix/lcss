@@ -308,13 +308,16 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	 */
 	@Override
 	public void train() {
+		
+		timeMeasurements =  new int[(iterations + (int)(iterations * UPDATE_ONLY_ITERATION_PERCENTAGE)) * instances.length][21];
+		
 		trainSet(iterations, rulePopulation);
 		
 		updatePopulation((int) (iterations * UPDATE_ONLY_ITERATION_PERCENTAGE),
 				rulePopulation);
 		
-		timeMeasurementsFile = this.hookedMetricsFileDirectory + "/measurements.txt"; 
-
+		timeMeasurementsFile = this.hookedMetricsFileDirectory + "/measurements.txt";
+		
 		
 		try {
 			final FileWriter fstream = new FileWriter(timeMeasurementsFile, false);

@@ -40,6 +40,7 @@ import gr.auth.ee.lcs.classifiers.statistics.WeightedMeanLabelSpecificity;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.data.ILCSMetric;
+import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm;
 import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
 import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
 import gr.auth.ee.lcs.evaluators.FileLogger;
@@ -177,17 +178,6 @@ public abstract class AbstractLearningClassifierSystem {
 		hooks = new Vector<ILCSMetric>();
 		hookCallbackRate = (int) SettingsLoader.getNumericSetting("callbackRate", 100);
 		smp = SettingsLoader.getStringSetting("SMP_run", "false").contains("true") ? true : false;
-		
-		int iterations = (int) SettingsLoader.getNumericSetting("trainIterations",500);
-		double UpdateOnlyPercentage = (double)SettingsLoader.getNumericSetting("UpdateOnlyPercentage",.1);
-		String inputFile = SettingsLoader.getStringSetting("filename", "");
-		try{
-			inst = InstancesUtility.openInstance(inputFile);
-			timeMeasurements =  new int[(iterations + (int)(iterations * UpdateOnlyPercentage)) * inst.numInstances()][20];
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
 		
 		//blacklist = new ClassifierSet(null);
 		
@@ -1004,6 +994,8 @@ public abstract class AbstractLearningClassifierSystem {
 			else if (UPDATE_MODE == UPDATE_MODE_HOLD) 
 				getUpdateStrategy().updateSetNew(population, matchSetSmp, dataInstanceIndex, evolve);			time2 += System.currentTimeMillis();					
 
+			time2 += System.currentTimeMillis();
+				
 			timeMeasurements[index][4] = (int)time2;
 			
 			int numCovered = 0;
@@ -1040,10 +1032,11 @@ public abstract class AbstractLearningClassifierSystem {
 			final ClassifierSet matchSet    = population.generateMatchSet(dataInstanceIndex);
 			time1 += System.currentTimeMillis();
 			
-			timeMeasurements[index][0] = (int)population.getNumberOfMacroclassifiers();
-			timeMeasurements[index][1] = (int)population.sumOfUnmatched;
-			timeMeasurements[index][2] = (int)time1;
-			timeMeasurements[index][3] = matchSet.getNumberOfMacroclassifiers();
+			timeMeasurements[index][0] = population.getTotalNumerosity();
+			timeMeasurements[index][1] = population.getNumberOfMacroclassifiers();
+			timeMeasurements[index][2] = population.sumOfUnmatched;
+			timeMeasurements[index][3] = population.deleteIndices.size();
+			timeMeasurements[index][4] = matchSet.getNumberOfMacroclassifiers();
 			
 			time2 = -System.currentTimeMillis();
 			
@@ -1054,7 +1047,13 @@ public abstract class AbstractLearningClassifierSystem {
 			
 			time2 += System.currentTimeMillis();
 			
-			timeMeasurements[index][4] = (int)time2;	
+			timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
+			timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
+			timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
+			timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
+			timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
+			timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
+			timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
 			
 			int numCovered = 0;
 			int numGaed = 0;
