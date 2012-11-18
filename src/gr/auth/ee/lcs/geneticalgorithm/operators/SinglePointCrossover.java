@@ -74,9 +74,9 @@ public class SinglePointCrossover implements IBinaryGeneticOperator {
 		System.out.println("label: " + label);*/
 		child = myLcs.getNewClassifier(performCrossover(classifierA, classifierB, crossoverPoint));
 		
-		double newFitness = classifierA.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION)
-						   + classifierB.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
-		newFitness /= 2;
+/*		double newFitness = classifierA.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION)
+						   + classifierB.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);*/
+		double newFitness = 1;
 		child.setComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, newFitness);
 		// TODO: Set specific update data
 		return child;
