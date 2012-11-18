@@ -62,21 +62,23 @@ public final class GenericMultiLabelRepresentation extends
 
 		@Override
 		public int[] classify(final ClassifierSet aSet,
-				final double[] visionVector) {
+							   final double[] visionVector) {
+			
 			final double[] decisionTable = new double[numberOfLabels];
 			final double[] confidenceTable = new double[numberOfLabels];
+			
 			Arrays.fill(decisionTable, 0);
 			Arrays.fill(confidenceTable, 0);
 
 			final ClassifierSet matchSet = aSet.generateMatchSet(visionVector);
 			final int setSize = matchSet.getNumberOfMacroclassifiers();
+			
 			for (int i = 0; i < setSize; i++) {
 				// For each classifier
 				final Classifier currentClassifier = matchSet.getClassifier(i);
 				final int numerosity = matchSet.getClassifierNumerosity(i);
 				final double fitness = numerosity
-						* currentClassifier
-								.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
+						* currentClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 
 				// For each label
 				for (int label = 0; label < numberOfLabels; label++) {
@@ -84,9 +86,12 @@ public final class GenericMultiLabelRepresentation extends
 					if (fitness > confidenceTable[label]) {
 						final String cons = (attributeList[(attributeList.length - numberOfLabels)
 								+ label]).toString(currentClassifier);
+						
 						if (cons.equals("#"))
 							continue;
+						
 						confidenceTable[label] = fitness;
+						
 						if (cons.equals("1"))
 							decisionTable[label] = 1;
 						else
@@ -384,6 +389,7 @@ public final class GenericMultiLabelRepresentation extends
 		 */
 		
 		/*
+		 * gia ka9e instance, pare ton confidenceArray tou instance autou, basei ton kanonon tou sustimatos
 		 * o votingTable exei toses 9eseis oses oi etiketes. 
 		 * se ka9e 9esi periexei ti 9etiki, kanonikopoiimeni, zugismeni ana fitness psifo tou ka9e macroclassifier
 		 * 
@@ -403,8 +409,7 @@ public final class GenericMultiLabelRepresentation extends
 				final Classifier currentClassifier = matchSet.getClassifier(i);
 				final int classifierNumerosity = matchSet.getClassifierNumerosity(i);
 				
-				final double fitness = currentClassifier
-						.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
+				final double fitness = currentClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 
 				for (int label = 0; label < numberOfLabels; label++) {
 					final String cons = (attributeList[(attributeList.length - numberOfLabels)
@@ -465,7 +470,7 @@ public final class GenericMultiLabelRepresentation extends
 			}
 
 			final ProportionalCut pCut = new ProportionalCut();
-			//this.voteThreshold = pCut.calibrate(targetLC, confidenceValues);
+
 			this.voteThreshold = pCut.calibrate((float) myLcs.labelCardinality, confidenceValues);
 
 			System.out.println("Threshold (pcut) set to " + this.voteThreshold);

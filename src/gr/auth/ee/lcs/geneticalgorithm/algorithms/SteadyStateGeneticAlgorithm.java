@@ -363,7 +363,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	 */
 	@Override
 	public final void evolveSet(final ClassifierSet evolveSet,
-								  final ClassifierSet population) {
+								  final ClassifierSet population,
+								  final int label) {
 
 		timestamp++;
 		
@@ -406,8 +407,15 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			Classifier child;
 			// produce a child
 			if (Math.random() < crossoverRate && /*parentA != parentB*/ !parentA.equals(parentB)) {
-				child = crossoverOp.operate((i == 0) ? parentB : parentA,
-						(i == 0) ? parentA : parentB);
+				
+				// chromosome size = number of attributes + the label under which the correct set is formed
+				final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+				/*
+				 * The point at which the crossover will occur
+				 */
+				int mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
+				child = crossoverOp.operate((i == 0) ? parentB : parentA, (i == 0) ? parentA : parentB, label, mutationPoint);
+				
 			} else {
 				child = (Classifier) ((i == 0) ? parentA : parentB).clone();
 				child.setComparisonValue(
@@ -416,22 +424,23 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 								.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 			}
 			
-/*			System.out.println("======================");
-			System.out.println("parentA: " + parentA + " origin: " + parentA.getClassifierOrigin());
+/*			System.out.println("parentA: " + parentA + " origin: " + parentA.getClassifierOrigin());
 			System.out.println("parentB: " + parentB + " origin: " + parentB.getClassifierOrigin());
 			System.out.println("child before: " + child);
-			
-*/
+			System.out.println("======================");*/
+
+
 
 			child = mutationOp.operate(child);
 			
-			child.inheritParametersFromParents(parentA, parentB);
+			child.inheritParametersFromParents(parentA, parentB); // den paizei rolo. 9a upologisoume etsi ki allios to actual ns tou kanona kai meta 9a diagrapsoume
 			
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
 			//System.out.println("child after: " + child);
 			
 			child.setClassifierOrigin("ga");
-			
+			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+
 			child.created = myLcs.totalRepetition; //timestamp; // tote dimiourgi9ike apo ga o classifier
 			
 			long time1 = -System.currentTimeMillis();
@@ -468,7 +477,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	@Override
 	public final void evolveSetNew(final ClassifierSet evolveSet,
-								  final ClassifierSet population) {
+								  	final ClassifierSet population,
+								  	int label) {
 	
 		subsumptionTime = 0;
 		
@@ -487,13 +497,22 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		parents.deleteClassifier(0);
 		
 		// Reproduce
+		// ka9e paidi exei diki tou pi9anotita na prokupsei apo crossover
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
 			Classifier child;
 			// produce a child
 			if (Math.random() < crossoverRate && parentA != parentB) {
-				child = crossoverOp.operate((i == 0) ? parentB : parentA,
-						(i == 0) ? parentA : parentB);
-			} else {
+				
+				// chromosome size = number of attributes + the label under which the correct set is formed
+				final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+				/*
+				 * The point at which the crossover will occur
+				 */
+				int mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
+				child = crossoverOp.operate((i == 0) ? parentB : parentA, (i == 0) ? parentA : parentB, label, mutationPoint);
+			} 
+			else {
+				
 				child = (Classifier) ((i == 0) ? parentA : parentB).clone();
 				child.setComparisonValue(
 						AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION,
@@ -539,6 +558,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				
 		
 	}
+	
+	
 	
 	@Override
 	public final Vector<Integer> getIndicesToSubsume() {

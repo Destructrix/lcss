@@ -363,7 +363,7 @@ public final class MlSSLCSUpdateAlgorithm extends AbstractUpdateStrategy {
 		}
 
 		if ((matchSetSize > 0) && evolve)
-			ga.evolveSet(matchSet, population);
+			ga.evolveSet(matchSet, population, 0);
 
 		// Delete classifiers that are only #'s
 

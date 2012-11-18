@@ -517,7 +517,7 @@ public final class MlUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 		gatherResults(matchSet);
 
 		if ((matchSetSize > 0) && evolve)
-			ga.evolveSet(matchSet, population);
+			ga.evolveSet(matchSet, population, 0);
 
 	}
 

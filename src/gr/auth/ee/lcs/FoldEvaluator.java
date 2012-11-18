@@ -124,6 +124,8 @@ public class FoldEvaluator {
 
 				//loadFold(i, foldLCS); // mou dinei to trainSet kai to testSet
 				
+				/*System.out.println(testSet);
+				System.out.println(trainSet);*/
 				
 				foldLCS.registerMultilabelHooks(InstancesUtility.convertIntancesToDouble(testSet), numberOfLabels);
 				
@@ -237,9 +239,21 @@ public class FoldEvaluator {
 			}
 			
 			trainSet = trainInstances;
+			trainSet.randomize(new Random());
+
 			lcs.instances = InstancesUtility.convertIntancesToDouble(trainSet);
+			lcs.testInstances = InstancesUtility.convertIntancesToDouble(testSet);
+
+			
 			testSet = testInstances;
+			testSet.randomize(new Random());
+			
+			lcs.trainSet = trainSet;
+			lcs.testSet = testSet;
+
 			lcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
+			
+
 
 		}
 	}
@@ -363,7 +377,7 @@ public class FoldEvaluator {
 		
 		
 		final int metricOptimizationIndex = (int) SettingsLoader.getNumericSetting("metricOptimizationIndex", 0);
-		final int numOfFoldRepetitions = (int) SettingsLoader.getNumericSetting("numOfFoldRepetitions", 1); // repeat process per fold
+		final int numOfFoldRepetitions = (int) SettingsLoader.getNumericSetting("numOfFoldRepetitions", 3); // repeat process per fold
 
 		// kalei ti run() {runs} fores
 		for (int currentRun = 0; currentRun < runs; currentRun++) {

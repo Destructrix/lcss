@@ -89,8 +89,9 @@ public class AccuracyRecallEvaluator implements ILCSMetric {
 	 *            the type of evaluation to be performed
 	 */
 	public AccuracyRecallEvaluator(final double[][] instances,
-			final boolean print, final AbstractLearningClassifierSystem lcs,
-			final int type) {
+									final boolean print, 
+									final AbstractLearningClassifierSystem lcs,
+									final int type) {
 		this.printResults = print;
 		this.instances = instances;
 		myLcs = lcs;
@@ -210,7 +211,7 @@ public class AccuracyRecallEvaluator implements ILCSMetric {
 			System.out.println("emptySamples: " + emptySamples);
 			
 		}
-		
+				
 		if (currentType == TYPE_ACCURACY)
 			return accuracy;
 		else

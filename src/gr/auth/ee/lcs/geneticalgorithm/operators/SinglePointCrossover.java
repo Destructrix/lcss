@@ -58,23 +58,26 @@ public class SinglePointCrossover implements IBinaryGeneticOperator {
 	 */
 	@Override
 	public final Classifier operate(final Classifier classifierA,
-			final Classifier classifierB) {
-		final int chromosomeSize = classifierB.size();
+									  final Classifier classifierB,
+									  int label,
+									  int crossoverPoint) {
+		
 		final Classifier child;
 		/*
 		 * The point at which the crossover will occur
 		 */
-		final int mutationPoint = (int) Math.round(Math.random()
-				* chromosomeSize - 1);
-		child = myLcs.getNewClassifier(performCrossover(classifierA,
-				classifierB, mutationPoint));
-		double newFitness = classifierA
-				.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)
-				+ classifierB
-						.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
+/*		
+ 		final int chromosomeSize = classifierB.size();
+		final int mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
+		System.out.println("chromosomeSize: " + chromosomeSize);
+		System.out.println("mutationPoint: " + mutationPoint);
+		System.out.println("label: " + label);*/
+		child = myLcs.getNewClassifier(performCrossover(classifierA, classifierB, crossoverPoint));
+		
+		double newFitness = classifierA.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION)
+						   + classifierB.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
 		newFitness /= 2;
-		child.setComparisonValue(
-				AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION, newFitness);
+		child.setComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, newFitness);
 		// TODO: Set specific update data
 		return child;
 	}
@@ -90,12 +93,12 @@ public class SinglePointCrossover implements IBinaryGeneticOperator {
 	 *            the position (bit) to perform the crossover
 	 * @return the new cross-overed (child) chromosome
 	 */
-	protected final ExtendedBitSet performCrossover(
-			final ExtendedBitSet chromosomeA, final ExtendedBitSet chromosomeB,
-			final int position) {
+	protected final ExtendedBitSet performCrossover(final ExtendedBitSet chromosomeA, 
+													  final ExtendedBitSet chromosomeB,
+													  final int position) {
+		
 		final ExtendedBitSet child = (ExtendedBitSet) chromosomeA.clone();
-		child.setSubSet(position,
-				chromosomeB.getSubSet(position, chromosomeB.size() - position));
+		child.setSubSet(position, chromosomeB.getSubSet(position, chromosomeB.size() - position));
 
 		return child;
 	}

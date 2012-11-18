@@ -309,7 +309,7 @@ public class MlASLCS2UpdateAlgorithm extends AbstractUpdateStrategy {
 		if (evolve) {
 			for (int l = 0; l < numberOfLabels; l++) {
 				if (labelCorrectSets[l].getNumberOfMacroclassifiers() > 0) {
-					ga.evolveSet(labelCorrectSets[l], population);
+					ga.evolveSet(labelCorrectSets[l], population, l);
 				} else {
 					this.cover(population, instanceIndex);
 				}

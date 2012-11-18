@@ -22,6 +22,7 @@
 package gr.auth.ee.lcs.classifiers.populationcontrol;
 
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
+import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.IPopulationControlStrategy;
 import gr.auth.ee.lcs.classifiers.Macroclassifier;
@@ -65,6 +66,8 @@ public class FixedSizeSetWorstFitnessDeletion implements
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
 	private InadequeteClassifierDeletionStrategy zeroCoverageRemoval;
+	
+	private AbstractUpdateStrategy updateStrategy;
 
 	/**
 	 * Constructor of deletion strategy.
@@ -83,6 +86,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 		mySelector = selector; // roulette wheel gia ton GMlASLCS3
 		zeroCoverageRemoval = new InadequeteClassifierDeletionStrategy(lcs);
 		myLcs = lcs;
+		updateStrategy = myLcs.getUpdateStrategy();
 	}
 
 	/**
@@ -112,20 +116,34 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			long time1 = - System.currentTimeMillis();
 			
 			numberOfDeletions++;
-			// se auto to simeio upologizei maxPopulation + 1 pi9anotites, ka9os gia na kli9ei i controlPopulation, prepei na exei uperbei to ano orio tou pli9usmou
-			aSet.getMacroclassifiersVector().elementAt(0).myClassifier.getLCS().getUpdateStrategy().computeDeletionProbabilities(aSet);
-			mySelector.select(1, aSet, toBeDeleted); // me rouleta
 			
-			if (toBeDeleted.getClassifier(0).formulaForD == 0) aSet.secondDeletionFormula++;
+			// se auto to simeio upologizei maxPopulation + 1 pi9anotites, ka9os gia na kli9ei i controlPopulation, prepei na exei uperbei to ano orio tou pli9usmou
+			
+			//if (numberOfDeletions == 1) 
+			updateStrategy.computeDeletionProbabilities(aSet);
+			
+			mySelector.select(1, aSet, toBeDeleted); // me rouleta
+			Classifier cl = toBeDeleted.getClassifier(0);
+
+			if (cl.formulaForD == 0) aSet.secondDeletionFormula++;
 			else aSet.firstDeletionFormula++;
+			
+			if (cl.getClassifierOrigin() == "cover" || (cl.getClassifierOrigin() == "init"))
+				aSet.coveredDeleted++;
+			else if (cl.getClassifierOrigin() == "ga")
+				aSet.gaedDeleted++;
+			
+			// monitor deletions
+			monitorDeletions(aSet, cl);
 						
-			aSet.deleteClassifier(toBeDeleted.getClassifier(0));
+			aSet.deleteClassifier(cl);
 			toBeDeleted.deleteClassifier(0);
 			
 			time1 += System.currentTimeMillis();
 			
 			deletionTime += time1;
 		}
+		
 	}
 	
 	public final int getNumberOfDeletionsConducted(){
@@ -136,4 +154,61 @@ public class FixedSizeSetWorstFitnessDeletion implements
 		return deletionTime;
 	}
 
+	
+	
+	/**
+	 * record the progress of the deletion process
+	 * */
+	public void monitorDeletions(ClassifierSet aSet, Classifier cl) {
+		
+		//Macroclassifier macro = aSet.getActualMacroclassifier(cl);
+		
+		//double acc = cl.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_ACCURACY);
+		double acc = cl.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+
+		/*double relativeExperience = (double) cl.cummulativeInstanceCreated / 
+			(myLcs.getCummulativeCurrentInstanceIndex() == 0 ? 1 : myLcs.getCummulativeCurrentInstanceIndex());*/
+		
+		double qualityIndex = -0.1;
+		
+		if (cl.getClassifierOrigin() == "cover" || cl.getClassifierOrigin() == "init") {
+			if (cl.objectiveCoverage > 0) // to cl.objectiveCoverage apokta timi otan gia proti fora o kanonas dei olo to dataset
+				qualityIndex =/* acc * relativeExperience * macro.numerosity*/ cl.objectiveCoverage;
+/*			else if (cl.objectiveCoverage == -1) { 
+				// osoi diagrafontai edo, den exoun dei olo to dataset oute mia fora.
+				qualityIndex = -0.1;
+			}*/
+			// den ginetai cl.objectiveCoverage == 0 giati 9a diagrafotan logo zero coverage
+			myLcs.qualityIndexOfClassifiersCoveredDeleted.add((float) qualityIndex);
+			myLcs.qualityIndexOfClassifiersGaedDeleted.add((float) -0.2);
+			myLcs.originOfDeleted.add(0);
+			myLcs.accuracyOfCoveredDeletion.add((float) acc);
+			myLcs.accuracyOfGaedDeletion.add((float) -0.1);
+
+		}
+		
+		else if (cl.getClassifierOrigin() == "ga") {
+			if (cl.objectiveCoverage > 0) // to cl.objectiveCoverage apokta timi otan gia proti fora o kanonas dei olo to dataset
+				qualityIndex = /*acc * relativeExperience * macro.numerosity*/ cl.objectiveCoverage;
+/*			else if (cl.objectiveCoverage == -1) { 
+				// osoi diagrafontai edo, den exoun dei olo to dataset oute mia fora.
+				qualityIndex = -0.1;
+			}*/
+			myLcs.qualityIndexOfClassifiersGaedDeleted.add((float) qualityIndex);
+			myLcs.qualityIndexOfClassifiersCoveredDeleted.add((float) -0.2);
+			myLcs.originOfDeleted.add(1);
+			myLcs.accuracyOfGaedDeletion.add((float) acc);
+			myLcs.accuracyOfCoveredDeletion.add((float) -0.1);
+
+
+			// den ginetai cl.objectiveCoverage == 0 giati 9a diagrafotan logo zero coverage
+		}
+
+		
+		
+		myLcs.qualityIndexOfDeleted.add((float) qualityIndex);
+		myLcs.accuracyOfDeleted.add((float) acc);
+		myLcs.iteration.add(myLcs.totalRepetition);
+
+	}
 }

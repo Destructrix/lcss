@@ -40,6 +40,6 @@ public interface IBinaryGeneticOperator {
 	 *            the second argument of the binary classifier
 	 * @return the result of the operator
 	 */
-	Classifier operate(Classifier classifierA, Classifier classifierB);
+	Classifier operate(Classifier classifierA, Classifier classifierB, int label, int mutationPoint);
 
 }

@@ -54,7 +54,6 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 	
 	public double totalFitness;
 	
-	//public double alternateFitness;
 
 	/**
 	 * The Macroclassifier object constructor.
@@ -81,7 +80,7 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 		myClassifier = copy.myClassifier;
 		numerosity = copy.numerosity;
 		numberOfSubsumptions = copy.numberOfSubsumptions;
-		//totalFitness = copy.totalFitness;
+		totalFitness = copy.totalFitness;
 	}
 
 	/**
@@ -112,7 +111,7 @@ public class Macroclassifier implements Serializable, Comparable<Macroclassifier
 	@Override
 	public final String toString() {
 		return this.myClassifier.toString() 
-				+ " totalFitness: " + this.totalFitness
+				//+ " totalFitness: " + this.totalFitness
 				+ " numerosity: " + this.numerosity 
 				+ " numberOfSubsumptions " + this.numberOfSubsumptions ;
 	}

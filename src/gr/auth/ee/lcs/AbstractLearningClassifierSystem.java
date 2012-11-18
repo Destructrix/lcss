@@ -60,6 +60,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 import java.lang.String;
 
@@ -86,15 +87,25 @@ public abstract class AbstractLearningClassifierSystem {
 	public final int UPDATE_MODE = (int) SettingsLoader.getNumericSetting("UPDATE_MODE", 0);
 	
 	public static final int UPDATE_MODE_IMMEDIATE = 0;
+	
 	public static final int UPDATE_MODE_HOLD = 1;
 
 	public double meanCorrectSetNumerosity = 0;
+	
+	private int cummulativeCurrentInstanceIndex = 0;
+	
+
 
 	/**
 	 * The train set.
 	 * @uml.property  name="instances" multiplicity="(0 -1)" dimension="2"
 	 */
 	public double[][] instances;
+	public double[][] testInstances;
+
+	public Instances trainSet;
+	public Instances testSet;
+	
 
 	/**
 	 * The LCS instance transform bridge.
@@ -146,7 +157,28 @@ public abstract class AbstractLearningClassifierSystem {
 	/**
 	 * Matrix used to store the time measurements for different phases of the train procedure.
 	 */
-	public int[][] timeMeasurements;
+	public double[][] timeMeasurements;
+	
+	public double[][] systemAccuracy;
+	
+	public Vector<Float> 	qualityIndexOfDeleted = new Vector<Float>();
+	public Vector<Float> 	qualityIndexOfClassifiersCoveredDeleted = new Vector<Float>();
+	public Vector<Float> 	qualityIndexOfClassifiersGaedDeleted = new Vector<Float>();
+	
+	public Vector<Float> 	accuracyOfDeleted = new Vector<Float>();
+	public Vector<Float> 	accuracyOfCoveredDeletion = new Vector<Float>();
+	public Vector<Float> 	accuracyOfGaedDeletion = new Vector<Float>();
+	
+	public Vector<Integer> iteration = new Vector<Integer>();
+	public Vector<Integer> originOfDeleted = new Vector<Integer>();
+
+	public Vector<Float> 	systemAccuracyInTraining = new Vector<Float>();
+	public Vector<Float> 	systemAccuracyInTesting = new Vector<Float>();
+	public Vector<Float> 	systemCoverage = new Vector<Float>();
+
+	
+
+	
 	
 	/**
 	 * Indicates whether the parallel implementation is employed or not.
@@ -164,7 +196,7 @@ public abstract class AbstractLearningClassifierSystem {
 	private Instances inst;
 	
 	//public ClassifierSet blacklist;
-
+	
 	/**
 	 * Constructor.
 	 * 
@@ -180,6 +212,8 @@ public abstract class AbstractLearningClassifierSystem {
 		smp = SettingsLoader.getStringSetting("SMP_run", "false").contains("true") ? true : false;
 		
 		//blacklist = new ClassifierSet(null);
+		
+		
 		
 	}
 	
@@ -315,8 +349,8 @@ public abstract class AbstractLearningClassifierSystem {
 		}
 		
 		// to sort edo ginetai mono gia optikous logous kai afora mono sto population.txt
-		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
-		srt.controlPopulation(this.rulePopulation);
+/*		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+		srt.controlPopulation(this.rulePopulation);*/
 		
 		int numberOfClassifiersCovered = 0;
 		int numberClassifiersGaed = 0;
@@ -341,7 +375,7 @@ public abstract class AbstractLearningClassifierSystem {
 		try {
 
 			// record the rule population and its metrics in population.txt
-			final FileWriter fstream = new FileWriter(this.hookedMetricsFileDirectory + "/population.txt", true);
+			final FileWriter fstream = new FileWriter(this.hookedMetricsFileDirectory + "/population_" + repetition +".txt", true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
 			buffer.write(					
 					  String.valueOf(this.repetition) + "th repetition:"
@@ -351,7 +385,7 @@ public abstract class AbstractLearningClassifierSystem {
 					+ System.getProperty("line.separator")
 					+ "Timestamp: " + rulePopulation.totalGAInvocations
 					+ System.getProperty("line.separator")
-					+ "Classifiers in population covered :" 	+ numberOfClassifiersCovered
+					+ "Classifiers in population covered :" + numberOfClassifiersCovered
 					+ System.getProperty("line.separator")
 					+ "Classifiers in population ga-ed :" 	+ numberClassifiersGaed
 					+ System.getProperty("line.separator")
@@ -371,7 +405,7 @@ public abstract class AbstractLearningClassifierSystem {
 		}	
 		
 		this.numberOfCoversOccured = 0;
-		
+	
 	}
 
 	/**
@@ -381,6 +415,11 @@ public abstract class AbstractLearningClassifierSystem {
 	 */
 	public final ClassifierTransformBridge getClassifierTransformBridge() {
 		return transformBridge;
+	}
+	
+	
+	public int getCummulativeCurrentInstanceIndex() {
+		return cummulativeCurrentInstanceIndex;
 	}
 
 	/**
@@ -399,7 +438,57 @@ public abstract class AbstractLearningClassifierSystem {
 	 */
 	public abstract double[] getEvaluations(Instances testSet);
 	
-	
+	/*
+	 * redundant
+	 * */
+	public double getSystemMultilabelAccuracy(){
+		final ClassifierTransformBridge bridge = this.getClassifierTransformBridge();
+
+		double sumOfAccuracies = 0;
+
+		int emptySamples = 0;
+		for (int i = 0; i < testInstances.length; i++) {
+			int unionOfLabels = 0;
+			int intersectionOfLabels = 0;
+			/*
+			 * epistrefei pinaka 9eseon numberOfActiveLabels. einai toses osa einai ta labels pou ston votingTable ksepernane to voteThreshold.
+			 * periexomeno tis ka9e 9esis einai to index tou label px [0,2,3] an to deutero (1) label den pernaei pano apo to voteThreshold.
+			 * 
+			 * ara periexei gia ka9e instance to AN (kai oxi poso giati to poso einai i psifos) pisteuei to sustima oti auto to label prepei na einai energopoiimeno,
+			 * dld na ginei classify se auto to label auto to instance
+			 * */
+			final int[] classes = this.classifyInstance(testInstances[i]); 
+			final int[] classification = bridge.getDataInstanceLabels(testInstances[i]); // to idio me to pano. apla einai oi actual klaseis pou energopoiountai gia ka9e instance
+
+			// Find symmetric differences
+			Arrays.sort(classes);
+			Arrays.sort(classification);
+			
+			for (int j = 0; j < classes.length; j++) {
+				if (Arrays.binarySearch(classification, classes[j]) < 0) {
+					unionOfLabels++;
+				} else {
+					intersectionOfLabels++;
+					unionOfLabels++;
+				}
+			}
+			for (int j = 0; j < classification.length; j++) {
+				if (Arrays.binarySearch(classes, classification[j]) < 0)
+					unionOfLabels++;
+			}
+			final double instanceAccuracy = ((double) intersectionOfLabels) / ((double) unionOfLabels);
+			sumOfAccuracies += Double.isNaN(instanceAccuracy) ? 0 : instanceAccuracy;
+
+
+			if (unionOfLabels == 0) // den exei kai polu noima, giati na einai 0? an ena deigma den katigoriopoieitai pou9ena--> atributes,0,0,0,0 gia 4 labels
+				emptySamples++;
+		} // kleinei to for ton instances
+		
+		final double accuracy = sumOfAccuracies / (testInstances.length - emptySamples);
+
+		return accuracy;
+
+	}
 
 
 	/**
@@ -441,6 +530,29 @@ public abstract class AbstractLearningClassifierSystem {
 	}
 
 	
+	/**
+	 * collect the system's multilabel accuracy per iteration, plus every classifier's accuracy per iteration(TODO)
+	 * */
+	public void harvestAccuracies(int iteration){
+		
+		//double acc = getSystemMultilabelAccuracy();
+		final AccuracyRecallEvaluator testingAccuracy  = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
+		final AccuracyRecallEvaluator trainingAccuracy = new AccuracyRecallEvaluator(trainSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
+		final MeanCoverageStatistic coverage = new MeanCoverageStatistic();
+
+		double trainAcc = trainingAccuracy.getMetric(this);
+		double testAcc = testingAccuracy.getMetric(this);
+		double cov = coverage.getMetric(this);
+		
+		/*systemAccuracy[iteration][0] =  testAcc;
+		systemAccuracy[iteration][1] =  trainAcc;*/
+		
+		systemAccuracyInTesting.add((float) testAcc);
+		systemAccuracyInTraining.add((float) trainAcc);
+		systemCoverage.add((float) cov);
+		
+		
+	}
 	
 	
 	/**
@@ -780,7 +892,7 @@ public abstract class AbstractLearningClassifierSystem {
 	 * 
 	 * 
 	 * */
-	public void registerMultilabelHooks( double[][] instances, int numberOfLabels) {
+	public void registerMultilabelHooks(double[][] instances, int numberOfLabels) {
 		
 		FileLogger setStoreDirectory = new FileLogger(this);
 				
@@ -924,7 +1036,6 @@ public abstract class AbstractLearningClassifierSystem {
 		repetition = 0;
 		
 		int trainsBeforeHook = 0;
-		//final double instanceProb = (1. / (numInstances));
 		while (repetition < iterations) { 		
 			System.out.print("[");
 			// train  me olo to trainset gia {iterations} fores
@@ -932,13 +1043,17 @@ public abstract class AbstractLearningClassifierSystem {
 				System.out.print('/');													  // 9a ekteleito gia iterations * hookCallBackRate
 				
 				for (int i = 0; i < numInstances; i++) {
+					cummulativeCurrentInstanceIndex = totalRepetition * instances.length + i;
 					trainWithInstance(population, i, evolve);
+					//harvestAccuracies(cummulativeCurrentInstanceIndex);
+
 				}
-				
+				harvestAccuracies(totalRepetition);
+
 				repetition++;
 				totalRepetition++;
 				trainsBeforeHook++;
-				//System.out.println("repetition: " + repetition);
+
 				// check for duplicities on every repetition
 				if (!thoroughlyCheckWIthPopulation) {
 					assimilateDuplicateClassifiers(rulePopulation, evolve);
@@ -992,7 +1107,7 @@ public abstract class AbstractLearningClassifierSystem {
 			if (UPDATE_MODE == UPDATE_MODE_IMMEDIATE) 
 				getUpdateStrategy().updateSet(population, matchSetSmp, dataInstanceIndex, evolve);
 			else if (UPDATE_MODE == UPDATE_MODE_HOLD) 
-				getUpdateStrategy().updateSetNew(population, matchSetSmp, dataInstanceIndex, evolve);			time2 += System.currentTimeMillis();					
+				getUpdateStrategy().updateSetNew(population, matchSetSmp, dataInstanceIndex, evolve);				
 
 			time2 += System.currentTimeMillis();
 				
@@ -1029,7 +1144,7 @@ public abstract class AbstractLearningClassifierSystem {
 		else
 		{
 			time1 = -System.currentTimeMillis();
-			final ClassifierSet matchSet    = population.generateMatchSet(dataInstanceIndex);
+			final ClassifierSet matchSet    = population.generateMatchSetNew(dataInstanceIndex);
 			time1 += System.currentTimeMillis();
 			
 			timeMeasurements[index][0] = population.getTotalNumerosity();
@@ -1047,46 +1162,126 @@ public abstract class AbstractLearningClassifierSystem {
 			
 			time2 += System.currentTimeMillis();
 			
-			timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
-			timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
-			timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
-			timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
-			timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
-			timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
-			timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
-			
-			int numCovered = 0;
-			int numGaed = 0;
-			int numInited = 0;
-			int numberOfSubsumptions = 0;
-			double meanNs = 0;
-			
-			for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++) {
-				numberOfSubsumptions +=  population.getMacroclassifiersVector().elementAt(i).numberOfSubsumptions;
-				if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin().equals("cover")) numCovered++;
-				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin().equals("ga")) numGaed++;
-				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin().equals("init")) numInited++;
-				
-				meanNs += population.getClassifier(i).getNs();
-
-			}
-			
-			
-			meanNs /= population.getNumberOfMacroclassifiers();
-			
-			timeMeasurements[index][10] = numCovered;
-			timeMeasurements[index][11] = numGaed;
-			timeMeasurements[index][12] = numInited;
-			timeMeasurements[index][13] = population.getTotalNumerosity();
-			timeMeasurements[index][14] = population.firstDeletionFormula;
-			timeMeasurements[index][15] = population.secondDeletionFormula;
-			timeMeasurements[index][16] = numberOfSubsumptions;
-			timeMeasurements[index][17] = (int) meanCorrectSetNumerosity;
-			timeMeasurements[index][18] = (int) meanNs;
+			recordInTimeMeasurements(population, index);
 
 		}
 	}
 
+	
+	private void recordInTimeMeasurements(ClassifierSet population, int index) {
+		
+		timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
+		timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
+		timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
+		timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
+		timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
+		timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
+		timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
+		
+		int numberOfMacroclassifiersCovered = 0;
+		int numberOfClassifiersCovered = 0;
+		
+		int numberOfMacroclassifiersGaed = 0;
+		int numberOfClassifiersGaed = 0;
+		
+		int numberOfMacroclassifiersInited = 0;
+		int numberOfClassifiersInited = 0;
+		
+		int numberOfSubsumptions = 0;
+		
+		double meanNs = 0;
+		
+		double meanAcc = 0;
+		double meanCoveredAcc = 0;
+		double meanGaedAcc = 0;
+		
+		double meanExplorationFitness = 0;
+		double meanCoveredExplorationFitness = 0;
+		double meanGaedExplorationFitness = 0;
+		
+		double meanPureFitness = 0;
+		double meanCoveredPureFitness = 0;
+		double meanGaedPureFitness = 0;
+		
+		for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++) {
+			
+			Macroclassifier macro = population.getMacroclassifiersVector().elementAt(i);
+			numberOfSubsumptions +=  macro.numberOfSubsumptions;
+			
+			if (macro.myClassifier.getClassifierOrigin().equals("cover")) {
+				numberOfMacroclassifiersCovered++;
+				numberOfClassifiersCovered += macro.numerosity;
+			}
+			else if (macro.myClassifier.getClassifierOrigin().equals("ga")) {
+				numberOfMacroclassifiersGaed++;
+				numberOfClassifiersGaed += macro.numerosity;
+			}
+			else if (macro.myClassifier.getClassifierOrigin().equals("init")) {
+				numberOfMacroclassifiersInited++;
+				numberOfClassifiersInited += macro.numerosity;
+			}
+			
+			meanAcc += 					macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_ACCURACY);
+			meanExplorationFitness += 	macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+			meanPureFitness += 			macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS);
+			meanNs += population.getClassifier(i).getNs();
+			
+			if (macro.myClassifier.getClassifierOrigin() == "cover" || macro.myClassifier.getClassifierOrigin() == "init") {
+				
+				meanCoveredAcc += 					macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_ACCURACY);
+				meanCoveredExplorationFitness += 	macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+				meanCoveredPureFitness += 			macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS);
+			}
+			else if (macro.myClassifier.getClassifierOrigin() == "ga") {
+				
+				meanGaedAcc += 					macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_ACCURACY);
+				meanGaedExplorationFitness += 	macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+				meanGaedPureFitness += 			macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS);
+
+			}
+
+				
+		}
+		
+		meanAcc /= population.getTotalNumerosity();
+		meanNs /= population.getNumberOfMacroclassifiers();
+		meanCoveredAcc /= (numberOfClassifiersCovered + numberOfClassifiersInited);
+		meanGaedAcc /= numberOfClassifiersGaed;
+		
+		meanExplorationFitness /= population.getTotalNumerosity();
+		meanCoveredExplorationFitness/= (numberOfClassifiersCovered + numberOfClassifiersInited);
+		meanGaedExplorationFitness /= numberOfClassifiersGaed;
+
+		meanPureFitness /= population.getTotalNumerosity();
+		meanCoveredPureFitness /= (numberOfClassifiersCovered + numberOfClassifiersInited);
+		meanGaedPureFitness /= numberOfClassifiersGaed;
+		
+		timeMeasurements[index][10] = (int) numberOfMacroclassifiersCovered;
+		timeMeasurements[index][11] = (int) numberOfMacroclassifiersGaed;
+		timeMeasurements[index][12] = (int) ClassifierSet.firstTimeSetSmp.getNumberOfMacroclassifiers();
+		timeMeasurements[index][13] = (int) population.getTotalNumerosity();
+		timeMeasurements[index][14] = (int) population.firstDeletionFormula;
+		timeMeasurements[index][15] = (int) population.secondDeletionFormula;
+		timeMeasurements[index][21] = (int) population.coveredDeleted;
+		timeMeasurements[index][22] = (int) population.gaedDeleted;
+		timeMeasurements[index][16] = (int) numberOfSubsumptions;
+		timeMeasurements[index][17] = (int) meanCorrectSetNumerosity;
+		timeMeasurements[index][18] = (int) meanNs;
+		
+		timeMeasurements[index][23] = meanAcc;
+		timeMeasurements[index][24] = meanCoveredAcc;
+		timeMeasurements[index][25] = meanGaedAcc;
+		
+		timeMeasurements[index][26] = meanExplorationFitness;
+		timeMeasurements[index][27] = meanCoveredExplorationFitness;
+		timeMeasurements[index][28] = meanGaedExplorationFitness;
+		
+		timeMeasurements[index][29] = meanPureFitness;
+		timeMeasurements[index][30] = meanCoveredPureFitness;
+		timeMeasurements[index][31] = meanGaedPureFitness;
+
+	}
+	
 	/**
 	 * Unregister an evaluator.
 	 * 

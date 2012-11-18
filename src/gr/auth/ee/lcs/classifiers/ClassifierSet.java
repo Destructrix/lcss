@@ -56,6 +56,14 @@ public class ClassifierSet implements Serializable {
 	public int firstDeletionFormula = 0;
 	public int secondDeletionFormula = 0;
 	
+	public int coveredDeleted = 0;
+	public int gaedDeleted = 0;
+	
+	public int zeroCoverageDeletions = 0;
+	public Vector<Integer> zeroCoverageVector = new Vector<Integer>();
+	public Vector<Integer> zeroCoverageIterations = new Vector<Integer>();
+
+	
 	
 	/**
 	 * Serialization id for versioning.
@@ -65,6 +73,9 @@ public class ClassifierSet implements Serializable {
 	public int totalGAInvocations = 0;
 
 	public int unmatched;
+	
+	//public ClassifierSet firstTimeSet;
+
 	
 	/**
 	 * Open a saved (and serialized) ClassifierSet.
@@ -384,6 +395,8 @@ public class ClassifierSet implements Serializable {
 		} else {
 			//this.myMacroclassifiers.elementAt(index).myClassifier.getLCS().blacklist.addClassifier(new Macroclassifier((this.myMacroclassifiers.elementAt(index).myClassifier), 1), true);
 			this.myMacroclassifiers.remove(index); // an to numerosity tou macroclassifier einai 1, diagrapse ton
+			
+			
 
 		}
 	}
@@ -464,9 +477,13 @@ public class ClassifierSet implements Serializable {
 			boolean zeroCoverage = (this.getClassifier(i).getCheckedInstances() >= this.getClassifier(i).getLCS().instances.length) 
 									 && (this.getClassifier(i).getCoverage() == 0);
 			
+			if (this.getClassifier(i).checked == this.getClassifier(i).getLCS().instances.length) 
+				this.getClassifier(i).objectiveCoverage = this.getClassifier(i).getCoverage();
+			
 			if(zeroCoverage) {
 				//this.deleteMacroclassifier(i);
 				deleteIndices.add(i); // add the index of the macroclassifier with zero coverage 
+				System.out.println("deleted due to 0-cov");
 			}
 		}
 		
@@ -589,10 +606,9 @@ public class ClassifierSet implements Serializable {
 	
 	public final ClassifierSet generateMatchSetNew(final int dataInstanceIndex){
 		
-		
 		final ClassifierSet matchSet = new ClassifierSet(null);
 		final ClassifierSet firstTimeSet = new ClassifierSet(null);
-		
+
 		Vector<Integer> deleteIndices = new Vector<Integer>();
 		Vector<Integer> candidateDeleteIndices = new Vector<Integer>();
 		
@@ -625,6 +641,9 @@ public class ClassifierSet implements Serializable {
 				}
 				
 				boolean zeroCoverage = (cl.myClassifier.checked >= cl.myClassifier.getLCS().instances.length) && (cl.myClassifier.covered == 0);
+				
+				if (cl.myClassifier.checked == cl.myClassifier.getLCS().instances.length) 
+					cl.myClassifier.objectiveCoverage = cl.myClassifier.getCoverage();
 
 				if (zeroCoverage) {
 					deleteIndices.add(index);
@@ -641,14 +660,18 @@ public class ClassifierSet implements Serializable {
 		
 		for ( int i = deleteIndices.size() - 1 ; i >= 0 ; i-- )
 		{
-			this.deleteMacroclassifier(deleteIndices.elementAt(i));
-		}
-		
-		firstTimeSetSmp = firstTimeSet;
+			zeroCoverageIterations.add(myMacroclassifiers.elementAt(deleteIndices.elementAt(i)).myClassifier.getLCS().totalRepetition);
 
+			this.deleteMacroclassifier(deleteIndices.elementAt(i));
+			zeroCoverageDeletions++;
+			zeroCoverageVector.add(zeroCoverageDeletions);
+			//System.out.println("deleted due to 0-cov");
+		}
+
+		firstTimeSetSmp = firstTimeSet;
+		
 		deleteIndices.clear();
 		candidateDeleteIndices.clear();
-		
 		return matchSet;
 	}
 	
@@ -1148,16 +1171,31 @@ public class ClassifierSet implements Serializable {
 		double numOfInit = 0;
 		int 	numOfSubsumptions = 0;
 		int 	meanNs = 0;
-
+		int 	coveredTotalNumerosity = 0;
+		int 	gaedTotalNumerosity = 0;
+		double meanAcc = 0;
+		
+		//int numberOfFinalClassifiersNotSeenTheWholePicture = 0;
+		//int numInstances = this.getClassifier(0).getLCS().instances.length;
 		
 		for (int i = 0; i < this.getNumberOfMacroclassifiers(); i++) {
-			myMacroclassifiers.elementAt(i).totalFitness = 
-				this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;
+/*			myMacroclassifiers.elementAt(i).totalFitness = 
+				this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity;*/
+			double acc = this.getActualMacroclassifier(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_ACCURACY);
+			if (Double.isNaN(acc)) 
+				acc = 0;
 			
 			meanNs += this.getClassifier(i).getNs();
+			meanAcc += acc * this.getMacroclassifier(i).numerosity;
+/*			if (this.getClassifier(i).getCheckedInstances() < numInstances)
+				numberOfFinalClassifiersNotSeenTheWholePicture++;*/
 		}
 		
+/*		if (numberOfFinalClassifiersNotSeenTheWholePicture > 0)
+			System.out.println(numberOfFinalClassifiersNotSeenTheWholePicture + " rules not seen the entire dataset even once");*/
+		
 		meanNs /= this.getNumberOfMacroclassifiers();
+		meanAcc /= this.getTotalNumerosity();
 		
         DecimalFormat df = new DecimalFormat("#.####");
 
@@ -1169,15 +1207,23 @@ public class ClassifierSet implements Serializable {
 			
 			//response.append(this.getClassifier(i).toString()
 			response.append(
-						myMacroclassifiers.elementAt(i).myClassifier.toString() // antecedent => concequent
+					myMacroclassifiers.elementAt(i).myClassifier.toString() // antecedent => concequent
+					+ "|"	
 					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
 					// myMacroclassifiers.elementAt(i).toString isos kalutera
-					+ " macro fit: " + df.format(myMacroclassifiers.elementAt(i).totalFitness) 
-					+ " fit: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION))
-					+ " acc: " + df.format(myMacroclassifiers.elementAt(i).myClassifier.getAccuracy())
-					+ " num: " + myMacroclassifiers.elementAt(i).numerosity 
-					+ " exp: " + myMacroclassifiers.elementAt(i).myClassifier.experience  
-					+ " cov: " + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.getCoverage()) + "% of dataset");
+					+ "macro fit:|" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION) 
+							* myMacroclassifiers.elementAt(i).numerosity) 
+					+ "|"
+					+ "fit:|" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION))
+					+ "|"
+					+ "acc:|" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getAccuracy())
+					+ "|"
+					+ "num:|" + myMacroclassifiers.elementAt(i).numerosity 
+					+ "|"
+					+ "exp:|" + myMacroclassifiers.elementAt(i).myClassifier.experience  
+					+ "|"
+					+ "cov:|" + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.objectiveCoverage) + "%" 
+					+ "|");
 			
 			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
 			
@@ -1185,39 +1231,44 @@ public class ClassifierSet implements Serializable {
 			
 			if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "cover") {
 				numOfCover++;
-				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
-				response.append(" origin: cover ");
+				coveredTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
+				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
+				response.append("origin:|cover" + "|");
 			}
 			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "ga") {
 				numOfGA++;
-				accuracyOfGa +=  myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
-				response.append(" origin: ga ");
+				gaedTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
+				accuracyOfGa +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
+				response.append("origin:|ga" + "|");
 			}
 			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "init") {
 				numOfInit++;
-				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
-				response.append(" origin: init ");
+				coveredTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
+				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
+				response.append("origin:|init "+ "|");
 			}	
 			
 			
 			numOfSubsumptions += myMacroclassifiers.elementAt(i).numberOfSubsumptions;
-			response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.created + " ");
-			response.append(" last in correctset: " + myMacroclassifiers.elementAt(i).myClassifier.timestamp + " ");
-			response.append(" subsumptions: " + myMacroclassifiers.elementAt(i).numberOfSubsumptions + " ");
-			response.append(" created: " + (-Integer.MIN_VALUE + myMacroclassifiers.elementAt(i).myClassifier.getSerial()) + "th");
+			//response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.created + " ");
+			response.append("created:|" + myMacroclassifiers.elementAt(i).myClassifier.cummulativeInstanceCreated + "|");
+			response.append("last in correctset:|" + myMacroclassifiers.elementAt(i).myClassifier.timestamp + "|");
+			response.append("subsumptions:|" + myMacroclassifiers.elementAt(i).numberOfSubsumptions + "|");
+			response.append("created:|" + (-Integer.MIN_VALUE + myMacroclassifiers.elementAt(i).myClassifier.getSerial()) + "th" + "|");
 			response.append(System.getProperty("line.separator"));
 		}
 		
-		System.out.println("\nPopulation size (macro): "  			+ this.getNumberOfMacroclassifiers());
+		System.out.println("\nPopulation size (macro, micro): "  	+ "(" + this.getNumberOfMacroclassifiers() + "," + this.getTotalNumerosity() + ")");
+
 		System.out.println("Classifiers in population covered: " 	+ (int) numOfCover);
 		System.out.println("Classifiers in population ga-ed:   " 	+ (int) numOfGA);
 		System.out.println("Classifiers in population init-ed: " 	+ (int) numOfInit);
 		System.out.println();
 		
 		System.out.println("% covered: " 									+ df.format(100 * (numOfCover / this.getNumberOfMacroclassifiers())) + " %");
-		System.out.println("covered.acc: " +  (Double.isNaN(accuracyOfCovered / numOfCover) ? 0 : accuracyOfCovered / (numOfCover + numOfInit)));
+		System.out.println("covered.acc: " +  (Double.isNaN(accuracyOfCovered / numOfCover) ? 0 : accuracyOfCovered / coveredTotalNumerosity /*(numOfCover + numOfInit)*/));
 		System.out.println("% ga-ed:   " 									+ df.format(100 * (numOfGA / this.getNumberOfMacroclassifiers())) + " %");
-		System.out.println("gaed.acc: " +  (Double.isNaN(accuracyOfGa/ numOfCover) ? 0 : accuracyOfGa / numOfGA));
+		System.out.println("gaed.acc: " +  (Double.isNaN(accuracyOfGa/ numOfCover) ? 0 : accuracyOfGa / gaedTotalNumerosity/*numOfGA*/));
 		System.out.println();
 
 		System.out.println("% init-ed: " 									+ df.format(100 * (numOfInit / this.getNumberOfMacroclassifiers())) + " %");
@@ -1225,6 +1276,7 @@ public class ClassifierSet implements Serializable {
 
 		
 		System.out.println("Mean ns:   " + meanNs);
+		System.out.println("Mean acc:   " + meanAcc);
 		
 		System.out.println("Total ga invocations: " 						+ this.totalGAInvocations);
 

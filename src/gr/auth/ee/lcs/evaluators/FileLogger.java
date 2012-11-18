@@ -224,8 +224,10 @@ public class FileLogger implements ILCSMetric {
 			
 			final FileWriter fstream = new FileWriter(file, true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
-			buffer.write(String.valueOf(lcs.repetition) 
-						+ ":" +String.valueOf(evalResult)
+			buffer.write(
+						String.valueOf(lcs.repetition) 
+						+ ":" 
+						+ String.valueOf(evalResult)
 						+ System.getProperty("line.separator"));
 			buffer.flush();
 			buffer.close();

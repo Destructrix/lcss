@@ -253,11 +253,11 @@ public class SequentialMlUpdateAlgorithm extends AbstractUpdateStrategy {
 			 * Run GA
 			 */
 			if ((correctSet.getNumberOfMacroclassifiers() > 1) && evolve)
-				ga.evolveSet(correctSet, population);
+				ga.evolveSet(correctSet, population, label);
 			else if ((correctSet.getNumberOfMacroclassifiers() > 0) && evolve)
-				ga.evolveSet(labelSet, population);
+				ga.evolveSet(labelSet, population, label);
 			else if (evolve)
-				ga.evolveSet(matchSet, population);
+				ga.evolveSet(matchSet, population, label);
 		}
 
 		// Delete classifiers that are only #'s

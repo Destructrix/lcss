@@ -1,9 +1,9 @@
 # Input filename sidairfoil.johngalt
-filename = C:/Users/vag/Desktop/diplwmatiki/kwdikas/mlposition7.arff
+filename = /home/li9i/Dropbox/thesis/auth/java_workspace/lcss/datasets/mlTestbeds/mlposition7.arff
 
 
 # Input testFile
-# testFile = C:/Users/vag/Desktop/diplwmatiki/kwdikas/mlposition7.arff
+testFile = /home/li9i/Dropbox/thesis/auth/java_workspace/lcss/datasets/mlTestbeds/mlposition7.arff
 
 
 

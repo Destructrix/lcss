@@ -29,6 +29,7 @@ import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.IPopulationControlStrategy;
 import gr.auth.ee.lcs.classifiers.Macroclassifier;
+import gr.auth.ee.lcs.classifiers.statistics.MeanFitnessStatistic;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
@@ -140,6 +141,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	/**
 	 * The deletion mechanism. 0 for (cl.myClassifier.experience > THETA_DEL) && (data.fitness < DELTA * meanPopulationFitness)
 	 * 						   1 for (cl.myClassifier.experience > THETA_DEL) && (Math.pow(data.fitness,n) < DELTA * meanPopulationFitness)	
+	 * 						   
 	 * 
 	 * 0 as default
 	 * */
@@ -359,19 +361,27 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
 							: Math.exp(-data.ns  + 1)) );
 				
-//				double acc = data.tp / data.msa;
-//			
-//				
-//				if (cl.myClassifier.experience < THETA_DEL) 
-//					data.d = 0;//1 / (100 * (Double.isNaN(data.fitness) ? 1 : data.fitness)); // protect the new classifiers
-//				
-//				else if (acc >= ACC_0 * (1 - DELTA)) 
-//					data.d = Math.exp(data.ns / data.fitness * DELTA + 1);
-//				
-//				else 
-//					data.d = Math.exp(data.ns / data.fitness + 1);
-//					//data.d = Math.pow(data.ns * DELTA, data.ns + 1);
-			}
+				
+/*				if (cl.myClassifier.experience > THETA_DEL && (data.fitness < DELTA * meanPopulationFitness)) 
+					data.d = Math.exp(data.ns * meanPopulationFitness / data.fitness);
+				else
+					data.d = Math.exp(data.ns);
+
+				data.d /= Math.exp(100);*/
+				
+/*				double acc = data.tp / data.msa;
+			
+				
+				if (cl.myClassifier.experience < THETA_DEL) 
+					data.d = 0;//1 / (100 * (Double.isNaN(data.fitness) ? 1 : data.fitness)); // protect the new classifiers
+				
+				else if (acc >= ACC_0 * (1 - DELTA)) 
+					data.d = Math.exp(data.ns / data.fitness * DELTA + 1);
+				
+				else 
+					data.d = Math.exp(data.ns / data.fitness + 1);
+					//data.d = Math.pow(data.ns * DELTA, data.ns + 1);
+*/			}
 		}	
 	}
 	
@@ -390,7 +400,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		final Classifier coveringClassifier = myLcs
 											  .getClassifierTransformBridge()
 											  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+		
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
+		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+		
 		coveringClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
 		myLcs.numberOfCoversOccured ++ ;
 		population.addClassifier(new Macroclassifier(coveringClassifier, 1), false);
@@ -399,9 +412,13 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	
 	private Macroclassifier coverNew( int instanceIndex ) {
 		
-		final Classifier coveringClassifier = myLcs.getClassifierTransformBridge()
-		  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+		final Classifier coveringClassifier = myLcs
+											   .getClassifierTransformBridge()
+											   .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+		
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
+		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+
 		coveringClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
 		myLcs.numberOfCoversOccured ++ ;
 		return new Macroclassifier(coveringClassifier, 1);
@@ -479,7 +496,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			}
 			else 
 				if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-				correctSet.addClassifier(cl, false);
+					correctSet.addClassifier(cl, false);
 
 		}
 		
@@ -518,7 +535,16 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			return data.d;
 		
 		case COMPARISON_MODE_EXPLOITATION:
-			return /*(aClassifier.experience < 10) ? 0 :*/ (Double.isNaN(data.tp / data.msa) ? 0 : data.tp / data.msa);//(Double.isNaN(data.fitness) ? 0 : data.fitness);			
+			return (Double.isNaN(data.tp / data.msa) ? 0 : data.tp / data.msa);//(Double.isNaN(data.fitness) ? 0 : data.fitness);			
+		
+		case COMPARISON_MODE_PURE_FITNESS:
+			return data.fitness;
+			
+		case COMPARISON_MODE_PURE_ACCURACY:
+			return Double.isNaN(data.tp / data.msa) ? 0 : data.tp / data.msa;
+		
+		case COMPARISON_MODE_ACCURACY:
+			return (aClassifier.objectiveCoverage < 0) ? 2.0 : data.tp / data.msa;
 		default:
 		}
 		return 0;
@@ -539,10 +565,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
         DecimalFormat df = new DecimalFormat("#.####");
 
 		return  /* " internalFitness: " + df.format(data.fitness) 
-				+ */" tp: " + df.format(data.tp) 
-				+ " msa: " + df.format(data.msa) 
-				+ " ns: " + df.format(data.ns)
-				+ " d: " + df.format(data.d)
+				+ */" tp:|" + df.format(data.tp) + "|"
+				+ " msa:|" + df.format(data.msa) + "|"
+				+ " ns:|" + df.format(data.ns)  + "|"
+				+ " d:|" + df.format(data.d)  + "|"
 				/*+ " total fitness: " + df.format(data.totalFitness) 
 				+ " alt fitness: " + df.format(data.alternateFitness) */ ;
 	}
@@ -789,7 +815,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 							minCurrentNs = labelNs;
 						}
 					}
-					if (classificationAbility != 0) data.msa += 1;
+					if (classificationAbility != 0) 
+						data.msa += 1;
 				} // kleinei to for gia ka9e label
 	
 				cl.myClassifier.experience++;
@@ -860,7 +887,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 				
 			} 
-		}
+		}	
+		
 		
 		evolutionTime = 0;
 		
@@ -873,9 +901,10 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 		if (evolve) {
 			evolutionTime = -System.currentTimeMillis();
+
 			for (int l = 0; l < numberOfLabels; l++) {
 				if (labelCorrectSets[l].getNumberOfMacroclassifiers() > 0) {
-					ga.evolveSet(labelCorrectSets[l], population);
+					ga.evolveSet(labelCorrectSets[l], population, l);
 					population.totalGAInvocations = ga.getTimestamp();
 					
 					numberOfEvolutionsConducted += ga.evolutionConducted();
@@ -893,6 +922,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 			}
 			evolutionTime += System.currentTimeMillis();
+
 		}
 		
 		
@@ -973,7 +1003,9 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 							minCurrentNs = labelNs;
 						}
 					}
-					if (classificationAbility != 0) data.msa += 1;
+					
+					if (classificationAbility != 0) 
+						data.msa += 1;
 				} // kleinei to for gia ka9e label
 	
 				cl.myClassifier.experience++;
@@ -1090,9 +1122,12 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			{
 				if(labelsToEvolve.contains(l))
 				{
-					ga.evolveSetNew(labelCorrectSets[l],population);
+					ga.evolveSetNew(labelCorrectSets[l], population, l);
 					indicesToSubsume.addAll(ga.getIndicesToSubsume());
 					newClassifiersSet.merge(ga.getNewClassifiersSet());
+					
+					//numberOfSubsumptionsConducted += ga.getIndicesToSubsume().size();
+					//numberOfNewClassifiers += ga.getNewClassifiersSet().getNumberOfMacroclassifiers();
 					
 					subsumptionTime += ga.getSubsumptionTime();
 					

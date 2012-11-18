@@ -407,11 +407,11 @@ public final class RTUCSUpdateAlgorithm extends AbstractUpdateStrategy {
 		 */
 		if (evolve) {
 			if (Math.random() < matchSetRunProbability) {
-				ga.evolveSet(matchSet, population);
+				ga.evolveSet(matchSet, population, 0);
 			} else {
 				for (int i = 0; i < numOfCorrectSets; i++)
 					if (correctSets[i].getTotalNumerosity() > 0)
-						ga.evolveSet(correctSets[i], population);
+						ga.evolveSet(correctSets[i], population, i);
 			}
 		}
 

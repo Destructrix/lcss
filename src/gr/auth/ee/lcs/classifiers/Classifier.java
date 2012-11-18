@@ -174,6 +174,18 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 	
 	public int created;
 	
+	public int cummulativeInstanceCreated = 0;
+	
+	
+	
+	/*
+	 * ka9e kanonas gennietai me objectiveCoverage == -1. otan dei gia proti fora ola ta deigmata tou dataset (meso tis generate match set)
+	 * tote i metabliti pairnei tin pragmatiki, antikeimeniki, timi tou covered / checked.
+	 * 
+	 * uparxei periptosi oi kanones pou diagrafontai na min exoun dei oute mia fora to dataset kai omos na diagrafontai
+	 * */
+	public double objectiveCoverage = -1;
+	
 	public int formulaForD = 0;
 	
 	public int unmatched;

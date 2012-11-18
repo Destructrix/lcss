@@ -124,8 +124,8 @@ public class ArffTrainTestLoader {
 
 		// added the following 3 lines instead of the above statement
 		// before the population is printed in the console, it is sorted by (total) fitness
-		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
-		srt.controlPopulation(myLcs.rulePopulation);
+/*		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
+		srt.controlPopulation(myLcs.rulePopulation);*/
 		myLcs.rulePopulation.print();
 
 
@@ -242,6 +242,12 @@ public class ArffTrainTestLoader {
 		myLcs.instances = InstancesUtility.convertIntancesToDouble(trainSet); // to trainSet se double pinaka
 		myLcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
 		testSet = InstancesUtility.openInstance(testFile);
+
+
+		myLcs.trainSet = trainSet;
+		myLcs.testSet = trainSet;
+		
+		myLcs.testInstances = myLcs.instances;
 
 	}
 	

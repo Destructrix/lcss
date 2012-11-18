@@ -54,6 +54,13 @@ public abstract class AbstractUpdateStrategy {
 	 */
 	public static final int COMPARISON_MODE_EXPLORATION = 2;
 	
+	public static final int COMPARISON_MODE_PURE_FITNESS = 3;
+	
+	public static final int COMPARISON_MODE_ACCURACY = 4;
+	
+	public static final int COMPARISON_MODE_PURE_ACCURACY = 5;
+
+
 
 	/**
 	 * Covers an instance adding it to the population.

@@ -66,12 +66,11 @@ public final class BestClassifierSelector implements IRuleSelector {
 	 * 
 	 * @param fromPopulation
 	 *            the population to select from
-	 * @return the index of the best classiifer in the set
+	 * @return the index of the best classifier in the set
 	 */
 	private int select(final ClassifierSet fromPopulation) {
 		// Search for the best classifier
-		double bestFitness = max ? Double.NEGATIVE_INFINITY
-				: Double.POSITIVE_INFINITY;
+		double bestFitness = max ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
 		int bestExp = 0;
 		int bestIndex = -1;
 		final int popSize = fromPopulation.getNumberOfMacroclassifiers();
@@ -87,7 +86,7 @@ public final class BestClassifierSelector implements IRuleSelector {
 				bestIndex = i;
 				bestExp = fromPopulation.getClassifier(i).experience;
 			} else if ((Double.compare(temp, bestFitness) == 0)
-					&& (fromPopulation.getClassifier(i).experience > bestExp)) {
+					&& (fromPopulation.getClassifier(i).experience < bestExp)) {
 				bestFitness = temp;
 				bestIndex = i;
 				bestExp = fromPopulation.getClassifier(i).experience;

@@ -25,6 +25,7 @@ import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.calibration.InternalValidation;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.populationcontrol.FixedSizeSetWorstFitnessDeletion;
+import gr.auth.ee.lcs.classifiers.populationcontrol.LowestFitnessRemoval;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.data.ILCSMetric;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation;
@@ -35,9 +36,13 @@ import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
 import gr.auth.ee.lcs.evaluators.HammingLossEvaluator;
 import gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy;
 import gr.auth.ee.lcs.geneticalgorithm.algorithms.SteadyStateGeneticAlgorithm;
+import gr.auth.ee.lcs.geneticalgorithm.algorithms.SteadyStateGeneticAlgorithmNew;
+import gr.auth.ee.lcs.geneticalgorithm.operators.MultiPointCrossover;
 import gr.auth.ee.lcs.geneticalgorithm.operators.SinglePointCrossover;
 import gr.auth.ee.lcs.geneticalgorithm.operators.UniformBitMutation;
+import gr.auth.ee.lcs.geneticalgorithm.selectors.BestClassifierSelector;
 import gr.auth.ee.lcs.geneticalgorithm.selectors.RouletteWheelSelector;
+import gr.auth.ee.lcs.geneticalgorithm.selectors.WorstClassifierSelector;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.IOException;
@@ -142,6 +147,12 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	 */
 	private String timeMeasurementsFile;
 	
+	private String systemAccuracyFile;
+	
+	private String deletionsFile;
+	
+	private String zeroCoverageFile;
+	
 	
 	/**
 	 * Constructor.
@@ -153,12 +164,13 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		inputFile = SettingsLoader.getStringSetting("filename", "");
 		numberOfLabels = (int) SettingsLoader.getNumericSetting("numberOfLabels", 1);
 		iterations = (int) SettingsLoader.getNumericSetting("trainIterations",1000);
-		populationSize = (int) SettingsLoader.getNumericSetting("populationSize", 1500);
+		populationSize = (int) SettingsLoader.getNumericSetting("populationSize", 1000);
 		
 
-		final IGeneticAlgorithmStrategy ga = new SteadyStateGeneticAlgorithm(
+		final IGeneticAlgorithmStrategy ga = new SteadyStateGeneticAlgorithmNew(
 				new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, true), 
-				new SinglePointCrossover(this), 
+				new MultiPointCrossover(this), 
+				//new SinglePointCrossover(this),
 				CROSSOVER_RATE,
 				new UniformBitMutation(MUTATION_RATE), 
 				THETA_GA, 
@@ -180,13 +192,24 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 																			 ga,
 																			 numberOfLabels,
 																			 this);
+		 
+/*		 MlASLCS4UpdateAlgorithm strategy = new MlASLCS4UpdateAlgorithm(ASLCS_N, 
+																			 ASLCS_ACC0,
+																		     ASLCS_EXPERIENCE_THRESHOLD, 
+																			 ga,
+																			 numberOfLabels,
+																			 this);*/
 
 		this.setElements(rep, strategy);
 
 		rulePopulation = new ClassifierSet(
 											new FixedSizeSetWorstFitnessDeletion(this,
 																				 populationSize,
-																				 new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_DELETION /*=1*/, true)));
+																				 new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_DELETION, true)));
+		
+/*		rulePopulation = new ClassifierSet(
+											new LowestFitnessRemoval(this, populationSize,
+													 new WorstClassifierSelector(AbstractUpdateStrategy.COMPARISON_MODE_ACCURACY)));*/
 		
 	}
 
@@ -276,6 +299,8 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	}
 
 	
+	
+	
 	public void internalValidationCalibration(ILCSMetric selfAcc) {
 		/*
 		final VotingClassificationStrategy str = rep.new VotingClassificationStrategy(
@@ -292,8 +317,6 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 
 	public VotingClassificationStrategy proportionalCutCalibration() {
 		
-		/*final VotingClassificationStrategy str = rep.new VotingClassificationStrategy(
-				(float) SettingsLoader.getNumericSetting("datasetLabelCardinality", 1));*/
 		final VotingClassificationStrategy str = rep.new VotingClassificationStrategy((float) this.labelCardinality);
 		
 		rep.setClassificationStrategy(str);
@@ -309,7 +332,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	@Override
 	public void train() {
 		
-		timeMeasurements =  new int[(iterations + (int)(iterations * UPDATE_ONLY_ITERATION_PERCENTAGE)) * instances.length][21];
+		timeMeasurements =  new double[(iterations + (int)(iterations * UPDATE_ONLY_ITERATION_PERCENTAGE)) * instances.length][35];
 		
 		trainSet(iterations, rulePopulation);
 		
@@ -317,14 +340,42 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 				rulePopulation);
 		
 		timeMeasurementsFile = this.hookedMetricsFileDirectory + "/measurements.txt";
-		
+		systemAccuracyFile = this.hookedMetricsFileDirectory + "/systemProgress.txt";
+		deletionsFile = this.hookedMetricsFileDirectory + "/deletions.txt";
+		zeroCoverageFile = this.hookedMetricsFileDirectory + "/zeroCoverage.txt";
+
 		
 		try {
 			final FileWriter fstream = new FileWriter(timeMeasurementsFile, false);
+			final FileWriter fstream2 = new FileWriter(systemAccuracyFile, false);
+			final FileWriter fstream3 = new FileWriter(deletionsFile, false);
+			final FileWriter fstream4 = new FileWriter(zeroCoverageFile, false);
+
+
+
+			
 			final BufferedWriter buffer = new BufferedWriter(fstream);
+			final BufferedWriter buffer2 = new BufferedWriter(fstream2);
+			final BufferedWriter buffer3 = new BufferedWriter(fstream3);
+			final BufferedWriter buffer4 = new BufferedWriter(fstream4);
+
+
+
 			buffer.write("");
 			buffer.flush();
 			buffer.close();
+			
+			buffer2.write("");
+			buffer2.flush();
+			buffer2.close();
+			
+			buffer3.write("");
+			buffer3.flush();
+			buffer3.close();
+			
+			buffer4.write("");
+			buffer4.flush();
+			buffer4.close();
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -338,6 +389,76 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 					buffer.write( String.valueOf(timeMeasurements[i][j]) + "   ");
 				}
 				buffer.write(System.getProperty("line.separator"));
+			}
+			buffer.flush();
+			buffer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		try {
+			final FileWriter fstream = new FileWriter(hookedMetricsFileDirectory + "/systemProgress.txt", true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			for (int i = 0 ; i < systemAccuracyInTesting.size(); i++ ){
+				buffer.write(
+							//systemAccuracy[i][0] 
+							systemAccuracyInTesting.elementAt(i)
+							+ "		"
+							//+ systemAccuracy[i][1]
+							+ systemAccuracyInTraining.elementAt(i)
+							+ "		"
+							+ systemCoverage.elementAt(i)
+							+ System.getProperty("line.separator")
+						    );
+			}
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		try {
+			final FileWriter fstream = new FileWriter(hookedMetricsFileDirectory + "/deletions.txt", true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+
+
+			for (int i = 0 ; i < qualityIndexOfDeleted.size(); i++ ){
+				buffer.write(
+							   qualityIndexOfDeleted.elementAt(i) 
+							 + "	" 
+							 + accuracyOfDeleted.elementAt(i) 
+							 + "	"
+							 + iteration.elementAt(i)
+							 + "	"
+							 + originOfDeleted.elementAt(i)
+							 + "	"
+							 + accuracyOfCoveredDeletion.elementAt(i)
+							 + "	"
+							 + accuracyOfGaedDeletion.elementAt(i)
+							 + "	"
+							 + qualityIndexOfClassifiersCoveredDeleted.elementAt(i)
+							 + "	"
+							 + qualityIndexOfClassifiersGaedDeleted.elementAt(i)
+							 + System.getProperty("line.separator"));
+			}
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			final FileWriter fstream = new FileWriter(hookedMetricsFileDirectory + "/zeroCoverage.txt", true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			for (int i = 0 ; i < rulePopulation.zeroCoverageVector.size(); i++ ){
+				buffer.write(
+							rulePopulation.zeroCoverageVector.elementAt(i)	
+							+ "		"
+							+ rulePopulation.zeroCoverageIterations.elementAt(i)
+						   	+ System.getProperty("line.separator"));
 			}
 			buffer.flush();
 			buffer.close();
