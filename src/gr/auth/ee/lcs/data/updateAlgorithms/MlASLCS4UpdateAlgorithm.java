@@ -455,7 +455,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 		
-		coveringClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
+		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
 		myLcs.numberOfCoversOccured ++ ;
 		population.addClassifier(new Macroclassifier(coveringClassifier, 1), false);
 	}
@@ -469,7 +469,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 		
-		coveringClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
+		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
 		myLcs.numberOfCoversOccured ++ ;
 		return new Macroclassifier(coveringClassifier, 1);
 	}

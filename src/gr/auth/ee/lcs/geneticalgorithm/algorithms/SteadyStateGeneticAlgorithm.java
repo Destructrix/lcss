@@ -438,7 +438,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
 			//System.out.println("child after: " + child);
 			
-			child.setClassifierOrigin("ga");
+			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
 			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 
 			child.created = myLcs.totalRepetition; //timestamp; // tote dimiourgi9ike apo ga o classifier
@@ -523,7 +523,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			child = mutationOp.operate(child);
 			child.inheritParametersFromParents(parentA, parentB);
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
-			child.setClassifierOrigin("ga");
+			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
 			
 			child.created = myLcs.totalRepetition;
 			

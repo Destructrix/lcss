@@ -86,7 +86,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 		mySelector = selector; // roulette wheel gia ton GMlASLCS3
 		zeroCoverageRemoval = new InadequeteClassifierDeletionStrategy(lcs);
 		myLcs = lcs;
-		updateStrategy = myLcs.getUpdateStrategy();
+		updateStrategy = lcs.getUpdateStrategy();
 	}
 
 	/**
@@ -128,9 +128,9 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			if (cl.formulaForD == 0) aSet.secondDeletionFormula++;
 			else aSet.firstDeletionFormula++;
 			
-			if (cl.getClassifierOrigin() == "cover" || (cl.getClassifierOrigin() == "init"))
+			if (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER || (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT))
 				aSet.coveredDeleted++;
-			else if (cl.getClassifierOrigin() == "ga")
+			else if (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA)
 				aSet.gaedDeleted++;
 			
 			// monitor deletions
@@ -171,7 +171,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 		
 		double qualityIndex = -0.1;
 		
-		if (cl.getClassifierOrigin() == "cover" || cl.getClassifierOrigin() == "init") {
+		if (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER|| cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT) {
 			if (cl.objectiveCoverage > 0) // to cl.objectiveCoverage apokta timi otan gia proti fora o kanonas dei olo to dataset
 				qualityIndex =/* acc * relativeExperience * macro.numerosity*/ cl.objectiveCoverage;
 /*			else if (cl.objectiveCoverage == -1) { 
@@ -187,7 +187,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 
 		}
 		
-		else if (cl.getClassifierOrigin() == "ga") {
+		else if (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) {
 			if (cl.objectiveCoverage > 0) // to cl.objectiveCoverage apokta timi otan gia proti fora o kanonas dei olo to dataset
 				qualityIndex = /*acc * relativeExperience * macro.numerosity*/ cl.objectiveCoverage;
 /*			else if (cl.objectiveCoverage == -1) { 

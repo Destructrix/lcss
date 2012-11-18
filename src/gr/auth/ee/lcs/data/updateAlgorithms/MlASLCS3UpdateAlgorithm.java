@@ -404,7 +404,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 		
-		coveringClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
+		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
 		myLcs.numberOfCoversOccured ++ ;
 		population.addClassifier(new Macroclassifier(coveringClassifier, 1), false);
 	}
@@ -419,7 +419,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 
-		coveringClassifier.setClassifierOrigin("cover"); // o classifier proekupse apo cover
+		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
 		myLcs.numberOfCoversOccured ++ ;
 		return new Macroclassifier(coveringClassifier, 1);
 	}

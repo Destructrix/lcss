@@ -358,10 +358,10 @@ public abstract class AbstractLearningClassifierSystem {
 		double meanNs = 0;
 		
 		for (int i = 0; i < rulePopulation.getNumberOfMacroclassifiers(); i++) {
-			if (this.getRulePopulation().getMacroclassifier(i).myClassifier.getClassifierOrigin() == "cover") {
+			if (this.getRulePopulation().getMacroclassifier(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER) {
 				numberOfClassifiersCovered++;
 			}
-			else if (this.getRulePopulation().getMacroclassifier(i).myClassifier.getClassifierOrigin() == "ga") {
+			else if (this.getRulePopulation().getMacroclassifier(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) {
 				numberClassifiersGaed++;
 			}
 			numberOfSubsumptions += this.getRulePopulation().getMacroclassifier(i).numberOfSubsumptions;
@@ -701,7 +701,7 @@ public abstract class AbstractLearningClassifierSystem {
 				for (int j = 0; j < centroidsArray.length; j++) {
 					//System.out.printf("Instance %d => Cluster %d ", k, assignments[j]);
 					final Classifier coveringClassifier = this.getClassifierTransformBridge().createRandomCoveringClassifier(centroidsArray[j]);
-					coveringClassifier.setClassifierOrigin("init"); 
+					coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_INIT); 
 					initialClassifiers.addClassifier(new Macroclassifier(coveringClassifier, 1), false);	
 				}
 			} catch (Exception e) {
@@ -847,7 +847,7 @@ public abstract class AbstractLearningClassifierSystem {
 				for (int j = 0; j < centroidsArray.length; j++) {
 					//System.out.printf("Instance %d => Cluster %d ", k, assignments[j]);
 					final Classifier coveringClassifier = this.getClassifierTransformBridge().createRandomCoveringClassifier(centroidsArray[j]);
-					coveringClassifier.setClassifierOrigin("init"); 
+					coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_INIT); 
 					initialClassifiers.addClassifier(new Macroclassifier(coveringClassifier, 1), false);	
 				}
 			} catch (Exception e) {
@@ -1121,9 +1121,9 @@ public abstract class AbstractLearningClassifierSystem {
 			
 			for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++) {
 				numberOfSubsumptions +=  population.getMacroclassifiersVector().elementAt(i).numberOfSubsumptions;
-				if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin().equals("cover")) numCovered++;
-				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin().equals("ga")) numGaed++;
-				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin().equals("init")) numInited++;
+				if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin() == (Classifier.CLASSIFIER_ORIGIN_COVER)) numCovered++;
+				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin() == (Classifier.CLASSIFIER_ORIGIN_GA)) numGaed++;
+				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin() == (Classifier.CLASSIFIER_ORIGIN_INIT)) numInited++;
 				
 				meanNs += population.getClassifier(i).getNs();
 
@@ -1208,15 +1208,15 @@ public abstract class AbstractLearningClassifierSystem {
 			Macroclassifier macro = population.getMacroclassifiersVector().elementAt(i);
 			numberOfSubsumptions +=  macro.numberOfSubsumptions;
 			
-			if (macro.myClassifier.getClassifierOrigin().equals("cover")) {
+			if (macro.myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER) {
 				numberOfMacroclassifiersCovered++;
 				numberOfClassifiersCovered += macro.numerosity;
 			}
-			else if (macro.myClassifier.getClassifierOrigin().equals("ga")) {
+			else if (macro.myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) {
 				numberOfMacroclassifiersGaed++;
 				numberOfClassifiersGaed += macro.numerosity;
 			}
-			else if (macro.myClassifier.getClassifierOrigin().equals("init")) {
+			else if (macro.myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT) {
 				numberOfMacroclassifiersInited++;
 				numberOfClassifiersInited += macro.numerosity;
 			}
@@ -1226,13 +1226,13 @@ public abstract class AbstractLearningClassifierSystem {
 			meanPureFitness += 			macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS);
 			meanNs += population.getClassifier(i).getNs();
 			
-			if (macro.myClassifier.getClassifierOrigin() == "cover" || macro.myClassifier.getClassifierOrigin() == "init") {
+			if (macro.myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER || macro.myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT) {
 				
 				meanCoveredAcc += 					macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_ACCURACY);
 				meanCoveredExplorationFitness += 	macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
 				meanCoveredPureFitness += 			macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS);
 			}
-			else if (macro.myClassifier.getClassifierOrigin() == "ga") {
+			else if (macro.myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) {
 				
 				meanGaedAcc += 					macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_ACCURACY);
 				meanGaedExplorationFitness += 	macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);

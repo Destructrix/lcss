@@ -672,6 +672,7 @@ public class ClassifierSet implements Serializable {
 		
 		deleteIndices.clear();
 		candidateDeleteIndices.clear();
+		
 		return matchSet;
 	}
 	
@@ -1229,19 +1230,19 @@ public class ClassifierSet implements Serializable {
 			
 			//response.append(" deleted by: " + myMacroclassifiers.elementAt(i).myClassifier.formulaForD);
 			
-			if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "cover") {
+			if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER) {
 				numOfCover++;
 				coveredTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
 				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
 				response.append("origin:|cover" + "|");
 			}
-			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "ga") {
+			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) {
 				numOfGA++;
 				gaedTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
 				accuracyOfGa +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
 				response.append("origin:|ga" + "|");
 			}
-			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == "init") {
+			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT) {
 				numOfInit++;
 				coveredTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
 				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
