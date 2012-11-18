@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 a63f520a4cfc5f36fe83b1fe84db2b30bba12ebe li9i <alexandros.philotheou@gmail.com> 1344446237 +0300	branch: Created from commit Deletion now as in "Effective Rule-based Multi-Label Classification with Learning Classifier Systems: paper
+a63f520a4cfc5f36fe83b1fe84db2b30bba12ebe 4f24a0b122f4ed0e08795f73000826020f42404f li9i <alexandros.philotheou@gmail.com> 1344446556 +0300	4f24a0b122f4ed0e08795f73000826020f42404f: updating HEAD
+4f24a0b122f4ed0e08795f73000826020f42404f 8dceccf1502dd66099fe77a0005575eaa1c3802a li9i <alexandros.philotheou@gmail.com> 1344471428 +0300	commit: additions in numerosities in MlASLCS3UpdateAlgorithm. also, conditions
+8dceccf1502dd66099fe77a0005575eaa1c3802a ffc01ba957ca75b67a04c078e68648e5fb06fc4c li9i <alexandros.filotheou@gmail.com> 1344694967 +0300	revert: Revert "additions in numerosities in MlASLCS3UpdateAlgorithm. also, conditions"
+ffc01ba957ca75b67a04c078e68648e5fb06fc4c d8e6c6e3b0c713277ac973592c19b1865990fba7 li9i <alexandros.filotheou@gmail.com> 1344695942 +0300	merge refs/remotes/origin/fitnessVariants: Merge made by resolve.
+d8e6c6e3b0c713277ac973592c19b1865990fba7 38bff225182bdc65dcf7b5006d296b795b079b64 li9i <alexandros.filotheou@gmail.com> 1344773104 +0300	commit: little changes in MlASLCS3UpdateAlgorithm
+38bff225182bdc65dcf7b5006d296b795b079b64 9e798ca0b0877e6b3fc68815e1bdb65c324bd386 li9i <alexandros.filotheou@gmail.com> 1344979980 +0300	commit: Μεταφορά από το master της SteadyStateGeneticAlgorithm που αφορά στο subsumtpion από τους parents.
+9e798ca0b0877e6b3fc68815e1bdb65c324bd386 a48f98613ddb0a6fad08e74ca5dbee1e253f0cc5 li9i <alexandros.filotheou@gmail.com> 1345050663 +0300	commit: Finished up method absorbDuplicateClassifiers.
+a48f98613ddb0a6fad08e74ca5dbee1e253f0cc5 b993eb55eb1da2fb4ac964f9536e3d8019161273 li9i <alexandros.filotheou@gmail.com> 1345149285 +0300	commit: fixed stupid mistake in AbstractLCS.absorbDuplicateRules

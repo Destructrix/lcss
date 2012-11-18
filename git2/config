@@ -1,0 +1,8 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/li9i/lcss.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	push = +refs/heads/*:refs/heads/*
