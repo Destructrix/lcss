@@ -173,7 +173,9 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 	private int origin;
 	
 	public static final int CLASSIFIER_ORIGIN_INIT = 0;
+	
 	public static final int CLASSIFIER_ORIGIN_COVER = 1;
+	
 	public static final int CLASSIFIER_ORIGIN_GA = 2;
 
 	

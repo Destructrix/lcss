@@ -64,7 +64,6 @@ public class ClassifierSet implements Serializable {
 	public Vector<Integer> zeroCoverageIterations = new Vector<Integer>();
 
 	
-	
 	/**
 	 * Serialization id for versioning.
 	 */
@@ -395,9 +394,6 @@ public class ClassifierSet implements Serializable {
 		} else {
 			//this.myMacroclassifiers.elementAt(index).myClassifier.getLCS().blacklist.addClassifier(new Macroclassifier((this.myMacroclassifiers.elementAt(index).myClassifier), 1), true);
 			this.myMacroclassifiers.remove(index); // an to numerosity tou macroclassifier einai 1, diagrapse ton
-			
-			
-
 		}
 	}
 
@@ -609,7 +605,7 @@ public class ClassifierSet implements Serializable {
 		final ClassifierSet matchSet = new ClassifierSet(null);
 		final ClassifierSet firstTimeSet = new ClassifierSet(null);
 
-		Vector<Integer> deleteIndices = new Vector<Integer>();
+		deleteIndices = new Vector<Integer>();
 		Vector<Integer> candidateDeleteIndices = new Vector<Integer>();
 		
 		final int populationSize = this.getNumberOfMacroclassifiers();

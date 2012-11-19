@@ -116,7 +116,6 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			long time1 = - System.currentTimeMillis();
 			
 			numberOfDeletions++;
-			
 			// se auto to simeio upologizei maxPopulation + 1 pi9anotites, ka9os gia na kli9ei i controlPopulation, prepei na exei uperbei to ano orio tou pli9usmou
 			
 			//if (numberOfDeletions == 1) 

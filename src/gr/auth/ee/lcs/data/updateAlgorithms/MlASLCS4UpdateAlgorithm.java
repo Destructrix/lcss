@@ -375,7 +375,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 /*				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
 							: Math.exp(-data.ns + 1)));*/
 				
-				data.d = 1 / (data.fitness * ((cl.myClassifier.objectiveCoverage < 0) ? 100. // isos objective cover?
+				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < 10) ? 100. // isos objective cover?
 						: Math.exp(-data.ns + 1)));
 				
 
@@ -579,7 +579,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		switch (mode) {
 		case COMPARISON_MODE_EXPLORATION:
-			return ((aClassifier.objectiveCoverage < 0) ? data.fitness / 100/* fitness discount*/: data.fitness);
+			return ((aClassifier.experience < aClassifier.objectiveCoverage * myLcs.instances.length || aClassifier.objectiveCoverage < 0) ? data.fitness / 100/* fitness discount*/: data.fitness);
 			
 		case COMPARISON_MODE_DELETION:
 			return data.d;

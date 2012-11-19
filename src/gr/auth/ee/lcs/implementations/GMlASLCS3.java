@@ -31,6 +31,7 @@ import gr.auth.ee.lcs.data.ILCSMetric;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation.VotingClassificationStrategy;
 import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm;
+import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS4UpdateAlgorithm;
 import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
 import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
 import gr.auth.ee.lcs.evaluators.HammingLossEvaluator;
@@ -129,6 +130,15 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	 */
 	private final double LABEL_GENERALIZATION_RATE = SettingsLoader.getNumericSetting("LabelGeneralizationRate", 0.33);
 	
+	private final int GENETIC_ALGORITHM_SELECTION = (int) SettingsLoader.getNumericSetting("gaSelection", 0);
+	
+	private final int CROSSOVER_OPERATOR = (int) SettingsLoader.getNumericSetting("crossoverOperator", 0);
+
+	private final int UPDATE_ALGORITHM_VERSION = (int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3);
+
+	
+	//private final boolean SettingsLoader.getStringSetting("wildCardsParticipateInCorrectSets", "false").equals("true");
+	
 
 
 	/**
@@ -167,14 +177,37 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		populationSize = (int) SettingsLoader.getNumericSetting("populationSize", 1000);
 		
 
-		final IGeneticAlgorithmStrategy ga = new SteadyStateGeneticAlgorithmNew(
+
+		
+
+			
+	final IGeneticAlgorithmStrategy ga = 
+		
+		GENETIC_ALGORITHM_SELECTION == 0 ? 
+			
+			(new SteadyStateGeneticAlgorithm(
 				new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, true), 
-				new MultiPointCrossover(this), 
-				//new SinglePointCrossover(this),
+				CROSSOVER_OPERATOR == 0 ? new SinglePointCrossover(this) : new MultiPointCrossover(this), 
 				CROSSOVER_RATE,
 				new UniformBitMutation(MUTATION_RATE), 
 				THETA_GA, 
-				this);
+				this)) 
+				
+			: 
+				
+			(new SteadyStateGeneticAlgorithmNew(
+				new RouletteWheelSelector(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, true), 
+				CROSSOVER_OPERATOR == 0 ? new SinglePointCrossover(this) : new MultiPointCrossover(this), 
+				CROSSOVER_RATE,
+				new UniformBitMutation(MUTATION_RATE), 
+				THETA_GA, 
+				this));
+	
+
+	
+
+
+
 
 		rep = new GenericMultiLabelRepresentation(inputFile, 
 												  PRECISION_BITS,
@@ -186,21 +219,29 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		
 		rep.setClassificationStrategy(rep.new BestFitnessClassificationStrategy());
 
-		 MlASLCS3UpdateAlgorithm strategy = new MlASLCS3UpdateAlgorithm(ASLCS_N, 
+		
+		if (UPDATE_ALGORITHM_VERSION == 3) {
+			MlASLCS3UpdateAlgorithm strategy = new MlASLCS3UpdateAlgorithm(ASLCS_N, 
 																			 ASLCS_ACC0,
 																		     ASLCS_EXPERIENCE_THRESHOLD, 
 																			 ga,
 																			 numberOfLabels,
 																			 this);
-		 
-/*		 MlASLCS4UpdateAlgorithm strategy = new MlASLCS4UpdateAlgorithm(ASLCS_N, 
+			this.setElements(rep, strategy);
+		
+		}
+	
+		else if (UPDATE_ALGORITHM_VERSION == 4) {
+			MlASLCS4UpdateAlgorithm strategy = new MlASLCS4UpdateAlgorithm(ASLCS_N, 
 																			 ASLCS_ACC0,
 																		     ASLCS_EXPERIENCE_THRESHOLD, 
 																			 ga,
 																			 numberOfLabels,
-																			 this);*/
-
-		this.setElements(rep, strategy);
+																			 this);
+			this.setElements(rep, strategy);
+		
+		}
+		
 
 		rulePopulation = new ClassifierSet(
 											new FixedSizeSetWorstFitnessDeletion(this,
@@ -298,8 +339,6 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		return results;
 	}
 
-	
-	
 	
 	public void internalValidationCalibration(ILCSMetric selfAcc) {
 		/*

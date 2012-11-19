@@ -196,7 +196,6 @@ public abstract class AbstractLearningClassifierSystem {
 	private Instances inst;
 	
 	//public ClassifierSet blacklist;
-	
 	/**
 	 * Constructor.
 	 * 
@@ -438,58 +437,6 @@ public abstract class AbstractLearningClassifierSystem {
 	 */
 	public abstract double[] getEvaluations(Instances testSet);
 	
-	/*
-	 * redundant
-	 * */
-	public double getSystemMultilabelAccuracy(){
-		final ClassifierTransformBridge bridge = this.getClassifierTransformBridge();
-
-		double sumOfAccuracies = 0;
-
-		int emptySamples = 0;
-		for (int i = 0; i < testInstances.length; i++) {
-			int unionOfLabels = 0;
-			int intersectionOfLabels = 0;
-			/*
-			 * epistrefei pinaka 9eseon numberOfActiveLabels. einai toses osa einai ta labels pou ston votingTable ksepernane to voteThreshold.
-			 * periexomeno tis ka9e 9esis einai to index tou label px [0,2,3] an to deutero (1) label den pernaei pano apo to voteThreshold.
-			 * 
-			 * ara periexei gia ka9e instance to AN (kai oxi poso giati to poso einai i psifos) pisteuei to sustima oti auto to label prepei na einai energopoiimeno,
-			 * dld na ginei classify se auto to label auto to instance
-			 * */
-			final int[] classes = this.classifyInstance(testInstances[i]); 
-			final int[] classification = bridge.getDataInstanceLabels(testInstances[i]); // to idio me to pano. apla einai oi actual klaseis pou energopoiountai gia ka9e instance
-
-			// Find symmetric differences
-			Arrays.sort(classes);
-			Arrays.sort(classification);
-			
-			for (int j = 0; j < classes.length; j++) {
-				if (Arrays.binarySearch(classification, classes[j]) < 0) {
-					unionOfLabels++;
-				} else {
-					intersectionOfLabels++;
-					unionOfLabels++;
-				}
-			}
-			for (int j = 0; j < classification.length; j++) {
-				if (Arrays.binarySearch(classes, classification[j]) < 0)
-					unionOfLabels++;
-			}
-			final double instanceAccuracy = ((double) intersectionOfLabels) / ((double) unionOfLabels);
-			sumOfAccuracies += Double.isNaN(instanceAccuracy) ? 0 : instanceAccuracy;
-
-
-			if (unionOfLabels == 0) // den exei kai polu noima, giati na einai 0? an ena deigma den katigoriopoieitai pou9ena--> atributes,0,0,0,0 gia 4 labels
-				emptySamples++;
-		} // kleinei to for ton instances
-		
-		final double accuracy = sumOfAccuracies / (testInstances.length - emptySamples);
-
-		return accuracy;
-
-	}
-
 
 	/**
 	 * Create a new classifier for the specific LCS.
@@ -1144,7 +1091,7 @@ public abstract class AbstractLearningClassifierSystem {
 		else
 		{
 			time1 = -System.currentTimeMillis();
-			final ClassifierSet matchSet    = population.generateMatchSetNew(dataInstanceIndex);
+			final ClassifierSet matchSet = population.generateMatchSetNew(dataInstanceIndex);
 			time1 += System.currentTimeMillis();
 			
 			timeMeasurements[index][0] = population.getTotalNumerosity();
@@ -1170,13 +1117,13 @@ public abstract class AbstractLearningClassifierSystem {
 	
 	private void recordInTimeMeasurements(ClassifierSet population, int index) {
 		
-		timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
+/*		timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
 		timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
 		timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
 		timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
 		timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
 		timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
-		timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
+		timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;*/
 		
 		int numberOfMacroclassifiersCovered = 0;
 		int numberOfClassifiersCovered = 0;

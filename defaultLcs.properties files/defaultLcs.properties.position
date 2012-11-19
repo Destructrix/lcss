@@ -41,10 +41,12 @@ UpdateOnlyPercentage = .1
 populationSize = 1000
 
 #Exploration options
+gaSelection = 1
+crossoverOperator = 1
 crossoverRate = .8
 mutationRate = .04
 thetaGA = 200
-gaPerLabel = false
+updateAlgorithmVersion = 3
 
 AttributeGeneralizationRate = 0
 LabelGeneralizationRate = 0.1
