@@ -116,16 +116,17 @@ public class FoldEvaluator {
 			for (int repetition = 0; repetition < numOfFoldRepetitions; repetition++) {
 				
 				AbstractLearningClassifierSystem foldLCS = prototype.createNew(); // foldLCS = new AbstractLearningClassifierSystem
+				
 				System.out.println("Training Fold " + i);
 				
-
 				loadMlStratifiedFold(i, foldLCS);
 				
-
 				//loadFold(i, foldLCS); // mou dinei to trainSet kai to testSet
 				
-				/*System.out.println(testSet);
-				System.out.println(trainSet);*/
+				/*
+				  	System.out.println(testSet);
+					System.out.println(trainSet);
+				*/
 				
 				foldLCS.registerMultilabelHooks(InstancesUtility.convertIntancesToDouble(testSet), numberOfLabels);
 				

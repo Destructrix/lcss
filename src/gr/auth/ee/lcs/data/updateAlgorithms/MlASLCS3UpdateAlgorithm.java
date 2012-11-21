@@ -141,7 +141,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	/**
 	 * The deletion mechanism. 0 for (cl.myClassifier.experience > THETA_DEL) && (data.fitness < DELTA * meanPopulationFitness)
 	 * 						   1 for (cl.myClassifier.experience > THETA_DEL) && (Math.pow(data.fitness,n) < DELTA * meanPopulationFitness)	
-	 * 						   
 	 * 
 	 * 0 as default
 	 * */
@@ -360,6 +359,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				// miltos original
 				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
 							: Math.exp(-data.ns  + 1)) );
+				
+				cl.myClassifier.formulaForD = (cl.myClassifier.experience > THETA_DEL) ? 1 : 0;
 				
 				
 /*				if (cl.myClassifier.experience > THETA_DEL && (data.fitness < DELTA * meanPopulationFitness)) 
@@ -778,16 +779,33 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		for (int i = 0; i < numberOfLabels; i++) {
 			CorrectSetsPopulation += labelCorrectSets[i].getNumberOfMacroclassifiers() ;
 		}
+		
 		myLcs.meanCorrectSetNumerosity = CorrectSetsPopulation / numberOfLabels;
 
 		
+		for (int i = 0; i < numberOfLabels; i++) {
+			int numberOfRulesThatDontCare = 0;
+			for (int j = 0; j < labelCorrectSets[i].getNumberOfMacroclassifiers(); j++) {
+				
+				final Macroclassifier cl = matchSet.getMacroclassifier(i);
+				final float classificationAbility = cl.myClassifier.classifyLabelCorrectly(instanceIndex, i);
+				if (classificationAbility == 0)
+					numberOfRulesThatDontCare++;
+				
+			}
+			
+			if (numberOfRulesThatDontCare == labelCorrectSets[i].getNumberOfMacroclassifiers())
+				System.out.println("all dont care");
+		}
+		
+		
 		final int matchSetSize = matchSet.getNumberOfMacroclassifiers();
 
-		
+
 		if (FITNESS_MODE == FITNESS_MODE_SIMPLE || FITNESS_MODE == FITNESS_MODE_COMPLEX) {
 			// For each classifier in the matchset
 			for (int i = 0; i < matchSetSize; i++) { // gia ka9e macroclassifier
-				
+
 				final Macroclassifier cl = matchSet.getMacroclassifier(i); // getMacroclassifier => fernei to copy, oxi ton idio ton macroclassifier
 				
 				int minCurrentNs = Integer.MAX_VALUE;
@@ -836,6 +854,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				case FITNESS_MODE_SIMPLE:
 					data.fitness = Math.pow((data.tp) / (data.msa), n);
 					break;
+					
 				case FITNESS_MODE_COMPLEX:
 					data.fitness += LEARNING_RATE * (Math.pow((data.tp) / (data.msa), n) - data.fitness);
 					
@@ -845,7 +864,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 					break;
 				}
 				updateSubsumption(cl.myClassifier);
-
 			} // kleinei to for gia ka9e macroclassifier
 		}
 		
@@ -887,8 +905,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 				
 			} 
-		}	
-		
+		}
 		
 		evolutionTime = 0;
 		
@@ -904,6 +921,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 
 			for (int l = 0; l < numberOfLabels; l++) {
 				if (labelCorrectSets[l].getNumberOfMacroclassifiers() > 0) {
+					
 					ga.evolveSet(labelCorrectSets[l], population, l);
 					population.totalGAInvocations = ga.getTimestamp();
 					
@@ -914,6 +932,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 					deletionTime += ga.getDeletionTime();
 					numberOfDeletionsConducted += ga.getNumberOfDeletionsConducted();
 				} else {
+					
 					this.cover(population, instanceIndex);
 					numberOfNewClassifiers++;
 					IPopulationControlStrategy theControlStrategy = population.getPopulationControlStrategy();
@@ -922,10 +941,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 			}
 			evolutionTime += System.currentTimeMillis();
-
 		}
-		
-		
 	}	
 	
 	
@@ -1091,7 +1107,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			evolutionTime = -System.currentTimeMillis();
 						
 			Vector<Integer> labelsToEvolve = new Vector<Integer>();
-			
 			Vector<Integer> labelsToCover = new Vector<Integer>();
 			
 			for (int l = 0; l < numberOfLabels; l++) {

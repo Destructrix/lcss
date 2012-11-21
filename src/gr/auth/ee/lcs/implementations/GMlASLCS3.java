@@ -49,10 +49,7 @@ import gr.auth.ee.lcs.utilities.SettingsLoader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 
 import weka.core.Instances;
@@ -294,8 +291,9 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		final double[] results = new double[12];
 		Arrays.fill(results, 0);
 
-		proportionalCutCalibration();
-
+		final VotingClassificationStrategy pcut = proportionalCutCalibration();
+		System.out.println("Threshold (pcut) set to " + pcut.getThreshold());
+		
 		final AccuracyRecallEvaluator accEval = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		results[0] = accEval.getMetric(this);
 
@@ -338,7 +336,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		 * */
 		return results;
 	}
-
+	
 	
 	public void internalValidationCalibration(ILCSMetric selfAcc) {
 		/*
@@ -361,6 +359,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		rep.setClassificationStrategy(str);
 
 		str.proportionalCutCalibration(this.instances, rulePopulation);
+		
 		return str;
 	}
 
@@ -439,13 +438,11 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		try {
 			final FileWriter fstream = new FileWriter(hookedMetricsFileDirectory + "/systemProgress.txt", true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
-			for (int i = 0 ; i < systemAccuracyInTesting.size(); i++ ){
+			for (int i = 0 ; i < systemAccuracyInTestingWithBest.size(); i++ ){
 				buffer.write(
-							//systemAccuracy[i][0] 
-							systemAccuracyInTesting.elementAt(i)
-							+ "		"
-							//+ systemAccuracy[i][1]
 							+ systemAccuracyInTraining.elementAt(i)
+							+ "		"
+							+ systemAccuracyInTestingWithPcut.elementAt(i)
 							+ "		"
 							+ systemCoverage.elementAt(i)
 							+ System.getProperty("line.separator")

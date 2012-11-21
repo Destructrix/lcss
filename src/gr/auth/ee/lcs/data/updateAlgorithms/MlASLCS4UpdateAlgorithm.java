@@ -130,6 +130,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 	public static final int DELETION_MODE_KOVACS = 0;
 	public static final int DELETION_MODE_KOVACS_POWERED = 1;
 	public static final int DELETION_MODE_MILTOS = 2;
+	public static final int DELETION_MODE_E_KOVACS = 3;
 
 	
 	
@@ -373,12 +374,19 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 
 				// miltos original
 /*				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
-							: Math.exp(-data.ns + 1)));*/
-				
-				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < 10) ? 100. // isos objective cover?
-						: Math.exp(-data.ns + 1)));
-				
+							: Math.exp(-data.ns + 1)));
+							
+				cl.myClassifier.formulaForD = (cl.myClassifier.experience > THETA_DEL) ? 1 : 0;
 
+
+*/
+				
+				if (cl.myClassifier.experience < THETA_DEL)
+					data.d = 1 / (100.0 * data.fitness);
+				else
+					data.d = Math.exp(data.ns / data.fitness - 1) / (cl.myClassifier.objectiveCoverage == -1 ? 100 : cl.myClassifier.objectiveCoverage);
+				
+				cl.myClassifier.formulaForD = (cl.myClassifier.experience < THETA_DEL) ? 1 : 0;
 				
 				
 				
@@ -433,6 +441,17 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 						&& (data.fitness < DELTA * meanPopulationFitness)) ? 1 : 0;*/
 				
 			}
+			
+			else if (DELETION_MODE == DELETION_MODE_E_KOVACS) {
+				
+				if ((cl.myClassifier.experience > THETA_DEL) && (data.fitness < DELTA * meanPopulationFitness)) 
+					data.d = Math.exp(data.ns * meanPopulationFitness / data.fitness) ;
+				else
+					data.d = Math.exp(data.ns);
+				
+				
+				cl.myClassifier.formulaForD = (cl.myClassifier.experience > THETA_DEL) && (data.fitness < DELTA * meanPopulationFitness) ? 1 : 0;
+			}
 		}	
 	}
 	
@@ -448,14 +467,13 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 	public void cover(ClassifierSet population, 
 					    int instanceIndex) {
 		
-		final Classifier coveringClassifier = myLcs
-											  .getClassifierTransformBridge()
+		final Classifier coveringClassifier = myLcs.getClassifierTransformBridge()
 											  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 		
-		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
+		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER);
 		myLcs.numberOfCoversOccured ++ ;
 		population.addClassifier(new Macroclassifier(coveringClassifier, 1), false);
 	}
@@ -464,12 +482,12 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 	private Macroclassifier coverNew( int instanceIndex ) {
 		
 		final Classifier coveringClassifier = myLcs.getClassifierTransformBridge()
-		  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+		  									  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 		
-		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
+		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER);
 		myLcs.numberOfCoversOccured ++ ;
 		return new Macroclassifier(coveringClassifier, 1);
 	}
@@ -546,7 +564,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			}
 			else 
 				if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-				correctSet.addClassifier(cl, false);
+					correctSet.addClassifier(cl, false);
 
 		}
 		
@@ -579,7 +597,10 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		switch (mode) {
 		case COMPARISON_MODE_EXPLORATION:
-			return ((aClassifier.experience < aClassifier.objectiveCoverage * myLcs.instances.length || aClassifier.objectiveCoverage < 0) ? data.fitness / 100/* fitness discount*/: data.fitness);
+			return ((aClassifier.experience < THETA_DEL
+					&& aClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) 
+					? 
+					data.fitness / 100/* fitness discount*/: data.fitness);
 			
 		case COMPARISON_MODE_DELETION:
 			return data.d;
@@ -829,6 +850,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		for (int i = 0; i < numberOfLabels; i++) {
 			CorrectSetsPopulation += labelCorrectSets[i].getNumberOfMacroclassifiers() ;
 		}
+		
 		myLcs.meanCorrectSetNumerosity = CorrectSetsPopulation / numberOfLabels;
 
 		
@@ -841,7 +863,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 
 				final Macroclassifier cl = matchSet.getMacroclassifier(i); // getMacroclassifier => fernei to copy, oxi ton idio ton macroclassifier
 				
-			
+
 				int minCurrentNs = Integer.MAX_VALUE;
 				final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 	
@@ -849,8 +871,6 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 					// Get classification ability for label l. an anikei sto labelCorrectSet me alla logia.
 					final float classificationAbility = cl.myClassifier.classifyLabelCorrectly(instanceIndex, l);
 					final int labelNs = labelCorrectSets[l].getTotalNumerosity();
-					
-					
 
 					if (classificationAbility == 0) {// an proekupse apo adiaforia
 						data.tp += OMEGA;
@@ -871,8 +891,6 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 					}
 					if (classificationAbility != 0) 
 						data.msa += 1;
-					
-					
 				} // kleinei to for gia ka9e label
 	
 				cl.myClassifier.experience++;
@@ -890,9 +908,9 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 				switch (FITNESS_MODE) {
 				
 				case FITNESS_MODE_SIMPLE:
-					data.fitness = Math.pow ((data.tp) / (data.msa), 2 * n);
+					data.fitness = Math.pow ((data.tp) / (data.msa), n);
 					break;
-					
+
 				case FITNESS_MODE_COMPLEX:
 					data.fitness += LEARNING_RATE * (Math.pow((data.tp) / (data.msa), n) - data.fitness);
 					
@@ -903,7 +921,6 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 				updateSubsumption(cl.myClassifier);
 			} // kleinei to for gia ka9e macroclassifier
-
 		}
 		
 		
@@ -945,7 +962,6 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 				
 			} 
 		}
-
 		
 		evolutionTime = 0;
 		
@@ -958,7 +974,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 		if (evolve) {
 			evolutionTime = -System.currentTimeMillis();
-			
+
 			for (int l = 0; l < numberOfLabels; l++) {
 				if (labelCorrectSets[l].getNumberOfMacroclassifiers() > 0) {
 					
@@ -982,8 +998,6 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			}
 			evolutionTime += System.currentTimeMillis();
 		}
-		
-		
 	}	
 	
 	
@@ -1061,6 +1075,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 							minCurrentNs = labelNs;
 						}
 					}
+					
 					if (classificationAbility != 0) 
 						data.msa += 1;
 				} // kleinei to for gia ka9e label
@@ -1080,7 +1095,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 				switch (FITNESS_MODE) {
 				
 				case FITNESS_MODE_SIMPLE:
-					data.fitness = Math.pow((data.tp) / (data.msa), 2 * n);
+					data.fitness = Math.pow((data.tp) / (data.msa), n);
 					break;
 				case FITNESS_MODE_COMPLEX:
 					data.fitness += LEARNING_RATE * (Math.pow((data.tp) / (data.msa), n) - data.fitness);

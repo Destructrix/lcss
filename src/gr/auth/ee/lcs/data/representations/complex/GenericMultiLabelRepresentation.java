@@ -330,8 +330,7 @@ public final class GenericMultiLabelRepresentation extends
 	 * @author Miltos Allamanis
 	 * 
 	 */
-	public final class VotingClassificationStrategy implements
-			IClassificationStrategy {
+	public final class VotingClassificationStrategy implements IClassificationStrategy {
 
 		/**
 		 * The target Label Cardinality we are trying to reach.
@@ -473,10 +472,14 @@ public final class GenericMultiLabelRepresentation extends
 
 			this.voteThreshold = pCut.calibrate((float) myLcs.labelCardinality, confidenceValues);
 
-			System.out.println("Threshold (pcut) set to " + this.voteThreshold);
+			//System.out.println("Threshold (pcut) set to " + this.voteThreshold);
 
 		}
 
+		public double  getThreshold() {
+			return this.voteThreshold;
+		}
+		
 		@Override
 		public void setThreshold(double threshold) {
 			voteThreshold = threshold;

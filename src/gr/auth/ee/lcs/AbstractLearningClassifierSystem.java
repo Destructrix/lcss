@@ -40,6 +40,10 @@ import gr.auth.ee.lcs.classifiers.statistics.WeightedMeanLabelSpecificity;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.data.ILCSMetric;
+import gr.auth.ee.lcs.data.representations.complex.ComplexRepresentation;
+import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation;
+import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation.BestFitnessClassificationStrategy;
+import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation.VotingClassificationStrategy;
 import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm;
 import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
 import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
@@ -173,7 +177,8 @@ public abstract class AbstractLearningClassifierSystem {
 	public Vector<Integer> originOfDeleted = new Vector<Integer>();
 
 	public Vector<Float> 	systemAccuracyInTraining = new Vector<Float>();
-	public Vector<Float> 	systemAccuracyInTesting = new Vector<Float>();
+	public Vector<Float> 	systemAccuracyInTestingWithBest = new Vector<Float>();
+	public Vector<Float> 	systemAccuracyInTestingWithPcut = new Vector<Float>();
 	public Vector<Float> 	systemCoverage = new Vector<Float>();
 
 	
@@ -483,19 +488,28 @@ public abstract class AbstractLearningClassifierSystem {
 	public void harvestAccuracies(int iteration){
 		
 		//double acc = getSystemMultilabelAccuracy();
-		final AccuracyRecallEvaluator testingAccuracy  = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		final AccuracyRecallEvaluator trainingAccuracy = new AccuracyRecallEvaluator(trainSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
+
+		final VotingClassificationStrategy str = ((GenericMultiLabelRepresentation) transformBridge).new VotingClassificationStrategy((float) this.labelCardinality);
+		((GenericMultiLabelRepresentation) transformBridge).setClassificationStrategy(str);
+		str.proportionalCutCalibration(this.instances, rulePopulation);
+		
+		final AccuracyRecallEvaluator testingAccuracyWithPcut  = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
+		
+
 		final MeanCoverageStatistic coverage = new MeanCoverageStatistic();
 
 		double trainAcc = trainingAccuracy.getMetric(this);
-		double testAcc = testingAccuracy.getMetric(this);
+		double testAccPcut = testingAccuracyWithPcut.getMetric(this);
 		double cov = coverage.getMetric(this);
 		
-		/*systemAccuracy[iteration][0] =  testAcc;
-		systemAccuracy[iteration][1] =  trainAcc;*/
+		/*
+		systemAccuracy[iteration][0] =  testAcc;
+		systemAccuracy[iteration][1] =  trainAcc;
+		*/
 		
-		systemAccuracyInTesting.add((float) testAcc);
 		systemAccuracyInTraining.add((float) trainAcc);
+		systemAccuracyInTestingWithPcut.add((float) testAccPcut);
 		systemCoverage.add((float) cov);
 		
 		
@@ -814,6 +828,8 @@ public abstract class AbstractLearningClassifierSystem {
 	public final void printSet() {
 		rulePopulation.print();
 	}
+	
+	
 
 	/**
 	 * Register an evaluator to be called during training.
@@ -978,6 +994,8 @@ public abstract class AbstractLearningClassifierSystem {
 							     final ClassifierSet population, 
 							     final boolean evolve) {
 
+		
+		
 		final int numInstances = instances.length;
 
 		repetition = 0;
