@@ -177,12 +177,11 @@ public abstract class AbstractLearningClassifierSystem {
 	public Vector<Integer> originOfDeleted = new Vector<Integer>();
 
 	public Vector<Float> 	systemAccuracyInTraining = new Vector<Float>();
-	public Vector<Float> 	systemAccuracyInTestingWithBest = new Vector<Float>();
 	public Vector<Float> 	systemAccuracyInTestingWithPcut = new Vector<Float>();
 	public Vector<Float> 	systemCoverage = new Vector<Float>();
 
 	
-
+	public int numberOfClassifiersDeletedInMatchSets;
 	
 	
 	/**
@@ -1135,13 +1134,13 @@ public abstract class AbstractLearningClassifierSystem {
 	
 	private void recordInTimeMeasurements(ClassifierSet population, int index) {
 		
-/*		timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
+		timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
 		timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
 		timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
 		timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
 		timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
 		timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
-		timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;*/
+		timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
 		
 		int numberOfMacroclassifiersCovered = 0;
 		int numberOfClassifiersCovered = 0;
@@ -1244,6 +1243,8 @@ public abstract class AbstractLearningClassifierSystem {
 		timeMeasurements[index][29] = meanPureFitness;
 		timeMeasurements[index][30] = meanCoveredPureFitness;
 		timeMeasurements[index][31] = meanGaedPureFitness;
+		
+		timeMeasurements[index][32] = numberOfClassifiersDeletedInMatchSets;
 
 	}
 	

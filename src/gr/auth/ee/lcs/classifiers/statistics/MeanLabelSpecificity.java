@@ -56,9 +56,9 @@ public class MeanLabelSpecificity implements ILCSMetric {
 	 */
 	@Override
 	public double getMetric(AbstractLearningClassifierSystem lcs) {
+		
 		final ClassifierSet set = lcs.getRulePopulation();
-		final ClassifierTransformBridge bridge = lcs
-				.getClassifierTransformBridge();
+		final ClassifierTransformBridge bridge = lcs.getClassifierTransformBridge();
 
 		final int numberOfAttributes = bridge.getNumberOfAttributes();
 
@@ -67,10 +67,11 @@ public class MeanLabelSpecificity implements ILCSMetric {
 		int specificLabels = 0;
 
 		for (int i = 0; i < numberOfMacroclassifiers; i++) {
+			
 			final Classifier cl = set.getClassifier(i);
 			final int numerosity = set.getClassifierNumerosity(i);
-			for (int l = numberOfAttributes; l < numberOfAttributes
-					+ numOfLabels; l++) {
+			
+			for (int l = numberOfAttributes; l < numberOfAttributes + numOfLabels; l++) {
 				if (bridge.isAttributeSpecific(cl, l)) {
 					specificLabels += numerosity;
 				}

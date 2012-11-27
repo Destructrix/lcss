@@ -438,7 +438,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		try {
 			final FileWriter fstream = new FileWriter(hookedMetricsFileDirectory + "/systemProgress.txt", true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
-			for (int i = 0 ; i < systemAccuracyInTestingWithBest.size(); i++ ){
+			for (int i = 0 ; i < systemAccuracyInTraining.size(); i++ ){
 				buffer.write(
 							+ systemAccuracyInTraining.elementAt(i)
 							+ "		"

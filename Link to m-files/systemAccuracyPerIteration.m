@@ -1,5 +1,5 @@
-data= load("latestMetricFiles/systemProgress.txt");
-data2 = load("latestMetricFiles/measurements.txt");
+data= load("~/latestMetricFiles/systemProgress.txt");
+data2 = load("~/latestMetricFiles/measurements.txt");
 figure;
 plot (data (:,1),"-b; acc during train;");
 hold on;
@@ -7,7 +7,7 @@ plot (data (:,2),"-k; acc during test in pcut;");
 hold on;
 plot (data (:,3) * 10,"-g; mean coverage;");
 grid;
-print -color graphs/systemAccuracy.jpg;
+print -color ~/graphs/systemAccuracy.jpg;
 
 figure;
 
@@ -19,5 +19,5 @@ plot (data2 (:,26),"-r;gaed accuracy;");
 hold on;
 plot (data2 (:,19) / 100,"-g;mean ns;");
 grid;
-print -color graphs/classifiersAccuracy.jpg;
+print -color ~/graphs/classifiersAccuracy.jpg;
 

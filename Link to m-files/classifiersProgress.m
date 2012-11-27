@@ -1,4 +1,4 @@
-data = load("latestMetricFiles/measurements.txt");
+data = load("~/latestMetricFiles/measurements.txt");
 figure;
 plot (data (:,2),"-k;number of macros;");
 hold on;
@@ -16,6 +16,6 @@ plot (data (:,19) , "-r;mean ns;");
 hold on;
 plot (data (:,17), "-k;subsumptions;"); 
 grid;
-print -color graphs/classifiersProgress.jpg;
+print -color ~/graphs/classifiersProgress.jpg;
 
 

@@ -124,8 +124,11 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			mySelector.select(1, aSet, toBeDeleted); // me rouleta
 			Classifier cl = toBeDeleted.getClassifier(0);
 
-			if (cl.formulaForD == 0) aSet.secondDeletionFormula++;
-			else aSet.firstDeletionFormula++;
+			
+			if (cl.formulaForD == 1)
+				aSet.firstDeletionFormula++;
+			else if (cl.formulaForD == 0) 
+				aSet.secondDeletionFormula++;
 			
 			if (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER || (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT))
 				aSet.coveredDeleted++;

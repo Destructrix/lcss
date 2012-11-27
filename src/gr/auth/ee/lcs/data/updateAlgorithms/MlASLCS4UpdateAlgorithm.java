@@ -33,6 +33,7 @@ import gr.auth.ee.lcs.classifiers.statistics.MeanCoverageStatistic;
 import gr.auth.ee.lcs.classifiers.statistics.MeanFitnessStatistic;
 import gr.auth.ee.lcs.classifiers.statistics.MeanNicheSizeStatistic;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
+import gr.auth.ee.lcs.data.ClassifierTransformBridge;
 import gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
@@ -252,6 +253,17 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 	
 	public long deletionTime;
 	
+	
+	/**
+	 *  holds the classifiers' indices in the match set with the lowest coverage. used when deleting from [M]
+	 * */
+	private Vector <Integer> indicesInMatchSetWithLowestCoverage;
+	
+	private Vector <Integer> indicesInMatchSetWithLowestFitness;
+	
+
+
+
 
 	/**
 	 * Constructor.
@@ -283,6 +295,11 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		n = nParameter;
 		ga = geneticAlgorithm;
 		
+		indicesInMatchSetWithLowestCoverage = new Vector <Integer>();
+		indicesInMatchSetWithLowestFitness = new Vector <Integer>();
+		
+
+		
 		/*DELETION_MODE = (int) SettingsLoader.getNumericSetting("DELETION_MODE", 0);
 		FITNESS_MODE = (int) SettingsLoader.getNumericSetting("FITNESS_MODE", 0);
 		wildCardsParticipateInCorrectSets = SettingsLoader.getStringSetting("wildCardsParticipateInCorrectSets", "true").equals("true");*/
@@ -291,6 +308,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		System.out.println("fitness mode: " + FITNESS_MODE);
 		System.out.println("deletion mode: " + DELETION_MODE);
 		System.out.println("update mode: " + UPDATE_MODE);
+		System.out.println("update algorithm: " + 4);
 		System.out.print("# => [C] " + wildCardsParticipateInCorrectSets);
 		if (wildCardsParticipateInCorrectSets) 
 			System.out.println(", balance [C]: " + balanceCorrectSets + "\n");
@@ -307,7 +325,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 	 * @param aSet
 	 * 			the classifierset of which the classifiers' deletion probabilities we will compute
 	 * */
-	
+	@Override
 	public void computeDeletionProbabilities (ClassifierSet aSet) {
 
 		
@@ -376,17 +394,25 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 /*				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
 							: Math.exp(-data.ns + 1)));
 							
-				cl.myClassifier.formulaForD = (cl.myClassifier.experience > THETA_DEL) ? 1 : 0;
+				cl.myClassifier.formulaForD = (cl.myClassifier.experience < THETA_DEL) ? 1 : 0;*/
 
+				if (cl.myClassifier.experience < THETA_DEL){
+					data.d = Math.exp(1 / data.fitness);
+					cl.myClassifier.formulaForD = 1;
+				}
+				else {
+					data.d = Math.exp(data.ns - 1) / data.fitness;
+					cl.myClassifier.formulaForD = 0;
+				}
+						
 
-*/
 				
-				if (cl.myClassifier.experience < THETA_DEL)
+/*				if (cl.myClassifier.experience < THETA_DEL)
 					data.d = 1 / (100.0 * data.fitness);
 				else
 					data.d = Math.exp(data.ns / data.fitness - 1) / (cl.myClassifier.objectiveCoverage == -1 ? 100 : cl.myClassifier.objectiveCoverage);
 				
-				cl.myClassifier.formulaForD = (cl.myClassifier.experience < THETA_DEL) ? 1 : 0;
+				cl.myClassifier.formulaForD = (cl.myClassifier.experience < THETA_DEL) ? 1 : 0;*/
 				
 				
 				
@@ -455,6 +481,97 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		}	
 	}
 	
+	
+	
+	
+	private void controlPopulationInMatchSet(final ClassifierSet population, final ClassifierSet matchSet) {
+		
+		
+		double lowestCoverage = Double.MAX_VALUE;
+		
+		for (int i = 0; i < matchSet.getNumberOfMacroclassifiers(); i++) {
+			
+			final Classifier cl = matchSet.getClassifier(i);
+			if (cl.objectiveCoverage > 0 && cl.objectiveCoverage <= lowestCoverage) { // CL.getcoverage?
+				
+				if (cl.objectiveCoverage != lowestCoverage) {
+					indicesInMatchSetWithLowestCoverage.clear();
+				}
+				
+				lowestCoverage = cl.objectiveCoverage;
+				indicesInMatchSetWithLowestCoverage.add(i);
+			}
+		}
+		// edo exoume parei autous pou exoun to mikrotero coverage
+		
+		
+		if (indicesInMatchSetWithLowestCoverage.size() > 1) {
+
+			double lowestFitness = Double.MAX_VALUE;
+			
+			for (int i = 0; i < indicesInMatchSetWithLowestCoverage.size(); i++) {
+				
+				final Macroclassifier macro = matchSet.getMacroclassifier(indicesInMatchSetWithLowestCoverage.elementAt(i));
+				final Classifier cl = macro.myClassifier;
+				final double fitness = cl.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS);
+
+				if (fitness <= lowestFitness) {
+					
+					if (fitness != lowestFitness) {
+						indicesInMatchSetWithLowestFitness.clear();
+					}
+					
+					lowestFitness = fitness;
+					indicesInMatchSetWithLowestFitness.add(indicesInMatchSetWithLowestCoverage.elementAt(i));
+
+					//toBeDeleted = indicesInMatchSetWithLowestCoverage.elementAt(i)
+				}
+			}
+			// edo exoume parei auton pou exei to xamilotero fitness. omos, borei na uparxoun parapano apo enas me to xamilotero fitness
+			// 9a broume sti sunexeia autous pou exoun tis perissoteres adiafories sta labels
+			
+			if (indicesInMatchSetWithLowestFitness.size() > 1) {
+				
+					double largestNs = -1;
+					int toBeDeletedIndex = -1;
+					for (int i = 0; i < indicesInMatchSetWithLowestFitness.size(); i++) {
+						
+						final Macroclassifier macro = matchSet.getMacroclassifier(indicesInMatchSetWithLowestFitness.elementAt(i));
+						final Classifier cl = macro.myClassifier;
+						final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.getUpdateDataObject();
+						
+						if (data.ns >= largestNs) {
+							toBeDeletedIndex = indicesInMatchSetWithLowestFitness.elementAt(i);
+							largestNs = data.ns;
+						}
+					}
+					if (largestNs > 0) {
+						population.deleteClassifier(matchSet.getMacroclassifier(toBeDeletedIndex).myClassifier);
+						myLcs.numberOfClassifiersDeletedInMatchSets++;
+					}
+				
+				
+
+
+				
+			}
+			else if (indicesInMatchSetWithLowestFitness.size() == 1) {
+					population.deleteClassifier(matchSet.getMacroclassifier(indicesInMatchSetWithLowestFitness.elementAt(0)).myClassifier);
+					myLcs.numberOfClassifiersDeletedInMatchSets++;
+	
+			}
+		}
+/*		else if (indicesInMatchSetWithLowestCoverage.size() == 1) {
+			population.deleteClassifier(matchSet.getMacroclassifier(indicesInMatchSetWithLowestCoverage.elementAt(0)).myClassifier);
+			myLcs.numberOfClassifiersDeletedInMatchSets++;
+		}*/
+			
+		
+		
+		indicesInMatchSetWithLowestCoverage.clear();
+		indicesInMatchSetWithLowestFitness.clear();
+
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -597,11 +714,10 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		switch (mode) {
 		case COMPARISON_MODE_EXPLORATION:
-			return ((aClassifier.experience < THETA_DEL
-					&& aClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) 
-					? 
-					data.fitness / 100/* fitness discount*/: data.fitness);
-			
+			//return aClassifier.objectiveCoverage < 0 ? 0 : data.fitness;
+			//return aClassifier.objectiveCoverage < 0 ? 0 : (aClassifier.experience < aClassifier.objectiveCoverage * myLcs.instances.length * 2 ? data.fitness / 10 : data.fitness);
+
+			return aClassifier.experience < THETA_DEL ? 0 : data.fitness;
 		case COMPARISON_MODE_DELETION:
 			return data.d;
 		
@@ -1009,6 +1125,10 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 							   ClassifierSet matchSet,
 							   int instanceIndex, 
 							   boolean evolve) {
+		
+		
+		controlPopulationInMatchSet(population, matchSet);
+		
 		
 		// Create all label correct sets
 		final ClassifierSet[] labelCorrectSets = new ClassifierSet[numberOfLabels];

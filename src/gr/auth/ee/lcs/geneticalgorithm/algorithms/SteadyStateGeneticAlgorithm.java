@@ -501,7 +501,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
 			Classifier child;
 			// produce a child
-			if (Math.random() < crossoverRate && parentA != parentB) {
+			if (Math.random() < crossoverRate && !parentA.equals(parentB)) {
 				
 				// chromosome size = number of attributes + the label under which the correct set is formed
 				final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
@@ -524,7 +524,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			child.inheritParametersFromParents(parentA, parentB);
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
 			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
-			
+			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+
 			child.created = myLcs.totalRepetition;
 			
 			long time1 = -System.currentTimeMillis();

@@ -288,6 +288,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		System.out.println("fitness mode: " + FITNESS_MODE);
 		System.out.println("deletion mode: " + DELETION_MODE);
 		System.out.println("update mode: " + UPDATE_MODE);
+		System.out.println("update algorithm: " + 3);
 		System.out.print("# => [C] " + wildCardsParticipateInCorrectSets);
 		if (wildCardsParticipateInCorrectSets) 
 			System.out.println(", balance [C]: " + balanceCorrectSets + "\n");
@@ -304,7 +305,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 * @param aSet
 	 * 			the classifierset of which the classifiers' deletion probabilities we will compute
 	 * */
-	
+	@Override
 	public void computeDeletionProbabilities (ClassifierSet aSet) {
 
 		
@@ -360,7 +361,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
 							: Math.exp(-data.ns  + 1)) );
 				
-				cl.myClassifier.formulaForD = (cl.myClassifier.experience > THETA_DEL) ? 1 : 0;
+				cl.myClassifier.formulaForD = (cl.myClassifier.experience < THETA_DEL) ? 1 : 0;
 				
 				
 /*				if (cl.myClassifier.experience > THETA_DEL && (data.fitness < DELTA * meanPopulationFitness)) 
@@ -783,7 +784,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		myLcs.meanCorrectSetNumerosity = CorrectSetsPopulation / numberOfLabels;
 
 		
-		for (int i = 0; i < numberOfLabels; i++) {
+/*		for (int i = 0; i < numberOfLabels; i++) {
 			int numberOfRulesThatDontCare = 0;
 			for (int j = 0; j < labelCorrectSets[i].getNumberOfMacroclassifiers(); j++) {
 				
@@ -796,7 +797,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			if (numberOfRulesThatDontCare == labelCorrectSets[i].getNumberOfMacroclassifiers())
 				System.out.println("all dont care");
-		}
+		}*/
 		
 		
 		final int matchSetSize = matchSet.getNumberOfMacroclassifiers();

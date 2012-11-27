@@ -1191,8 +1191,10 @@ public class ClassifierSet implements Serializable {
 /*		if (numberOfFinalClassifiersNotSeenTheWholePicture > 0)
 			System.out.println(numberOfFinalClassifiersNotSeenTheWholePicture + " rules not seen the entire dataset even once");*/
 		
-		meanNs /= this.getNumberOfMacroclassifiers();
-		meanAcc /= this.getTotalNumerosity();
+		if (this.getNumberOfMacroclassifiers() > 0) {
+			meanNs /= this.getNumberOfMacroclassifiers();
+			meanAcc /= this.getTotalNumerosity();
+		}
 		
         DecimalFormat df = new DecimalFormat("#.####");
 
@@ -1219,7 +1221,7 @@ public class ClassifierSet implements Serializable {
 					+ "|"
 					+ "exp:|" + myMacroclassifiers.elementAt(i).myClassifier.experience  
 					+ "|"
-					+ "cov:|" + df.format(100 * myMacroclassifiers.elementAt(i).myClassifier.objectiveCoverage) + "%" 
+					+ "cov:|" + (int) (myMacroclassifiers.elementAt(i).myClassifier.objectiveCoverage * myMacroclassifiers.elementAt(i).myClassifier.getLCS().instances.length)
 					+ "|");
 			
 			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
@@ -1262,22 +1264,17 @@ public class ClassifierSet implements Serializable {
 		System.out.println("Classifiers in population init-ed: " 	+ (int) numOfInit);
 		System.out.println();
 		
-		System.out.println("% covered: " 									+ df.format(100 * (numOfCover / this.getNumberOfMacroclassifiers())) + " %");
-		System.out.println("covered.acc: " +  (Double.isNaN(accuracyOfCovered / numOfCover) ? 0 : accuracyOfCovered / coveredTotalNumerosity /*(numOfCover + numOfInit)*/));
-		System.out.println("% ga-ed:   " 									+ df.format(100 * (numOfGA / this.getNumberOfMacroclassifiers())) + " %");
-		System.out.println("gaed.acc: " +  (Double.isNaN(accuracyOfGa/ numOfCover) ? 0 : accuracyOfGa / gaedTotalNumerosity/*numOfGA*/));
-		System.out.println();
-
-		System.out.println("% init-ed: " 									+ df.format(100 * (numOfInit / this.getNumberOfMacroclassifiers())) + " %");
+		System.out.println("Accuracy of covered: " +  (Double.isNaN(accuracyOfCovered / numOfCover) ? 0 : accuracyOfCovered / coveredTotalNumerosity /*(numOfCover + numOfInit)*/));
+		System.out.println("Accuracy of gaed:    " +  (Double.isNaN(accuracyOfGa/ numOfCover) ? 0 : accuracyOfGa / gaedTotalNumerosity/*numOfGA*/));
 		System.out.println();
 
 		
 		System.out.println("Mean ns:   " + meanNs);
-		System.out.println("Mean acc:   " + meanAcc);
+		System.out.println("Mean pure accuracy:   " + meanAcc);
 		
-		System.out.println("Total ga invocations: " 						+ this.totalGAInvocations);
+		System.out.println("ga invocations: " 						+ this.totalGAInvocations);
 
-		System.out.println("Total subsumptions: " + numOfSubsumptions + "\n");
+		System.out.println("Subsumptions: " + numOfSubsumptions + "\n");
 		//System.out.println("Total number of epochs:" + this.getClassifier(this.getNumberOfMacroclassifiers() - 1).timestamp);
 
 

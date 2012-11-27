@@ -34,6 +34,7 @@ import gr.auth.ee.lcs.utilities.InstancesUtility;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -99,10 +100,13 @@ public class FoldEvaluator {
 			this.metricOptimizationIndex = metricOptimizationIndex;
 			this.i = nFold;
 			this.numOfFoldRepetitions = numOfFoldRepetitions;
+			createStaticFolds();
 		}
 
 		@Override
 		public void run() {
+			
+			
 			
 			// mark commencement time in console
 			final Calendar cal = Calendar.getInstance();
@@ -119,7 +123,12 @@ public class FoldEvaluator {
 				
 				System.out.println("Training Fold " + i);
 				
-				loadMlStratifiedFold(i, foldLCS);
+				//loadMlStratifiedFold(i, foldLCS);
+				try {
+					loadStaticMlStratifiedFold(i, foldLCS);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				
 				//loadFold(i, foldLCS); // mou dinei to trainSet kai to testSet
 				
@@ -241,23 +250,107 @@ public class FoldEvaluator {
 			
 			trainSet = trainInstances;
 			trainSet.randomize(new Random());
-
-			lcs.instances = InstancesUtility.convertIntancesToDouble(trainSet);
-			lcs.testInstances = InstancesUtility.convertIntancesToDouble(testSet);
-
 			
 			testSet = testInstances;
 			testSet.randomize(new Random());
+
+			lcs.instances = InstancesUtility.convertIntancesToDouble(trainSet);
+			lcs.testInstances = InstancesUtility.convertIntancesToDouble(testSet);
 			
+
 			lcs.trainSet = trainSet;
 			lcs.testSet = testSet;
 
 			lcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
 			
 
-
 		}
+		
+		
+		
+		private void createStaticFolds() {
+			
+			// create directory dataset.arff without the .arff
+			File dir = new File(file.substring(0, (file.length() - 5))); 
+			if (!dir.exists()) {
+			  dir.mkdirs();
+			
+			
+				for (int foldNumber = 0; foldNumber < numOfFolds; foldNumber++) {
+					Instances trainInstances = new Instances (instances, 0);
+					Instances testInstances = new Instances (instances, 0);
+	
+					int numberOfPartitions = InstancesUtility.testInstances.size() / 2;
+					
+					for (int i = 0; i < numberOfPartitions; i++) {
+						for (int j = 0; j < InstancesUtility.testInstances.elementAt(i)[foldNumber].numInstances(); j++) {
+							testInstances.add(InstancesUtility.testInstances.elementAt(i)[foldNumber].instance(j));
+							
+						}
+						for (int j = 0; j < InstancesUtility.trainInstances.elementAt(i)[foldNumber].numInstances(); j++) {
+							trainInstances.add(InstancesUtility.trainInstances.elementAt(i)[foldNumber].instance(j));
+							
+						}
+						
+					}
+					
+					
+					trainInstances.randomize(new Random());
+					testInstances.randomize(new Random());
+					
+					try{	
+						final FileWriter fstream_train = new FileWriter(dir + "/train_" + foldNumber + ".arff", false);
+						final BufferedWriter buffer_train = new BufferedWriter(fstream_train);
+						buffer_train.write(trainInstances.toString());				
+
+						buffer_train.write("");
+						buffer_train.flush();
+						buffer_train.close();
+					} 
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					try {
+						final FileWriter fstream_test = new FileWriter(dir + "/test_" + foldNumber + ".arff", true);
+						final BufferedWriter buffer_test = new BufferedWriter(fstream_test);
+						buffer_test.write(testInstances.toString());				
+						buffer_test.flush();
+						buffer_test.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+		
+		
+		private void loadStaticMlStratifiedFold(int foldNumber,
+				AbstractLearningClassifierSystem lcs) throws IOException {
+			
+			final String staticFoldsDirectory = file.substring(0, (file.length() - 5));
+			
+			trainSet = InstancesUtility.openInstance(staticFoldsDirectory + "/train_" + foldNumber + ".arff");;
+			testSet = InstancesUtility.openInstance(staticFoldsDirectory + "/test_" + foldNumber + ".arff");;
+
+
+			lcs.instances = InstancesUtility.convertIntancesToDouble(trainSet);
+			lcs.testInstances = InstancesUtility.convertIntancesToDouble(testSet);
+
+			
+			//testSet = testInstances;
+			
+			
+			lcs.trainSet = trainSet;
+			lcs.testSet = testSet;
+
+			lcs.labelCardinality = InstancesUtility.getLabelCardinality(trainSet);
+		}
+		
 	}
+	
+	
 
 	/**
 	 * The number of folds to separate the dataset.
