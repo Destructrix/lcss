@@ -156,9 +156,9 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 		int indexB = -1;
 		
 		for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++){
-			if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getSerial() == parentA.getSerial()) 
+			if (population.getMacroclassifiersVector().get(i).myClassifier.getSerial() == parentA.getSerial()) 
 				indexA = i;
-			if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getSerial() == parentB.getSerial()) 
+			if (population.getMacroclassifiersVector().get(i).myClassifier.getSerial() == parentB.getSerial()) 
 				indexB = i;
 		}
 
@@ -222,8 +222,8 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 		}	
 		
 		if (subsumer != null) {
-				population.getMacroclassifiersVector().elementAt(index).numerosity++;
-				population.getMacroclassifiersVector().elementAt(index).numberOfSubsumptions++;
+				population.getMacroclassifiersVector().get(index).numerosity++;
+				population.getMacroclassifiersVector().get(index).numberOfSubsumptions++;
 				population.totalNumerosity++;
 				theControlStrategy.controlPopulation(population);
 				return true;
@@ -246,9 +246,9 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 		int indexB = -1;
 		
 		for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++){
-			if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getSerial() == parentA.getSerial()) 
+			if (population.getMacroclassifiersVector().get(i).myClassifier.getSerial() == parentA.getSerial()) 
 				indexA = i;
-			if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getSerial() == parentB.getSerial()) 
+			if (population.getMacroclassifiersVector().get(i).myClassifier.getSerial() == parentB.getSerial()) 
 				indexB = i;
 		}
 

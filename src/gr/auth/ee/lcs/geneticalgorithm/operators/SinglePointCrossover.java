@@ -27,6 +27,8 @@ import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.geneticalgorithm.IBinaryGeneticOperator;
 import gr.auth.ee.lcs.utilities.ExtendedBitSet;
 
+import edu.rit.util.Random;
+
 /**
  * A binary genetic operator that performs gene crossover at a single point.
  * 
@@ -40,6 +42,8 @@ public class SinglePointCrossover implements IBinaryGeneticOperator {
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
 	final AbstractLearningClassifierSystem myLcs;
+	
+	static AbstractLearningClassifierSystem myLcsSmp;
 
 	/**
 	 * Constructor.
@@ -81,6 +85,10 @@ public class SinglePointCrossover implements IBinaryGeneticOperator {
 		// TODO: Set specific update data
 		return child;
 	}
+	
+
+	
+	
 
 	/**
 	 * A protected function that performs a single point crossover.

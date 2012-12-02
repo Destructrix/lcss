@@ -23,7 +23,10 @@ package gr.auth.ee.lcs.geneticalgorithm;
 
 import java.util.Vector;
 
+import edu.rit.util.Random;
+
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
+import gr.auth.ee.lcs.geneticalgorithm.algorithms.SteadyStateGeneticAlgorithm.EvolutionOutcome;
 
 /**
  * An interface for evolving a set.
@@ -71,6 +74,14 @@ public interface IGeneticAlgorithmStrategy {
 	int getNumberOfDeletionsConducted();
 	
 	long getDeletionTime();
+
+	void evolveSetSmp(ClassifierSet evolveSet, ClassifierSet population, int label);
+
+	EvolutionOutcome evolveSetNewOneLabelSmp(ClassifierSet evolveSet,
+			ClassifierSet population, int label);
+
+	EvolutionOutcome evolveSetNewSmp(ClassifierSet evolveSet,
+			ClassifierSet population, Random prng, int label);
 	
 	
 }

@@ -3,6 +3,7 @@
  */
 package gr.auth.ee.lcs.distributed.distributers;
 
+import edu.rit.util.Random;
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.distributed.AbstractRuleDistributer;
@@ -25,6 +26,39 @@ public class SimpleRuleDistributer extends AbstractRuleDistributer {
 		public void select(int howManyToSelect, ClassifierSet fromPopulation,
 				ClassifierSet toPopulation) {
 			toPopulation.merge(fromPopulation);
+		}
+
+		@Override
+		public void selectWithoutSum(int i, ClassifierSet evolveSet,
+				ClassifierSet parents) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void computeFitnessSum(ClassifierSet evolveSet) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public double computeFitnessSumNew(ClassifierSet evolveSet) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void selectWithoutSumNew(int i, ClassifierSet evolveSet,
+				ClassifierSet parents, double fitnessSumLocal) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void selectWithoutSumNewSmp(int i, ClassifierSet evolveSet,
+				ClassifierSet parents, double fitnessSum, Random prng) {
+			// TODO Auto-generated method stub
+			
 		}
 
 	};

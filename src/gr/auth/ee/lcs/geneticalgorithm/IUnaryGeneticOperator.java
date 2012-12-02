@@ -21,6 +21,7 @@
  */
 package gr.auth.ee.lcs.geneticalgorithm;
 
+import edu.rit.util.Random;
 import gr.auth.ee.lcs.classifiers.Classifier;
 
 /**
@@ -39,5 +40,7 @@ public interface IUnaryGeneticOperator {
 	 * @return the new genetic operator
 	 */
 	Classifier operate(Classifier aClassifier);
+
+	Classifier operateSmp(Classifier child, Random prng);
 
 }

@@ -31,6 +31,7 @@ import gr.auth.ee.lcs.data.ILCSMetric;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation.VotingClassificationStrategy;
 import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm;
+import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm.EvolutionTimeMeasurements;
 import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS4UpdateAlgorithm;
 import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
 import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
@@ -48,6 +49,7 @@ import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Vector;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
@@ -160,6 +162,30 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	
 	private String zeroCoverageFile;
 	
+	long accEvalTime1;
+	long recEvalTime1;
+	long hamEvalTime1;
+	long testEvalTime1;
+	
+	long accEvalTime2;
+	long recEvalTime2;
+	long hamEvalTime2;
+	long testEvalTime2;
+	
+	long accEvalTime3;
+	long recEvalTime3;
+	long hamEvalTime3;
+	long testEvalTime3;
+	
+	long bestClassificationModeTime;
+	long proportionalCutCalibrationTime;
+	long internalValidationCalibrationTime;
+	
+	long getConfidenceArrayTime;
+	long calibrateTime;
+	
+
+	
 	
 	/**
 	 * Constructor.
@@ -171,7 +197,16 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		inputFile = SettingsLoader.getStringSetting("filename", "");
 		numberOfLabels = (int) SettingsLoader.getNumericSetting("numberOfLabels", 1);
 		iterations = (int) SettingsLoader.getNumericSetting("trainIterations",1000);
-		populationSize = (int) SettingsLoader.getNumericSetting("populationSize", 1000);
+		populationSize = (int) SettingsLoader.getNumericSetting("populationSize", 1500);
+		
+		Runtime runtime = Runtime.getRuntime();
+		int numOfProcessors = runtime.availableProcessors();
+		
+		
+		/*
+		 * dhmiourgia array gia pollapla antikeimena operators
+		 */
+		
 		
 
 
@@ -291,20 +326,35 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		final double[] results = new double[12];
 		Arrays.fill(results, 0);
 
+		proportionalCutCalibrationTime = -System.currentTimeMillis();
 		final VotingClassificationStrategy pcut = proportionalCutCalibration();
+		proportionalCutCalibrationTime += System.currentTimeMillis();
+		
 		System.out.println("Threshold (pcut) set to " + pcut.getThreshold());
 		
+		
+		
+		accEvalTime1 = -System.currentTimeMillis();
 		final AccuracyRecallEvaluator accEval = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		results[0] = accEval.getMetric(this);
+		accEvalTime1 += System.currentTimeMillis();
 
+
+		recEvalTime1 = -System.currentTimeMillis();
 		final AccuracyRecallEvaluator recEval = new AccuracyRecallEvaluator(testSet, false, this, AccuracyRecallEvaluator.TYPE_RECALL);
 		results[1] = recEval.getMetric(this);
+		recEvalTime1 += System.currentTimeMillis();
 
+
+		hamEvalTime1 = -System.currentTimeMillis();
 		final HammingLossEvaluator hamEval = new HammingLossEvaluator(testSet, false, numberOfLabels, this);
 		results[2] = hamEval.getMetric(this);
+		hamEvalTime1 += System.currentTimeMillis();
 
+		testEvalTime1 = -System.currentTimeMillis();
 		final ExactMatchEvalutor testEval = new ExactMatchEvalutor(testSet, false, this);
 		results[3] = testEval.getMetric(this);
+		testEvalTime1 += System.currentTimeMillis();
 		
 		
 		
@@ -313,19 +363,112 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		 * */
 		final AccuracyRecallEvaluator selfAcc = new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		
+		testEvalTime1 += System.currentTimeMillis();	
 		internalValidationCalibration(selfAcc);
+		internalValidationCalibrationTime += System.currentTimeMillis();
 
+		accEvalTime2 = -System.currentTimeMillis();
 		results[4] = accEval.getMetric(this);
+		accEvalTime2 += System.currentTimeMillis();
+
+		recEvalTime2 = -System.currentTimeMillis();
 		results[5] = recEval.getMetric(this);
+		recEvalTime2 += System.currentTimeMillis();
+		
+		hamEvalTime2 = -System.currentTimeMillis();
 		results[6] = hamEval.getMetric(this);
+		hamEvalTime2 += System.currentTimeMillis();
+		
+		testEvalTime2 = -System.currentTimeMillis();		
 		results[7] = testEval.getMetric(this);
+		testEvalTime2 += System.currentTimeMillis();
 
+
+		bestClassificationModeTime = -System.currentTimeMillis();
 		useBestClassificationMode();
+		bestClassificationModeTime += System.currentTimeMillis();
+		
 
+		accEvalTime3 = -System.currentTimeMillis();
 		results[8] = accEval.getMetric(this);
+		accEvalTime3 += System.currentTimeMillis();
+		
+		recEvalTime3 = -System.currentTimeMillis();
 		results[9] = recEval.getMetric(this);
+		recEvalTime3 += System.currentTimeMillis();
+		
+		hamEvalTime3 = -System.currentTimeMillis();
 		results[10] = hamEval.getMetric(this);
+		hamEvalTime3 += System.currentTimeMillis();
+		
+		testEvalTime3 = -System.currentTimeMillis();
 		results[11] = testEval.getMetric(this);
+		testEvalTime3 += System.currentTimeMillis();
+		
+		String testTimes = this.hookedMetricsFileDirectory + "/testTimes.txt";
+		
+		
+		try {
+			final FileWriter fstream = new FileWriter(testTimes, false);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			buffer.write("");
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		try {
+			final FileWriter fstream = new FileWriter(testTimes, true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			
+			buffer.write(String.valueOf(proportionalCutCalibrationTime));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(getConfidenceArrayTime));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(calibrateTime));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(accEvalTime1));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(recEvalTime1));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(hamEvalTime1));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(testEvalTime1));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(System.getProperty("line.separator"));
+			
+			buffer.write(String.valueOf(internalValidationCalibrationTime));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(accEvalTime2));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(recEvalTime2));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(hamEvalTime2));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(testEvalTime2));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(System.getProperty("line.separator"));
+			
+			buffer.write(String.valueOf(bestClassificationModeTime));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(accEvalTime3));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(recEvalTime3));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(hamEvalTime3));
+			buffer.write(System.getProperty("line.separator"));
+			buffer.write(String.valueOf(testEvalTime3));
+			buffer.write(System.getProperty("line.separator"));
+			
+			buffer.flush();
+			buffer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		
 		/*ara en telei exoume: results[] =
@@ -360,6 +503,9 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 
 		str.proportionalCutCalibration(this.instances, rulePopulation);
 		
+		getConfidenceArrayTime = str.getConfidenceArrayTime;
+		calibrateTime = str.calibrateTime;
+		
 		return str;
 	}
 
@@ -370,7 +516,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	@Override
 	public void train() {
 		
-		timeMeasurements =  new double[(iterations + (int)(iterations * UPDATE_ONLY_ITERATION_PERCENTAGE)) * instances.length][35];
+		timeMeasurements =  new double[(iterations + (int)(iterations * UPDATE_ONLY_ITERATION_PERCENTAGE)) * instances.length][45];
 		
 		trainSet(iterations, rulePopulation);
 		
@@ -382,6 +528,13 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		deletionsFile = this.hookedMetricsFileDirectory + "/deletions.txt";
 		zeroCoverageFile = this.hookedMetricsFileDirectory + "/zeroCoverage.txt";
 
+		
+		String etm0 = this.hookedMetricsFileDirectory + "/etm0.txt";
+		String etm1 = this.hookedMetricsFileDirectory + "/etm1.txt";
+				
+		Vector<EvolutionTimeMeasurements> measurements0 = MlASLCS3UpdateAlgorithm.measurements0;
+		Vector<EvolutionTimeMeasurements> measurements1 = MlASLCS3UpdateAlgorithm.measurements1;
+		
 		
 		try {
 			final FileWriter fstream = new FileWriter(timeMeasurementsFile, false);
@@ -486,7 +639,10 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 			e.printStackTrace();
 		}
 		
+		
+		
 		try {
+			
 			final FileWriter fstream = new FileWriter(hookedMetricsFileDirectory + "/zeroCoverage.txt", true);
 			final BufferedWriter buffer = new BufferedWriter(fstream);
 			for (int i = 0 ; i < rulePopulation.zeroCoverageVector.size(); i++ ){
@@ -498,11 +654,72 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 			}
 			buffer.flush();
 			buffer.close();
+		} 
+		
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+				
+		try {
+			final FileWriter fstream = new FileWriter(etm0, false);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			buffer.write("");
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			final FileWriter fstream = new FileWriter(etm0, true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			for (int i = 0 ; i < measurements0.size(); i++ ){
+				buffer.write( String.valueOf(measurements0.elementAt(i).timeA) + "   ");
+				buffer.write( String.valueOf(measurements0.elementAt(i).timeB) + "   ");
+				buffer.write( String.valueOf(measurements0.elementAt(i).timeC) + "   ");
+				buffer.write( String.valueOf(measurements0.elementAt(i).timeD) + "   ");
+				buffer.write(System.getProperty("line.separator"));
+			}
+			buffer.flush();
+			buffer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			final FileWriter fstream = new FileWriter(etm1, false);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			buffer.write("");
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			final FileWriter fstream = new FileWriter(etm1, true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			for (int i = 0 ; i < measurements0.size(); i++ ){
+				buffer.write( String.valueOf(measurements1.elementAt(i).timeA) + "   ");
+				buffer.write( String.valueOf(measurements1.elementAt(i).timeB) + "   ");
+				buffer.write( String.valueOf(measurements1.elementAt(i).timeC) + "   ");
+				buffer.write( String.valueOf(measurements1.elementAt(i).timeD) + "   ");
+				buffer.write(System.getProperty("line.separator"));
+			}
+			buffer.flush();
+			buffer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 
 	}
+	
+	
 
 	public void useBestClassificationMode() {
 		rep.setClassificationStrategy(rep.new BestFitnessClassificationStrategy());

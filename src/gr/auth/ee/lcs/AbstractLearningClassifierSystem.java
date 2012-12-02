@@ -45,6 +45,7 @@ import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentati
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation.BestFitnessClassificationStrategy;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation.VotingClassificationStrategy;
 import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm;
+import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS4UpdateAlgorithm;
 import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
 import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
 import gr.auth.ee.lcs.evaluators.FileLogger;
@@ -130,7 +131,7 @@ public abstract class AbstractLearningClassifierSystem {
 	 * @uml.property  name="updateStrategy"
 	 * @uml.associationEnd  
 	 */
-	private AbstractUpdateStrategy updateStrategy;
+	protected AbstractUpdateStrategy updateStrategy;
 
 	/**
 	 * The rule population.
@@ -199,6 +200,9 @@ public abstract class AbstractLearningClassifierSystem {
 	
 	private Instances inst;
 	
+	public final int iterations;
+	
+	
 	//public ClassifierSet blacklist;
 	/**
 	 * Constructor.
@@ -213,10 +217,14 @@ public abstract class AbstractLearningClassifierSystem {
 		hooks = new Vector<ILCSMetric>();
 		hookCallbackRate = (int) SettingsLoader.getNumericSetting("callbackRate", 100);
 		smp = SettingsLoader.getStringSetting("SMP_run", "false").contains("true") ? true : false;
+		iterations = (int) SettingsLoader.getNumericSetting("trainIterations",1000);
 		
 		//blacklist = new ClassifierSet(null);
 		
-		
+		if (smp)
+			System.out.println("smp : true");
+		else
+			System.out.println("smp : false");
 		
 	}
 	
@@ -233,16 +241,16 @@ public abstract class AbstractLearningClassifierSystem {
 					Vector<Float> 	fitnessOfDuplicates    = new Vector<Float>();
 					Vector<Integer> experienceOfDuplicates = new Vector<Integer>();
 
-					final Classifier aClassifier = rulePopulation.getMacroclassifiersVector().elementAt(j).myClassifier;
+					final Classifier aClassifier = rulePopulation.getMacroclassifiersVector().get(j).myClassifier;
 					
 					for (int i = rulePopulation.getNumberOfMacroclassifiers() - 1; i >= 0 ; i--) {
 					//for (int i = 0; i < rulePopulation.getNumberOfMacroclassifiers(); i++) {
 
-						Classifier theClassifier = rulePopulation.getMacroclassifiersVector().elementAt(i).myClassifier;
+						Classifier theClassifier = rulePopulation.getMacroclassifiersVector().get(i).myClassifier;
 						
 						if (theClassifier.equals(aClassifier)) { 
 							indicesOfDuplicates.add(i);
-							float theClassifierFitness = (float) (rulePopulation.getMacroclassifiersVector().elementAt(i).numerosity 
+							float theClassifierFitness = (float) (rulePopulation.getMacroclassifiersVector().get(i).numerosity 
 									* getUpdateStrategy().getComparisonValue(theClassifier, AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 							fitnessOfDuplicates.add(theClassifierFitness);
 							experienceOfDuplicates.add(theClassifier.experience);
@@ -275,10 +283,10 @@ public abstract class AbstractLearningClassifierSystem {
 						for (int k = 0; k < indicesOfDuplicates.size() ; k++) {
 
 							if (k != indexOfSurvivor) {
-								rulePopulation.getMacroclassifiersVector().elementAt(indicesOfDuplicates.elementAt(indexOfSurvivor)).numerosity += 
-									rulePopulation.getMacroclassifiersVector().elementAt(indicesOfDuplicates.elementAt(k)).numerosity;
-								rulePopulation.getMacroclassifiersVector().elementAt(indicesOfDuplicates.elementAt(indexOfSurvivor)).numberOfSubsumptions++;
-								rulePopulation.totalNumerosity += rulePopulation.getMacroclassifiersVector().elementAt(indicesOfDuplicates.elementAt(k)).numerosity;
+								rulePopulation.getMacroclassifiersVector().get(indicesOfDuplicates.elementAt(indexOfSurvivor)).numerosity += 
+									rulePopulation.getMacroclassifiersVector().get(indicesOfDuplicates.elementAt(k)).numerosity;
+								rulePopulation.getMacroclassifiersVector().get(indicesOfDuplicates.elementAt(indexOfSurvivor)).numberOfSubsumptions++;
+								rulePopulation.totalNumerosity += rulePopulation.getMacroclassifiersVector().get(indicesOfDuplicates.elementAt(k)).numerosity;
 								rulePopulation.deleteMacroclassifier(indicesOfDuplicates.elementAt(k));
 							}
 						}
@@ -352,8 +360,8 @@ public abstract class AbstractLearningClassifierSystem {
 		}
 		
 		// to sort edo ginetai mono gia optikous logous kai afora mono sto population.txt
-/*		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
-		srt.controlPopulation(this.rulePopulation);*/
+		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+		srt.controlPopulation(this.rulePopulation);
 		
 		int numberOfClassifiersCovered = 0;
 		int numberClassifiersGaed = 0;
@@ -1061,48 +1069,18 @@ public abstract class AbstractLearningClassifierSystem {
 			final ClassifierSet matchSetSmp = population.generateMatchSetNewSmp(dataInstanceIndex,pt);
 			time1 += System.currentTimeMillis();
 			
-			timeMeasurements[index][0] = (int)population.getNumberOfMacroclassifiers();
-			timeMeasurements[index][1] = (int)ClassifierSet.firstTimeSetSmp.getNumberOfMacroclassifiers();
-			timeMeasurements[index][2] = (int)time1;
-			timeMeasurements[index][3] = matchSetSmp.getNumberOfMacroclassifiers();
-			
-			time2 = -System.currentTimeMillis();
+			timeMeasurements[index][0] = population.getTotalNumerosity();
+			timeMeasurements[index][1] = population.getNumberOfMacroclassifiers();
+			timeMeasurements[index][2] = ClassifierSet.firstTimeSetSmp.getNumberOfMacroclassifiers();
+			timeMeasurements[index][3] = ClassifierSet.deleteIndicesSmp2.size();
+			timeMeasurements[index][4] = matchSetSmp.getNumberOfMacroclassifiers();
 			
 			if (UPDATE_MODE == UPDATE_MODE_IMMEDIATE) 
 				getUpdateStrategy().updateSet(population, matchSetSmp, dataInstanceIndex, evolve);
 			else if (UPDATE_MODE == UPDATE_MODE_HOLD) 
 				getUpdateStrategy().updateSetNew(population, matchSetSmp, dataInstanceIndex, evolve);				
 
-			time2 += System.currentTimeMillis();
-				
-			timeMeasurements[index][4] = (int)time2;
-			
-			int numCovered = 0;
-			int numGaed = 0;
-			int numInited = 0;
-			int numberOfSubsumptions = 0;
-			double meanNs = 0;
-			
-			for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++) {
-				numberOfSubsumptions +=  population.getMacroclassifiersVector().elementAt(i).numberOfSubsumptions;
-				if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin() == (Classifier.CLASSIFIER_ORIGIN_COVER)) numCovered++;
-				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin() == (Classifier.CLASSIFIER_ORIGIN_GA)) numGaed++;
-				else if (population.getMacroclassifiersVector().elementAt(i).myClassifier.getClassifierOrigin() == (Classifier.CLASSIFIER_ORIGIN_INIT)) numInited++;
-				
-				meanNs += population.getClassifier(i).getNs();
-
-			}
-			meanNs /= population.getNumberOfMacroclassifiers();
-			
-			timeMeasurements[index][10] = numCovered;
-			timeMeasurements[index][11] = numGaed;
-			timeMeasurements[index][12] = numInited;
-			timeMeasurements[index][13] = population.getTotalNumerosity();
-			timeMeasurements[index][14] = population.firstDeletionFormula;
-			timeMeasurements[index][15] = population.secondDeletionFormula;
-			timeMeasurements[index][16] = numberOfSubsumptions;
-			timeMeasurements[index][17] = (int) meanCorrectSetNumerosity;
-			timeMeasurements[index][18] = (int) meanNs;
+			recordInTimeMeasurements(population, index);
 
 		}
 		else
@@ -1117,30 +1095,57 @@ public abstract class AbstractLearningClassifierSystem {
 			timeMeasurements[index][3] = population.deleteIndices.size();
 			timeMeasurements[index][4] = matchSet.getNumberOfMacroclassifiers();
 			
-			time2 = -System.currentTimeMillis();
 			
 			if (UPDATE_MODE == UPDATE_MODE_IMMEDIATE) 
 				getUpdateStrategy().updateSet(population, matchSet, dataInstanceIndex, evolve);
 			else if (UPDATE_MODE == UPDATE_MODE_HOLD) 
 				getUpdateStrategy().updateSetNew(population, matchSet, dataInstanceIndex, evolve);
 			
-			time2 += System.currentTimeMillis();
 			
 			recordInTimeMeasurements(population, index);
 
 		}
+		
+		if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 3) {
+			timeMeasurements[index][33] = (int) ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).generateCorrectSetTime;
+			timeMeasurements[index][34] = (int) ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).updateParametersTime;
+			timeMeasurements[index][35] = (int) time1;
+			timeMeasurements[index][36] = (int) ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).selectionTime;
+		}
+		else if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 4) {
+/*			timeMeasurements[index][33] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).generateCorrectSetTime;
+			timeMeasurements[index][34] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).updateParametersTime;
+			timeMeasurements[index][35] = (int) time1;
+			timeMeasurements[index][36] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).selectionTime;*/
+		}
+
+		
 	}
 
 	
 	private void recordInTimeMeasurements(ClassifierSet population, int index) {
 		
-		timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
-		timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
-		timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
-		timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
-		timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
-		timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
-		timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
+		if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 3) {
+		
+			timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
+			timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
+			timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
+			timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
+			timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
+			timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
+			timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
+		}
+		
+		else if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 4) {
+			timeMeasurements[index][5] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
+			timeMeasurements[index][6] = (int)((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
+			timeMeasurements[index][7] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
+			timeMeasurements[index][8] = (int)((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
+			timeMeasurements[index][9] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
+			timeMeasurements[index][19] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
+			timeMeasurements[index][20] = (int)((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
+		}
+		
 		
 		int numberOfMacroclassifiersCovered = 0;
 		int numberOfClassifiersCovered = 0;
@@ -1169,7 +1174,7 @@ public abstract class AbstractLearningClassifierSystem {
 		
 		for (int i = 0; i < population.getNumberOfMacroclassifiers(); i++) {
 			
-			Macroclassifier macro = population.getMacroclassifiersVector().elementAt(i);
+			Macroclassifier macro = population.getMacroclassifiersVector().get(i);
 			numberOfSubsumptions +=  macro.numberOfSubsumptions;
 			
 			if (macro.myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER) {
@@ -1203,8 +1208,6 @@ public abstract class AbstractLearningClassifierSystem {
 				meanGaedPureFitness += 			macro.numerosity * macro.myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS);
 
 			}
-
-				
 		}
 		
 		meanAcc /= population.getTotalNumerosity();

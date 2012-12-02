@@ -24,6 +24,8 @@ package gr.auth.ee.lcs.geneticalgorithm.operators;
 import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.geneticalgorithm.IUnaryGeneticOperator;
 
+import edu.rit.util.Random;
+
 /**
  * Implements a mutation operator. Bits of a chromosome are mutated by following
  * a uniform distribution for each one.
@@ -38,6 +40,8 @@ public class UniformBitMutation implements IUnaryGeneticOperator {
 	 * @uml.property  name="mutationRate"
 	 */
 	final private double mutationRate;
+	
+	static double mutationRateSmp; 
 
 	/**
 	 * The default constructor.
@@ -48,6 +52,7 @@ public class UniformBitMutation implements IUnaryGeneticOperator {
 	 */
 	public UniformBitMutation(final double rate) {
 		this.mutationRate = rate;
+		mutationRateSmp = rate;
 	}
 
 	/**
@@ -63,6 +68,17 @@ public class UniformBitMutation implements IUnaryGeneticOperator {
 
 		for (int i = 0; i < chromosomeSize; i++) {
 			if (Math.random() < mutationRate)
+				aClassifier.invert(i);
+		}
+		return aClassifier;
+	}
+	
+	@Override
+	public final Classifier operateSmp(final Classifier aClassifier, Random prng) {
+		final int chromosomeSize = aClassifier.size();
+
+		for (int i = 0; i < chromosomeSize; i++) {
+			if (prng.nextDouble() < mutationRate)
 				aClassifier.invert(i);
 		}
 		return aClassifier;

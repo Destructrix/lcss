@@ -72,6 +72,9 @@ public abstract class AbstractUpdateStrategy {
 	 */
 	public abstract void cover(final ClassifierSet population,
 			final int instanceIndex);
+	
+	public abstract void coverSmp(final ClassifierSet population,
+			final int instanceIndex);
 
 	/**
 	 * Creates a data object for a classifier.
@@ -156,10 +159,18 @@ public abstract class AbstractUpdateStrategy {
 	public abstract void updateSet(ClassifierSet population,
 			ClassifierSet matchSet, int instanceIndex, boolean evolve);
 	
+	public abstract void updateSetSmp(ClassifierSet population,
+			ClassifierSet matchSet, int instanceIndex, boolean evolve);
+	
 	public abstract void updateSetNew(ClassifierSet population,
 			ClassifierSet matchSet, int instanceIndex, boolean evolve);
 	
+	public abstract void updateSetNewSmp(ClassifierSet population,
+			ClassifierSet matchSet, int instanceIndex, boolean evolve);
+	
 	public void computeDeletionProbabilities (ClassifierSet aSet) {}
+	
+	public void computeDeletionProbabilitiesSmp (ClassifierSet aSet) {}
 
 	public double getNs(Classifier classifier) {
 		// TODO Auto-generated method stub

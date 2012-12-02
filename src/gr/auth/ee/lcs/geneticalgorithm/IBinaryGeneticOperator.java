@@ -21,6 +21,7 @@
  */
 package gr.auth.ee.lcs.geneticalgorithm;
 
+import edu.rit.util.Random;
 import gr.auth.ee.lcs.classifiers.Classifier;
 
 /**

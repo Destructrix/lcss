@@ -326,10 +326,9 @@ public class FoldEvaluator {
 		
 		
 		
-		private void loadStaticMlStratifiedFold(int foldNumber,
-				AbstractLearningClassifierSystem lcs) throws IOException {
+		private void loadStaticMlStratifiedFold(int foldNumber, AbstractLearningClassifierSystem lcs) throws IOException {
 			
-			final String staticFoldsDirectory = file.substring(0, (file.length() - 5));
+			final String staticFoldsDirectory = file.substring(0, (file.length() - 5)); // 5 = . a r f f
 			
 			trainSet = InstancesUtility.openInstance(staticFoldsDirectory + "/train_" + foldNumber + ".arff");;
 			testSet = InstancesUtility.openInstance(staticFoldsDirectory + "/test_" + foldNumber + ".arff");;

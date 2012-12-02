@@ -109,7 +109,7 @@ public class LowestFitnessRemoval implements IPopulationControlStrategy {
 			long time1 = - System.currentTimeMillis();
 			
 			numberOfDeletions++;
-			myLcs = aSet.getMacroclassifiersVector().elementAt(0).myClassifier.getLCS();
+			myLcs = aSet.getMacroclassifiersVector().get(0).myClassifier.getLCS();
 			
 			mySelector.select(1, aSet, toBeDeleted); 
 			Classifier cl = toBeDeleted.getClassifier(0);

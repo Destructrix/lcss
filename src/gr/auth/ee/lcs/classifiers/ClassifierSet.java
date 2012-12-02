@@ -21,6 +21,10 @@
  */
 package gr.auth.ee.lcs.classifiers;
 
+import edu.rit.pj.IntegerForLoop;
+import edu.rit.pj.ParallelRegion;
+import edu.rit.pj.ParallelSection;
+import edu.rit.pj.ParallelTeam;
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 
@@ -30,13 +34,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 import java.text.*;
-import edu.rit.pj.ParallelRegion;
-import edu.rit.pj.ParallelTeam;
-import edu.rit.pj.IntegerForLoop;
-import edu.rit.pj.ParallelSection;
 
 /**
  * Implement set of Classifiers, counting numerosity for classifiers. This
@@ -159,7 +161,7 @@ public class ClassifierSet implements Serializable {
 	 * @uml.property  name="myMacroclassifiers"
 	 * @uml.associationEnd  multiplicity="(0 -1)" elementType="gr.auth.ee.lcs.classifiers.Macroclassifier"
 	 */
-	private final Vector<Macroclassifier> myMacroclassifiers;
+	private final ArrayList<Macroclassifier> myMacroclassifiers;
 
 	/**
 	 * An interface for a strategy on deleting classifiers from the set. This attribute is transient and therefore not serializable.
@@ -178,7 +180,18 @@ public class ClassifierSet implements Serializable {
 	static private int dataInstanceIndexSmp2;
 	static public Vector<Integer> deleteIndicesSmp2;
 	static public ClassifierSet firstTimeSetSmp;	
-	static private Vector<Integer> candidateDeleteIndicesSmp;
+	static private ArrayList<Integer> candidateDeleteIndicesSmp;
+	
+	static Vector<Integer> indicesOfSurvivorsSmp;
+	static Vector<Float> fitnessOfSurvivorsSmp;
+	static Vector<Integer> experienceOfSurvivorsSmp;
+	static Vector<Integer> originOfSurvivorsSmp;
+		
+	static ArrayList<Macroclassifier> myMacroclassifiersSmp;
+	
+	static Classifier classifierSmp;
+	
+	static int arrayList = 0;
 	
 	//padding variables
 	long p0,p1,p2,p3,p4,p5,p6,p7;
@@ -191,7 +204,7 @@ public class ClassifierSet implements Serializable {
 	 */
 	public ClassifierSet(final IPopulationControlStrategy sizeControlStrategy) {
 		this.myISizeControlStrategy = sizeControlStrategy;
-		this.myMacroclassifiers = new Vector<Macroclassifier>();
+		this.myMacroclassifiers = new ArrayList<Macroclassifier>();
 
 	}
 
@@ -228,14 +241,14 @@ public class ClassifierSet implements Serializable {
 			final Classifier aClassifier = macro.myClassifier;
 			for (int i = 0; i < myMacroclassifiers.size(); i++) {
 				
-				final Classifier theClassifier = myMacroclassifiers.elementAt(i).myClassifier;
+				final Classifier theClassifier = myMacroclassifiers.get(i).myClassifier;
 				
 				if (theClassifier.canSubsume()) {
 					if (theClassifier.isMoreGeneral(aClassifier)) {
 						
 						indicesVector.add(i);
 						originVector.add(0);
-						fitnessVector.add(myMacroclassifiers.elementAt(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+						fitnessVector.add(myMacroclassifiers.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 						experienceVector.add(theClassifier.experience);
 						
 						
@@ -254,7 +267,7 @@ public class ClassifierSet implements Serializable {
 																// it is equal
 					indicesVector.add(i);
 					originVector.add(1);
-					fitnessVector.add(myMacroclassifiers.elementAt(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+					fitnessVector.add(myMacroclassifiers.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 					experienceVector.add(theClassifier.experience);
 					
 					
@@ -318,8 +331,8 @@ public class ClassifierSet implements Serializable {
 			// if subsumable:
 			if (howManyGenerals != 0 || howManyEquals != 0) {
 				// Subsume and control size...
-				myMacroclassifiers.elementAt(indicesVector.elementAt(indexOfSurvivor)).numerosity += numerosity;
-				myMacroclassifiers.elementAt(indicesVector.elementAt(indexOfSurvivor)).numberOfSubsumptions++;
+				myMacroclassifiers.get(indicesVector.elementAt(indexOfSurvivor)).numerosity += numerosity;
+				myMacroclassifiers.get(indicesVector.elementAt(indexOfSurvivor)).numberOfSubsumptions++;
 				
 				indicesVector.clear();
 				originVector.clear();
@@ -366,7 +379,7 @@ public class ClassifierSet implements Serializable {
 		int index;
 		final int macroSize = myMacroclassifiers.size();
 		for (index = 0; index < macroSize; index++) {
-			if (myMacroclassifiers.elementAt(index).myClassifier.getSerial() ==  aClassifier.getSerial()) {
+			if (myMacroclassifiers.get(index).myClassifier.getSerial() ==  aClassifier.getSerial()) {
 				break;
 			}
 		}
@@ -377,6 +390,254 @@ public class ClassifierSet implements Serializable {
 
 	}
 
+
+public final void addClassifierSmp(final Macroclassifier macro,
+			  final boolean thoroughAdd, ParallelTeam ptSubsume ) {
+		
+		final int numerosity = macro.numerosity;
+		// Add numerosity to the Set
+		this.totalNumerosity += numerosity;
+		
+
+		
+		// Subsume if possible
+		if (thoroughAdd) { // if thoroughAdd = true, before adding the given macro to the population, check it against the whole population for subsumption
+			
+			myMacroclassifiersSmp = myMacroclassifiers;	
+			classifierSmp = macro.myClassifier;
+			
+			indicesOfSurvivorsSmp = new Vector<Integer>();
+			fitnessOfSurvivorsSmp = new Vector<Float>();
+			experienceOfSurvivorsSmp = new Vector<Integer>();
+			originOfSurvivorsSmp = new Vector<Integer>();
+			
+			try {
+				ptSubsume.execute(new ParallelRegion() {
+				
+					public void run() throws Exception
+					{
+						execute(0,myMacroclassifiersSmp.size()-1,new IntegerForLoop(){
+							
+							int indexOfSurvivor_thread;
+							float fitnessOfSurvivor_thread;
+							int experienceOfSurvivor_thread;
+							int originOfSurvivor_thread;
+														
+							long p0,p1,p2,p3,p4,p5,p6,p7;
+							long p8,p9,pa,pb,pc,pd,pe,pf;
+							
+							public void run(int first, int last)
+							{
+								Vector<Integer> indicesList    = new Vector<Integer>();
+								Vector<Float> 	fitnessList    = new Vector<Float>();
+								Vector<Integer> experienceList = new Vector<Integer>();
+								/* 0 gia generality, 1 gia equality */
+								Vector<Integer> originList = new Vector<Integer>();
+								
+								for (int i = first; i <= last; ++i) {
+									
+									final Classifier theClassifier = myMacroclassifiersSmp.get(i).myClassifier;
+									
+									if (theClassifier.canSubsume()) {
+										if (theClassifier.isMoreGeneral(classifierSmp)) {
+											
+											indicesList.add(i);
+											originList.add(0);
+											fitnessList.add(myMacroclassifiersSmp.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+											experienceList.add(theClassifier.experience);
+										}
+									} else if (theClassifier.equals(classifierSmp)) { // Or it can't
+																					 // subsume but
+																					// it is equal
+										indicesList.add(i);
+										originList.add(1);
+										fitnessList.add(myMacroclassifiersSmp.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+										experienceList.add(theClassifier.experience);
+									}
+
+								} // kleinei to for gia ton ka9e macroclassifier
+								
+								int howManyGenerals = 0;
+								int howManyEquals = 0;
+								for (int i = 0; i < indicesList.size(); i++) {
+									if (originList.get(i) == 0)
+											howManyGenerals++;
+									else 
+										howManyEquals++;
+								}
+								
+								int indexOfSurvivor = 0;
+								float maxFitness = 0;
+								
+								if (howManyGenerals !=  0) {
+									
+									for(int k = 0; k < indicesList.size(); k++) {
+										if (originList.get(k) == 0) {
+											if (fitnessList.get(k) > maxFitness) {
+												maxFitness = fitnessList.get(k);
+												indexOfSurvivor = k;
+											}
+											else if (fitnessList.get(k) == maxFitness) {
+												if (experienceList.get(k) >= experienceList.get(indexOfSurvivor)) {
+													indexOfSurvivor = k;
+												}	
+											}
+										}
+									}
+								}
+								else if (howManyEquals != 0){
+									
+									for (int k = 0; k < indicesList.size(); k++) {
+										if (originList.get(k) == 1) {
+											if (fitnessList.get(k) > maxFitness) {
+												maxFitness = fitnessList.get(k);
+												indexOfSurvivor = k;
+											}
+											else if (fitnessList.get(k) == maxFitness) {
+												if (experienceList.get(k) >= experienceList.get(indexOfSurvivor)) {
+													indexOfSurvivor = k;
+												}	
+											}
+										}
+									}
+									
+								}
+								
+								indexOfSurvivor_thread = -1;
+								
+								// if subsumable:
+								if (howManyGenerals != 0 || howManyEquals != 0) {
+									
+									indexOfSurvivor_thread = indicesList.get(indexOfSurvivor);
+									originOfSurvivor_thread = originList.get(indexOfSurvivor);
+									fitnessOfSurvivor_thread = fitnessList.get(indexOfSurvivor);
+									experienceOfSurvivor_thread = experienceList.get(indexOfSurvivor);
+									
+									indicesList.clear();
+									originList.clear();
+									fitnessList.clear();
+									experienceList.clear();
+								}
+							}							
+							public void finish() throws Exception
+							{
+								region().critical( new ParallelSection() {
+									public void run()
+									{
+										if ( indexOfSurvivor_thread >= 0 )
+										{
+											indicesOfSurvivorsSmp.add(indexOfSurvivor_thread);
+											originOfSurvivorsSmp.add(originOfSurvivor_thread);
+											fitnessOfSurvivorsSmp.add(fitnessOfSurvivor_thread);
+											experienceOfSurvivorsSmp.add(experienceOfSurvivor_thread);
+										}
+									}
+								});
+							}
+							
+						});
+					}
+					
+
+				
+				});
+			}
+			catch( Exception e) {
+				e.printStackTrace();
+			}
+			
+			int howManyGenerals = 0;
+			int howManyEquals = 0;
+			if (indicesOfSurvivorsSmp.size() > 0)
+			{
+				subsumed = true;
+				for ( int i = 0 ; i < indicesOfSurvivorsSmp.size(); i++ )
+				{
+					if (originOfSurvivorsSmp.get(i) == 0)
+						howManyGenerals++;
+					else
+						howManyEquals++;
+				}
+				
+			}
+			else
+				subsumed = false;
+			
+			int indexOfSurvivor = 0;
+			float maxFitness = 0;
+
+			if (howManyGenerals !=  0) {
+				
+				for(int k = 0; k < indicesOfSurvivorsSmp.size(); k++) {
+					if (originOfSurvivorsSmp.get(k) == 0) {
+						if (fitnessOfSurvivorsSmp.get(k) > maxFitness) {
+							maxFitness = fitnessOfSurvivorsSmp.get(k);
+							indexOfSurvivor = k;
+						}
+						else if (fitnessOfSurvivorsSmp.get(k) == maxFitness) {
+							if (experienceOfSurvivorsSmp.get(k) >= experienceOfSurvivorsSmp.get(indexOfSurvivor)) {
+								indexOfSurvivor = k;
+							}	
+						}
+					}
+				}
+			}
+			else if (howManyEquals != 0){
+				
+				for (int k = 0; k < indicesOfSurvivorsSmp.size(); k++) {
+					if (originOfSurvivorsSmp.get(k) == 1) {
+						if (fitnessOfSurvivorsSmp.get(k) > maxFitness) {
+							maxFitness = fitnessOfSurvivorsSmp.get(k);
+							indexOfSurvivor = k;
+						}
+						else if (fitnessOfSurvivorsSmp.get(k) == maxFitness) {
+							if (experienceOfSurvivorsSmp.get(k) >= experienceOfSurvivorsSmp.get(indexOfSurvivor)) {
+								indexOfSurvivor = k;
+							}	
+						}
+					}
+				}
+				
+			}
+			
+			// if subsumable:
+			if (howManyGenerals != 0 || howManyEquals != 0) {
+				// Subsume and control size...
+				myMacroclassifiers.get(indexOfSurvivor).numerosity += numerosity;
+				myMacroclassifiers.get(indexOfSurvivor).numberOfSubsumptions++;
+				
+				indicesOfSurvivorsSmp.clear();
+				originOfSurvivorsSmp.clear();
+				fitnessOfSurvivorsSmp.clear();
+				experienceOfSurvivorsSmp.clear();
+				
+				if (myISizeControlStrategy != null) {
+					myISizeControlStrategy.controlPopulationSmp(this);
+				}
+				return;
+			}
+			
+		}
+		
+		/*
+		 * No matching or subsumable more general classifier found. Add and
+		 * control size...
+		 * 
+		 * pros9ese ton macroclassifier sto vector myMacroclassifiers.
+		 * sti sunexeia an exei oristei stratigiki diagrafis, ektelese tin.
+		 * an to numerocity ton macroclassifiers einai pano apo to populationSize arxise na diagrafeis
+		 * 
+		 * 
+		 * an borei na kanei subsume de 9a ektelesei tis parakato entoles (return statements pio pano)
+		 */
+		//System.out.print(".");
+		this.myMacroclassifiers.add(macro);
+		if (myISizeControlStrategy != null) {
+			myISizeControlStrategy.controlPopulationSmp(this);
+		}
+		
+	}
+	
 	/**
 	 * Deletes a classifier with the given index. If the macroclassifier at the
 	 * given index contains more than one classifier the numerosity is decreased
@@ -389,8 +650,8 @@ public class ClassifierSet implements Serializable {
 		
 		this.totalNumerosity--; // meiose to numerosity olou tou set
 		
-		if (this.myMacroclassifiers.elementAt(index).numerosity > 1) {
-			this.myMacroclassifiers.elementAt(index).numerosity--; 
+		if (this.myMacroclassifiers.get(index).numerosity > 1) {
+			this.myMacroclassifiers.get(index).numerosity--; 
 		} else {
 			//this.myMacroclassifiers.elementAt(index).myClassifier.getLCS().blacklist.addClassifier(new Macroclassifier((this.myMacroclassifiers.elementAt(index).myClassifier), 1), true);
 			this.myMacroclassifiers.remove(index); // an to numerosity tou macroclassifier einai 1, diagrapse ton
@@ -411,7 +672,7 @@ public class ClassifierSet implements Serializable {
 	
 	
 	public final void deleteMacroclassifier (final int index) {
-		this.totalNumerosity -= this.myMacroclassifiers.elementAt(index).numerosity;
+		this.totalNumerosity -= this.myMacroclassifiers.get(index).numerosity;
 		this.myMacroclassifiers.remove(index);
 	
 	}
@@ -624,27 +885,7 @@ public class ClassifierSet implements Serializable {
 			{
 				firstTimeSet.addClassifier(cl, false);
 				candidateDeleteIndices.add(i);
-				int index = i;
-				
-				cl.myClassifier.matchInstances[dataInstanceIndex] = (byte)(cl.myClassifier.getLCS().getClassifierTransformBridge().
-							isMatch(cl.myClassifier.getLCS().instances[dataInstanceIndex], cl.myClassifier) ? 1 : 0 );
-				cl.myClassifier.checked++;
-				cl.myClassifier.covered += cl.myClassifier.matchInstances[dataInstanceIndex];
-				
-				if( cl.myClassifier.matchInstances[dataInstanceIndex] == 1 )
-				{
-					matchSet.addClassifier(cl, false);
-				}
-				
-				boolean zeroCoverage = (cl.myClassifier.checked >= cl.myClassifier.getLCS().instances.length) && (cl.myClassifier.covered == 0);
-				
-				if (cl.myClassifier.checked == cl.myClassifier.getLCS().instances.length) 
-					cl.myClassifier.objectiveCoverage = cl.myClassifier.getCoverage();
 
-				if (zeroCoverage) {
-					deleteIndices.add(index);
-				}
-				
 			}
 			else if ( cl.myClassifier.matchInstances[dataInstanceIndex] == 1 )
 			{
@@ -653,10 +894,29 @@ public class ClassifierSet implements Serializable {
 			
 		}
 	
+		for (int i = 0 ; i < firstTimeSet.getNumberOfMacroclassifiers()  ; i++)
+		{
+			Macroclassifier cl = firstTimeSet.getMacroclassifier(i);
+			cl.myClassifier.matchInstances[dataInstanceIndex]
+			= (byte)(cl.myClassifier.getLCS().getClassifierTransformBridge().isMatch
+					(cl.myClassifier.getLCS().instances[dataInstanceIndex], cl.myClassifier)? 1 : 0);
+			cl.myClassifier.checked++;
+			cl.myClassifier.covered += cl.myClassifier.matchInstances[dataInstanceIndex];
+			
+			if(cl.myClassifier.matchInstances[dataInstanceIndex] == 1)
+				matchSet.addClassifier(cl, false);
+			
+			boolean zeroCoverage = (cl.myClassifier.checked >= cl.myClassifier.getLCS().instances.length) 
+			                       && (cl.myClassifier.covered == 0);
+			
+			if (zeroCoverage)
+				deleteIndices.add(candidateDeleteIndices.get(i));			
+		}	
+		
 		
 		for ( int i = deleteIndices.size() - 1 ; i >= 0 ; i-- )
 		{
-			zeroCoverageIterations.add(myMacroclassifiers.elementAt(deleteIndices.elementAt(i)).myClassifier.getLCS().totalRepetition);
+			zeroCoverageIterations.add(myMacroclassifiers.get(deleteIndices.elementAt(i)).myClassifier.getLCS().totalRepetition);
 
 			this.deleteMacroclassifier(deleteIndices.elementAt(i));
 			zeroCoverageDeletions++;
@@ -696,7 +956,7 @@ public class ClassifierSet implements Serializable {
 				{
 					firstTimeSetSmp = new ClassifierSet(null);
 					matchSetSmp2    = new ClassifierSet(null);
-					candidateDeleteIndicesSmp = new Vector<Integer>();
+					candidateDeleteIndicesSmp = new ArrayList<Integer>();
 					deleteIndicesSmp2 = new Vector<Integer>();
 				}
 			
@@ -706,7 +966,7 @@ public class ClassifierSet implements Serializable {
 						
 						ClassifierSet matchSet_thread;
 						ClassifierSet firstTimeSet_thread;
-						Vector<Integer> candidateDeleteIndices_thread = new Vector<Integer>();
+						ArrayList<Integer> candidateDeleteIndices_thread = new ArrayList<Integer>();
 												
 						//padding variables
 						long p0,p1,p2,p3,p4,p5,p6,p7;
@@ -789,7 +1049,7 @@ public class ClassifierSet implements Serializable {
 								                       && (cl.myClassifier.covered == 0);
 								
 								if (zeroCoverage)
-									deleteIndices_thread.add(candidateDeleteIndicesSmp.elementAt(i));
+									deleteIndices_thread.add(candidateDeleteIndicesSmp.get(i));
 								
 							}							
 						}
@@ -848,7 +1108,7 @@ public class ClassifierSet implements Serializable {
 	 * @return the classifier at the specified index
 	 */
 	public final Classifier getClassifier(final int index) {
-		return this.myMacroclassifiers.elementAt(index).myClassifier;
+		return this.myMacroclassifiers.get(index).myClassifier;
 	}
 
 	/**
@@ -860,13 +1120,13 @@ public class ClassifierSet implements Serializable {
 	 */
 	public final int getClassifierNumerosity(final Classifier aClassifier) {
 		for (int i = 0; i < myMacroclassifiers.size(); i++) {
-			if (myMacroclassifiers.elementAt(i).myClassifier.getSerial() == aClassifier
+			if (myMacroclassifiers.get(i).myClassifier.getSerial() == aClassifier
 					.getSerial()) // ka9e (micro)classifier exei kai ena serial number. 
 								  // apo oti exo katalabei diaforetiko gia ka9e microclassifier, 
 								  // akoma kai gia autous tou idiou macroclassifier
 				//System.out.println("myClassifier" + myMacroclassifiers.elementAt(i).myClassifier.getSerial());
 				//System.out.println(aClassifier.getSerial());
-				return this.myMacroclassifiers.elementAt(i).numerosity;
+				return this.myMacroclassifiers.get(i).numerosity;
 		}
 		return 0;
 	}
@@ -879,7 +1139,7 @@ public class ClassifierSet implements Serializable {
 	 * @return the index'th macroclassifier numerosity
 	 */
 	public final int getClassifierNumerosity(final int index) {
-		return this.myMacroclassifiers.elementAt(index).numerosity;
+		return this.myMacroclassifiers.get(index).numerosity;
 	}
 
 	/**
@@ -890,7 +1150,7 @@ public class ClassifierSet implements Serializable {
 	 * @return the macroclassifier at a given index
 	 */
 	public final Macroclassifier getMacroclassifier(final int index) {
-		return new Macroclassifier(this.myMacroclassifiers.elementAt(index));
+		return new Macroclassifier(this.myMacroclassifiers.get(index));
 		//return this.myMacroclassifiers.elementAt(index);
 	}
 	
@@ -902,7 +1162,7 @@ public class ClassifierSet implements Serializable {
 	 * @author alexandros filotheou
 	 * 
 	 */
-	public Vector<Macroclassifier> getMacroclassifiersVector() {
+	public ArrayList<Macroclassifier> getMacroclassifiersVector() {
 		return myMacroclassifiers;
 	}
 	
@@ -917,7 +1177,7 @@ public class ClassifierSet implements Serializable {
 	 */
 	
 	public Macroclassifier getActualMacroclassifier(final int index) {
-		return this.myMacroclassifiers.elementAt(index);
+		return this.myMacroclassifiers.get(index);
 	}
 	
 	/**
@@ -934,8 +1194,8 @@ public class ClassifierSet implements Serializable {
 	public Macroclassifier getActualMacroclassifier(final Classifier aClassifier) {
 		
 		for (int i = 0; i < myMacroclassifiers.size(); i++) {
-			if (myMacroclassifiers.elementAt(i).myClassifier.getSerial() == aClassifier.getSerial()) 
-				return this.myMacroclassifiers.elementAt(i);
+			if (myMacroclassifiers.get(i).myClassifier.getSerial() == aClassifier.getSerial()) 
+				return this.myMacroclassifiers.get(i);
 		}
 		return null;	
 	}
@@ -993,14 +1253,14 @@ public class ClassifierSet implements Serializable {
 			final Classifier aClassifier = macro.myClassifier;
 			for (int i = 0; i < myMacroclassifiers.size(); i++) {
 				
-				final Classifier theClassifier = myMacroclassifiers.elementAt(i).myClassifier;
+				final Classifier theClassifier = myMacroclassifiers.get(i).myClassifier;
 				
 				if (theClassifier.canSubsume()) {
 					if (theClassifier.isMoreGeneral(aClassifier)) {
 						
 						indicesVector.add(i);
 						originVector.add(0);
-						fitnessVector.add(myMacroclassifiers.elementAt(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+						fitnessVector.add(myMacroclassifiers.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 						experienceVector.add(theClassifier.experience);
 						
 						
@@ -1019,7 +1279,7 @@ public class ClassifierSet implements Serializable {
 																// it is equal
 					indicesVector.add(i);
 					originVector.add(1);
-					fitnessVector.add(myMacroclassifiers.elementAt(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+					fitnessVector.add(myMacroclassifiers.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 					experienceVector.add(theClassifier.experience);
 					
 					
@@ -1099,6 +1359,233 @@ public class ClassifierSet implements Serializable {
 		
 	}
 
+	
+	
+	
+	
+		public final int letPopulationSubsumeNewSmp(final Macroclassifier macro,
+			  									final boolean thoroughAdd,
+			  									final ParallelTeam ptSubsume) {		
+
+		// Subsume if possible
+		if (thoroughAdd) { // if thoroughAdd = true, before adding the given macro to the population, check it against the whole population for subsumption
+			
+			myMacroclassifiersSmp = myMacroclassifiers;	
+			classifierSmp = macro.myClassifier;
+			
+			indicesOfSurvivorsSmp = new Vector<Integer>();
+			fitnessOfSurvivorsSmp = new Vector<Float>();
+			experienceOfSurvivorsSmp = new Vector<Integer>();
+			originOfSurvivorsSmp = new Vector<Integer>();
+			
+			try {
+				ptSubsume.execute(new ParallelRegion() {
+				
+					public void run() throws Exception
+					{
+						execute(0,myMacroclassifiersSmp.size()-1,new IntegerForLoop(){
+							
+							int indexOfSurvivor_thread;
+							float fitnessOfSurvivor_thread;
+							int experienceOfSurvivor_thread;
+							int originOfSurvivor_thread;
+														
+							long p0,p1,p2,p3,p4,p5,p6,p7;
+							long p8,p9,pa,pb,pc,pd,pe,pf;
+							
+							public void run(int first, int last)
+							{
+								int threadIndex = getThreadIndex();
+								Vector<Integer> indicesVector    = new Vector<Integer>();
+								Vector<Float> 	fitnessVector    = new Vector<Float>();
+								Vector<Integer> experienceVector = new Vector<Integer>();
+								/* 0 gia generality, 1 gia equality */
+								Vector<Integer> originVector = new Vector<Integer>();
+								
+								for (int i = first; i <= last; ++i) {
+									
+									final Classifier theClassifier = myMacroclassifiersSmp.get(i).myClassifier;
+									
+									if (theClassifier.canSubsume()) {
+										if (theClassifier.isMoreGeneral(classifierSmp)) {
+											
+											indicesVector.add(i);
+											originVector.add(0);
+											fitnessVector.add(myMacroclassifiersSmp.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+											experienceVector.add(theClassifier.experience);
+										}
+									} else if (theClassifier.equals(classifierSmp)) { // Or it can't
+																					 // subsume but
+																					// it is equal
+										indicesVector.add(i);
+										originVector.add(1);
+										fitnessVector.add(myMacroclassifiersSmp.get(i).numerosity * (float)theClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
+										experienceVector.add(theClassifier.experience);
+									}
+
+								} // kleinei to for gia ton ka9e macroclassifier
+								
+								int howManyGenerals = 0;
+								int howManyEquals = 0;
+								for (int i = 0; i < indicesVector.size(); i++) {
+									if (originVector.get(i) == 0)
+											howManyGenerals++;
+									else 
+										howManyEquals++;
+								}
+								
+								int indexOfSurvivor = 0;
+								float maxFitness = 0;
+								
+								if (howManyGenerals !=  0) {
+									
+									for(int k = 0; k < indicesVector.size(); k++) {
+										if (originVector.get(k) == 0) {
+											if (fitnessVector.get(k) > maxFitness) {
+												maxFitness = fitnessVector.get(k);
+												indexOfSurvivor = k;
+											}
+											else if (fitnessVector.get(k) == maxFitness) {
+												if (experienceVector.get(k) >= experienceVector.get(indexOfSurvivor)) {
+													indexOfSurvivor = k;
+												}	
+											}
+										}
+									}
+								}
+								else if (howManyEquals != 0){
+									
+									for (int k = 0; k < indicesVector.size(); k++) {
+										if (originVector.get(k) == 1) {
+											if (fitnessVector.get(k) > maxFitness) {
+												maxFitness = fitnessVector.get(k);
+												indexOfSurvivor = k;
+											}
+											else if (fitnessVector.get(k) == maxFitness) {
+												if (experienceVector.get(k) >= experienceVector.get(indexOfSurvivor)) {
+													indexOfSurvivor = k;
+												}	
+											}
+										}
+									}
+									
+								}
+								
+								indexOfSurvivor_thread = -1;
+								
+								// if subsumable:
+								if (howManyGenerals != 0 || howManyEquals != 0) {
+									
+									indexOfSurvivor_thread = indicesVector.get(indexOfSurvivor);
+									originOfSurvivor_thread = originVector.get(indexOfSurvivor);
+									fitnessOfSurvivor_thread = fitnessVector.get(indexOfSurvivor);
+									experienceOfSurvivor_thread = experienceVector.get(indexOfSurvivor);
+									
+									indicesVector.clear();
+									originVector.clear();
+									fitnessVector.clear();
+									experienceVector.clear();
+								}
+							}							
+							public void finish() throws Exception
+							{
+								region().critical( new ParallelSection() {
+									public void run()
+									{
+										if ( indexOfSurvivor_thread >= 0 )
+										{
+											indicesOfSurvivorsSmp.add(indexOfSurvivor_thread);
+											originOfSurvivorsSmp.add(originOfSurvivor_thread);
+											fitnessOfSurvivorsSmp.add(fitnessOfSurvivor_thread);
+											experienceOfSurvivorsSmp.add(experienceOfSurvivor_thread);
+										}
+									}
+								});
+							}
+							
+						});
+					}
+					
+
+				
+				});
+			}
+			catch( Exception e) {
+				e.printStackTrace();
+			}
+			
+			int howManyGenerals = 0;
+			int howManyEquals = 0;
+			if (indicesOfSurvivorsSmp.size() > 0)
+			{
+				subsumed = true;
+				for ( int i = 0 ; i < indicesOfSurvivorsSmp.size(); i++ )
+				{
+					if (originOfSurvivorsSmp.get(i) == 0)
+						howManyGenerals++;
+					else
+						howManyEquals++;
+				}
+				
+			}
+			else
+				subsumed = false;
+			
+			int indexOfSurvivor = 0;
+			float maxFitness = 0;
+
+			if (howManyGenerals !=  0) {
+				
+				for(int k = 0; k < indicesOfSurvivorsSmp.size(); k++) {
+					if (originOfSurvivorsSmp.get(k) == 0) {
+						if (fitnessOfSurvivorsSmp.get(k) > maxFitness) {
+							maxFitness = fitnessOfSurvivorsSmp.get(k);
+							indexOfSurvivor = k;
+						}
+						else if (fitnessOfSurvivorsSmp.get(k) == maxFitness) {
+							if (experienceOfSurvivorsSmp.get(k) >= experienceOfSurvivorsSmp.get(indexOfSurvivor)) {
+								indexOfSurvivor = k;
+							}	
+						}
+					}
+				}
+			}
+			else if (howManyEquals != 0){
+				
+				for (int k = 0; k < indicesOfSurvivorsSmp.size(); k++) {
+					if (originOfSurvivorsSmp.get(k) == 1) {
+						if (fitnessOfSurvivorsSmp.get(k) > maxFitness) {
+							maxFitness = fitnessOfSurvivorsSmp.get(k);
+							indexOfSurvivor = k;
+						}
+						else if (fitnessOfSurvivorsSmp.get(k) == maxFitness) {
+							if (experienceOfSurvivorsSmp.get(k) >= experienceOfSurvivorsSmp.get(indexOfSurvivor)) {
+								indexOfSurvivor = k;
+							}	
+						}
+					}
+				}
+				
+			}
+			
+			// if subsumable:
+			if (howManyGenerals != 0 || howManyEquals != 0) {
+				// Subsume and control size...
+								
+				indicesOfSurvivorsSmp.clear();
+				originOfSurvivorsSmp.clear();
+				fitnessOfSurvivorsSmp.clear();
+				experienceOfSurvivorsSmp.clear();
+				
+				return indexOfSurvivor;
+			}			
+			
+		}
+		
+		return -1;
+		
+	}
+	
 	
 	
 
@@ -1206,54 +1693,54 @@ public class ClassifierSet implements Serializable {
 			
 			//response.append(this.getClassifier(i).toString()
 			response.append(
-					myMacroclassifiers.elementAt(i).myClassifier.toString() // antecedent => concequent
+					myMacroclassifiers.get(i).myClassifier.toString() // antecedent => concequent
 					+ "|"	
 					//+ " total fitness: " + this.getClassifier(i).getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION) * this.getMacroclassifier(i).numerosity
 					// myMacroclassifiers.elementAt(i).toString isos kalutera
-					+ "macro fit:|" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION) 
-							* myMacroclassifiers.elementAt(i).numerosity) 
+					+ "macro fit:|" + df.format(myMacroclassifiers.get(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION) 
+							* myMacroclassifiers.get(i).numerosity) 
 					+ "|"
-					+ "fit:|" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION))
+					+ "fit:|" + df.format(myMacroclassifiers.get(i).myClassifier.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION))
 					+ "|"
-					+ "acc:|" + df.format(myMacroclassifiers.elementAt(i).myClassifier.getAccuracy())
+					+ "acc:|" + df.format(myMacroclassifiers.get(i).myClassifier.getAccuracy())
 					+ "|"
-					+ "num:|" + myMacroclassifiers.elementAt(i).numerosity 
+					+ "num:|" + myMacroclassifiers.get(i).numerosity 
 					+ "|"
-					+ "exp:|" + myMacroclassifiers.elementAt(i).myClassifier.experience  
+					+ "exp:|" + myMacroclassifiers.get(i).myClassifier.experience  
 					+ "|"
-					+ "cov:|" + (int) (myMacroclassifiers.elementAt(i).myClassifier.objectiveCoverage * myMacroclassifiers.elementAt(i).myClassifier.getLCS().instances.length)
+					+ "cov:|" + (int) (myMacroclassifiers.get(i).myClassifier.objectiveCoverage * myMacroclassifiers.get(i).myClassifier.getLCS().instances.length)
 					+ "|");
 			
-			response.append(myMacroclassifiers.elementAt(i).myClassifier.getUpdateSpecificData());
+			response.append(myMacroclassifiers.get(i).myClassifier.getUpdateSpecificData());
 			
 			//response.append(" deleted by: " + myMacroclassifiers.elementAt(i).myClassifier.formulaForD);
 			
-			if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER) {
+			if (myMacroclassifiers.get(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER) {
 				numOfCover++;
-				coveredTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
-				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
+				coveredTotalNumerosity += myMacroclassifiers.get(i).numerosity;
+				accuracyOfCovered +=  myMacroclassifiers.get(i).numerosity * myMacroclassifiers.get(i).myClassifier.getAccuracy();
 				response.append("origin:|cover" + "|");
 			}
-			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) {
+			else if (myMacroclassifiers.get(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA) {
 				numOfGA++;
-				gaedTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
-				accuracyOfGa +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
+				gaedTotalNumerosity += myMacroclassifiers.get(i).numerosity;
+				accuracyOfGa +=  myMacroclassifiers.get(i).numerosity * myMacroclassifiers.get(i).myClassifier.getAccuracy();
 				response.append("origin:|ga" + "|");
 			}
-			else if (myMacroclassifiers.elementAt(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT) {
+			else if (myMacroclassifiers.get(i).myClassifier.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT) {
 				numOfInit++;
-				coveredTotalNumerosity += myMacroclassifiers.elementAt(i).numerosity;
-				accuracyOfCovered +=  myMacroclassifiers.elementAt(i).numerosity * myMacroclassifiers.elementAt(i).myClassifier.getAccuracy();
+				coveredTotalNumerosity += myMacroclassifiers.get(i).numerosity;
+				accuracyOfCovered +=  myMacroclassifiers.get(i).numerosity * myMacroclassifiers.get(i).myClassifier.getAccuracy();
 				response.append("origin:|init "+ "|");
 			}	
 			
 			
-			numOfSubsumptions += myMacroclassifiers.elementAt(i).numberOfSubsumptions;
+			numOfSubsumptions += myMacroclassifiers.get(i).numberOfSubsumptions;
 			//response.append(" created: " + myMacroclassifiers.elementAt(i).myClassifier.created + " ");
-			response.append("created:|" + myMacroclassifiers.elementAt(i).myClassifier.cummulativeInstanceCreated + "|");
-			response.append("last in correctset:|" + myMacroclassifiers.elementAt(i).myClassifier.timestamp + "|");
-			response.append("subsumptions:|" + myMacroclassifiers.elementAt(i).numberOfSubsumptions + "|");
-			response.append("created:|" + (-Integer.MIN_VALUE + myMacroclassifiers.elementAt(i).myClassifier.getSerial()) + "th" + "|");
+			response.append("created:|" + myMacroclassifiers.get(i).myClassifier.cummulativeInstanceCreated + "|");
+			response.append("last in correctset:|" + myMacroclassifiers.get(i).myClassifier.timestamp + "|");
+			response.append("subsumptions:|" + myMacroclassifiers.get(i).numberOfSubsumptions + "|");
+			response.append("created:|" + (-Integer.MIN_VALUE + myMacroclassifiers.get(i).myClassifier.getSerial()) + "th" + "|");
 			response.append(System.getProperty("line.separator"));
 		}
 		

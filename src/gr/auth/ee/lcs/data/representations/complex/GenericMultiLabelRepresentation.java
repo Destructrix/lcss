@@ -341,6 +341,10 @@ public final class GenericMultiLabelRepresentation extends
 		 * The threshold on which to decide for the label bipartition.
 		 */
 		private double voteThreshold;
+		
+		public long getConfidenceArrayTime;
+		
+		public long calibrateTime;
 
 		/**
 		 * Constructor.
@@ -462,15 +466,20 @@ public final class GenericMultiLabelRepresentation extends
 			final float[][] confidenceValues = new float[instances.length][]; // didiastatos pinakas. to confidenceValues[a][b] periexei gia to sugkekrimeno instance a
 																			  // tin psifo ton kanonon tou matchSet (gia to instance a) gia to label b.
 																			  // einai 9etikes, kanonikopoiimenes psifoi, zugismenes me to fitness
-			
+			getConfidenceArrayTime = -System.currentTimeMillis();
 			for (int i = 0; i < instances.length; i++) {
 				confidenceValues[i] = getConfidenceArray(rules, instances[i]);  // getConfidenceArray epistrefei pinaka diastasis {numberOfLabels}, me periexomena
 																				// tin psifo ka9e kanona tou matchSet gia ka9e label gia ena sugkekrimeno instance
 			}
+			getConfidenceArrayTime += System.currentTimeMillis();
 
 			final ProportionalCut pCut = new ProportionalCut();
-
+			//this.voteThreshold = pCut.calibrate(targetLC, confidenceValues);
+			calibrateTime = -System.currentTimeMillis();
 			this.voteThreshold = pCut.calibrate((float) myLcs.labelCardinality, confidenceValues);
+			calibrateTime += System.currentTimeMillis();
+			
+			//System.out.println("Threshold (pcut) set to " + this.voteThreshold);
 
 			//System.out.println("Threshold (pcut) set to " + this.voteThreshold);
 

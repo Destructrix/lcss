@@ -148,6 +148,61 @@ public class FixedSizeSetWorstFitnessDeletion implements
 		
 	}
 	
+	
+	
+	@Override
+	public final void controlPopulationSmp(final ClassifierSet aSet) {
+
+		final ClassifierSet toBeDeleted = new ClassifierSet(null);
+		
+//		not necessary anymore. deletion of zero coverage rules occurs right after the formation of the match set
+ 
+/*		if (aSet.getTotalNumerosity() > populationSize) 
+			zeroCoverageRemoval.controlPopulation(aSet);*/
+
+		numberOfDeletions = 0;
+		deletionTime = 0;
+		
+		while (aSet.getTotalNumerosity() > populationSize) {
+			long time1 = - System.currentTimeMillis();
+			
+			numberOfDeletions++;
+			// se auto to simeio upologizei maxPopulation + 1 pi9anotites, ka9os gia na kli9ei i controlPopulation, prepei na exei uperbei to ano orio tou pli9usmou
+			
+			//if (numberOfDeletions == 1) 
+			updateStrategy.computeDeletionProbabilitiesSmp(aSet);
+			
+			mySelector.selectSmp2(1, aSet, toBeDeleted); // me rouleta			
+			
+			Classifier cl = toBeDeleted.getClassifier(0);
+
+			
+			if (cl.formulaForD == 1)
+				aSet.firstDeletionFormula++;
+			else if (cl.formulaForD == 0) 
+				aSet.secondDeletionFormula++;
+			
+			if (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_COVER || (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_INIT))
+				aSet.coveredDeleted++;
+			else if (cl.getClassifierOrigin() == Classifier.CLASSIFIER_ORIGIN_GA)
+				aSet.gaedDeleted++;
+			
+			// monitor deletions
+			monitorDeletions(aSet, cl);
+						
+			aSet.deleteClassifier(cl);
+			toBeDeleted.deleteClassifier(0);
+			
+			time1 += System.currentTimeMillis();
+			
+			deletionTime += time1;
+
+		}
+	}
+	
+	
+	
+	
 	public final int getNumberOfDeletionsConducted(){
 		return numberOfDeletions;
 	}

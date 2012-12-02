@@ -38,6 +38,8 @@ public interface IPopulationControlStrategy {
 	 */
 	void controlPopulation(ClassifierSet aSet);
 	
+	void controlPopulationSmp(ClassifierSet aSet);
+	
 	/**
 	 * 
 	 * Compute the probability of each classifier to be deleted.

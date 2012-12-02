@@ -21,6 +21,7 @@
  */
 package gr.auth.ee.lcs.geneticalgorithm;
 
+import edu.rit.util.Random;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 
 /**
@@ -42,6 +43,26 @@ public interface IRuleSelector {
 	 *            the ClassifierSet to copy the selected classifiers
 	 */
 	void select(int howManyToSelect, ClassifierSet fromPopulation,
+			ClassifierSet toPopulation);
+
+	void selectWithoutSum(int i, ClassifierSet evolveSet, ClassifierSet parents);
+
+	void computeFitnessSum(ClassifierSet evolveSet);
+
+	double computeFitnessSumNew(ClassifierSet evolveSet);
+
+	void selectWithoutSumNew(int i, ClassifierSet evolveSet,
+			ClassifierSet parents, double fitnessSumLocal);
+
+	void selectWithoutSumNewSmp(int i, ClassifierSet evolveSet,
+			ClassifierSet parents, double fitnessSum, Random prng);
+
+	double computeFitnessSumNewSmp(ClassifierSet fromPopulation);
+
+	void selectSmp(int howManyToSelect, ClassifierSet fromPopulation,
+			ClassifierSet toPopulation, Random prng);
+
+	void selectSmp2(int howManyToSelect, ClassifierSet fromPopulation,
 			ClassifierSet toPopulation);
 
 }
