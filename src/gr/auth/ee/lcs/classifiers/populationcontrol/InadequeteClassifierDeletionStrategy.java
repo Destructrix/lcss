@@ -98,4 +98,10 @@ public class InadequeteClassifierDeletionStrategy implements
 		return 0;
 	}
 
+	@Override
+	public void controlPopulationSmp(ClassifierSet aSet) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

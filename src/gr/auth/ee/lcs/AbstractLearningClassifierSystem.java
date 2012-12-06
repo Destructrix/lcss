@@ -201,9 +201,6 @@ public abstract class AbstractLearningClassifierSystem {
 	private Instances inst;
 	
 	public final int iterations;
-	
-	
-	//public ClassifierSet blacklist;
 	/**
 	 * Constructor.
 	 * 
@@ -222,9 +219,9 @@ public abstract class AbstractLearningClassifierSystem {
 		//blacklist = new ClassifierSet(null);
 		
 		if (smp)
-			System.out.println("smp : true");
+			System.out.println("smp: true");
 		else
-			System.out.println("smp : false");
+			System.out.println("smp: false");
 		
 	}
 	
@@ -360,8 +357,8 @@ public abstract class AbstractLearningClassifierSystem {
 		}
 		
 		// to sort edo ginetai mono gia optikous logous kai afora mono sto population.txt
-		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
-		srt.controlPopulation(this.rulePopulation);
+/*		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
+		srt.controlPopulation(this.rulePopulation);*/
 		
 		int numberOfClassifiersCovered = 0;
 		int numberClassifiersGaed = 0;
@@ -864,7 +861,7 @@ public abstract class AbstractLearningClassifierSystem {
 	 * */
 	public void registerMultilabelHooks(double[][] instances, int numberOfLabels) {
 		
-		FileLogger setStoreDirectory = new FileLogger(this);
+		new FileLogger(this);
 				
 		this.registerHook(new FileLogger("accuracy",
 				new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
@@ -1076,9 +1073,9 @@ public abstract class AbstractLearningClassifierSystem {
 			timeMeasurements[index][4] = matchSetSmp.getNumberOfMacroclassifiers();
 			
 			if (UPDATE_MODE == UPDATE_MODE_IMMEDIATE) 
-				getUpdateStrategy().updateSet(population, matchSetSmp, dataInstanceIndex, evolve);
+				getUpdateStrategy().updateSetSmp(population, matchSetSmp, dataInstanceIndex, evolve);
 			else if (UPDATE_MODE == UPDATE_MODE_HOLD) 
-				getUpdateStrategy().updateSetNew(population, matchSetSmp, dataInstanceIndex, evolve);				
+				getUpdateStrategy().updateSetNewSmp(population, matchSetSmp, dataInstanceIndex, evolve);				
 
 			recordInTimeMeasurements(population, index);
 
@@ -1113,10 +1110,10 @@ public abstract class AbstractLearningClassifierSystem {
 			timeMeasurements[index][36] = (int) ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).selectionTime;
 		}
 		else if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 4) {
-/*			timeMeasurements[index][33] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).generateCorrectSetTime;
+			timeMeasurements[index][33] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).generateCorrectSetTime;
 			timeMeasurements[index][34] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).updateParametersTime;
 			timeMeasurements[index][35] = (int) time1;
-			timeMeasurements[index][36] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).selectionTime;*/
+			timeMeasurements[index][36] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).selectionTime;
 		}
 
 		

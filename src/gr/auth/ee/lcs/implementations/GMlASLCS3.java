@@ -363,7 +363,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		 * */
 		final AccuracyRecallEvaluator selfAcc = new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY);
 		
-		testEvalTime1 += System.currentTimeMillis();	
+		internalValidationCalibrationTime = -System.currentTimeMillis();
 		internalValidationCalibration(selfAcc);
 		internalValidationCalibrationTime += System.currentTimeMillis();
 

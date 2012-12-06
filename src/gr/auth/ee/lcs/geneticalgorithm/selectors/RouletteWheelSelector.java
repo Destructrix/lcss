@@ -142,9 +142,9 @@ public class RouletteWheelSelector implements IRuleSelector {
 	}
 	
 	@Override
-	public final void selectWithoutSum(final int howManyToSelect,
-			   final ClassifierSet fromPopulation, // to correctSet(evolve) i o population(addClassifier) i delete
-			   final ClassifierSet toPopulation) {
+	public final void selectWithoutSum  (final int howManyToSelect,
+										   final ClassifierSet fromPopulation, // to correctSet(evolve) i o population(addClassifier) i delete
+										   final ClassifierSet toPopulation) {
 		
 		// Repeat roulette for howManyToSelect times
 		for (int i = 0; i < howManyToSelect; i++) {

@@ -26,7 +26,9 @@ import java.util.Vector;
 import edu.rit.util.Random;
 
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
-import gr.auth.ee.lcs.geneticalgorithm.algorithms.SteadyStateGeneticAlgorithm.EvolutionOutcome;
+//import gr.auth.ee.lcs.geneticalgorithm.algorithms.SteadyStateGeneticAlgorithm.EvolutionOutcome;
+
+
 
 /**
  * An interface for evolving a set.
@@ -48,11 +50,8 @@ public interface IGeneticAlgorithmStrategy {
 	
 	void evolveSetNew(ClassifierSet evolveSet, ClassifierSet population, int label);
 
-	
-	int getTimestamp(); // @author alek
+	int getTimestamp();
 
-	
-	
 	int getActivationAge();
 	
 	int getNumberOfSubsumptionsConducted();
@@ -76,12 +75,23 @@ public interface IGeneticAlgorithmStrategy {
 	long getDeletionTime();
 
 	void evolveSetSmp(ClassifierSet evolveSet, ClassifierSet population, int label);
+	
+	class EvolutionOutcome{
 
-	EvolutionOutcome evolveSetNewOneLabelSmp(ClassifierSet evolveSet,
-			ClassifierSet population, int label);
+		public Vector<Integer> indicesToSubsume;
+		public ClassifierSet newClassifierSet;
+		public long subsumptionTime;
+		public long selectionTime;
+		
+		public long timeA;
+		public long timeB;
+		public long timeC;
+		public long timeD;
+	};
 
-	EvolutionOutcome evolveSetNewSmp(ClassifierSet evolveSet,
-			ClassifierSet population, Random prng, int label);
+	EvolutionOutcome evolveSetNewOneLabelSmp(ClassifierSet evolveSet, ClassifierSet population, int label);
+
+	EvolutionOutcome evolveSetNewSmp(ClassifierSet evolveSet, ClassifierSet population, Random prng, int label);
 	
 	
 }

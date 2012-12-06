@@ -209,4 +209,10 @@ public class LowestFitnessRemoval implements IPopulationControlStrategy {
 		myLcs.iteration.add(myLcs.totalRepetition);
 
 	}
+
+	@Override
+	public void controlPopulationSmp(ClassifierSet aSet) {
+		// TODO Auto-generated method stub
+		
+	}
 }

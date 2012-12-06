@@ -43,7 +43,7 @@ import edu.rit.pj.ParallelRegion;
 
 /**
  * A steady-stage GA that selects two individuals from a set (with probability
- * proportional to their total fitness) and performs a crossover and mutation
+ * proportional to their total fitness) and performs a crossover and mutation,
  * corrects the classifier (if needed) and adds it to the set.
  * 
  * @author Miltos Allamanis
@@ -490,7 +490,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	 *            the LCS instance used
 	 * 
 	 */
-	public SteadyStateGeneticAlgorithm(final IRuleSelector gaSelector,
+	public SteadyStateGeneticAlgorithm (final IRuleSelector gaSelector,
 										final IBinaryGeneticOperator crossoverOperator,
 										final float crossoverRate,
 										final IUnaryGeneticOperator mutationOperator,
@@ -586,7 +586,9 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				int mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
 				child = crossoverOp.operate((i == 0) ? parentB : parentA, (i == 0) ? parentA : parentB, label, mutationPoint);
 				
-			} else {
+			} 
+			
+			else {
 				child = (Classifier) ((i == 0) ? parentA : parentB).clone();
 				child.setComparisonValue(
 						AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION,
@@ -597,7 +599,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 /*			System.out.println("parentA: " + parentA + " origin: " + parentA.getClassifierOrigin());
 			System.out.println("parentB: " + parentB + " origin: " + parentB.getClassifierOrigin());
 			System.out.println("child before: " + child);
-			System.out.println("======================");*/
+			System.out.println("======================");
+*/
 
 
 
@@ -643,6 +646,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		subsumptionTime -= deletionTime;
 		
 	}
+	
 	
 	@Override
 	public final void evolveSetSmp (final ClassifierSet evolveSet,
@@ -761,12 +765,10 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	
 	
-	
-	
 	@Override
-	public final void evolveSetNew(final ClassifierSet evolveSet,
-								  	final ClassifierSet population,
-								  	int label) {
+	public final void evolveSetNew (final ClassifierSet evolveSet,
+								  		final ClassifierSet population,
+								  		int label) {
 	
 		subsumptionTime = 0;
 		
@@ -816,6 +818,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
 			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 
+			
 			child.created = myLcs.totalRepetition;
 			
 			long time1 = -System.currentTimeMillis();
@@ -852,15 +855,16 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	
 	@Override
-	public final EvolutionOutcome evolveSetNewSmp (final ClassifierSet evolveSet,
+	public final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolveSetNewSmp (final ClassifierSet evolveSet,
 													  final ClassifierSet population,
-													  final Random prng, final int label) {
+													  final Random prng, 
+													  final int label) {
 		
 		//long timeA = System.currentTimeMillis();
 	
 		final ClassifierSet parents = new ClassifierSet(null);
 		
-		final EvolutionOutcome evolutionOutcome = new EvolutionOutcome(); 
+		final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = new gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome(); 
 		
 		Vector<Integer> indicesToSubsumeLocal  = new Vector<Integer>();
 		ClassifierSet newClassifiersSetLocal = new ClassifierSet(null);
@@ -910,6 +914,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			} 
 			
 			else {
+				
 				child = (Classifier) ((i == 0) ? parentA : parentB).clone();
 				child.setComparisonValue(
 						AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION,
@@ -971,12 +976,13 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	
 	@Override
-	public final EvolutionOutcome evolveSetNewOneLabelSmp(final ClassifierSet evolveSet,
-										   final ClassifierSet population, int label) {
+	public final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolveSetNewOneLabelSmp (final ClassifierSet evolveSet,
+										   					final ClassifierSet population, 
+										   					int label) {
 		
 		final ClassifierSet parents = new ClassifierSet(null);
 		
-		final EvolutionOutcome evolutionOutcome = new EvolutionOutcome(); 
+		final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = new gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome(); 
 		
 		Vector<Integer> indicesToSubsumeLocal  = new Vector<Integer>();
 		ClassifierSet newClassifiersSetLocal = new ClassifierSet(null);

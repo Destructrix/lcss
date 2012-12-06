@@ -278,6 +278,26 @@ public class SequentialMlUpdateAlgorithm extends AbstractUpdateStrategy {
 	
 	@Override
 	public void updateSetNew(ClassifierSet population,
-			ClassifierSet matchSet, int instanceIndex, boolean evolve){};
+			ClassifierSet matchSet, int instanceIndex, boolean evolve){}
+
+	@Override
+	public void coverSmp(ClassifierSet population, int instanceIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateSetSmp(ClassifierSet population, ClassifierSet matchSet,
+			int instanceIndex, boolean evolve) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateSetNewSmp(ClassifierSet population,
+			ClassifierSet matchSet, int instanceIndex, boolean evolve) {
+		// TODO Auto-generated method stub
+		
+	};
 
 }

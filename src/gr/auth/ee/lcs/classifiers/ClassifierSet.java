@@ -809,6 +809,9 @@ public final void addClassifierSmp(final Macroclassifier macro,
 								boolean zeroCoverage = (testSetSmp.getClassifier(i).getCheckedInstances() >= testSetSmp.getClassifier(i).getLCS().instances.length) 
 										 && (testSetSmp.getClassifier(i).getCoverage() == 0);
 								
+								if (testSetSmp.getClassifier(i).checked == testSetSmp.getClassifier(i).getLCS().instances.length) 
+									testSetSmp.getClassifier(i).objectiveCoverage = testSetSmp.getClassifier(i).getCoverage();
+								
 								if (zeroCoverage)
 									regionalDeleteIndices.add(i);
 								
@@ -900,6 +903,7 @@ public final void addClassifierSmp(final Macroclassifier macro,
 			cl.myClassifier.matchInstances[dataInstanceIndex]
 			= (byte)(cl.myClassifier.getLCS().getClassifierTransformBridge().isMatch
 					(cl.myClassifier.getLCS().instances[dataInstanceIndex], cl.myClassifier)? 1 : 0);
+			
 			cl.myClassifier.checked++;
 			cl.myClassifier.covered += cl.myClassifier.matchInstances[dataInstanceIndex];
 			
@@ -908,6 +912,9 @@ public final void addClassifierSmp(final Macroclassifier macro,
 			
 			boolean zeroCoverage = (cl.myClassifier.checked >= cl.myClassifier.getLCS().instances.length) 
 			                       && (cl.myClassifier.covered == 0);
+			
+			if (cl.myClassifier.checked == cl.myClassifier.getLCS().instances.length) 
+				cl.myClassifier.objectiveCoverage = cl.myClassifier.getCoverage();
 			
 			if (zeroCoverage)
 				deleteIndices.add(candidateDeleteIndices.get(i));			
@@ -1047,6 +1054,9 @@ public final void addClassifierSmp(final Macroclassifier macro,
 								
 								boolean zeroCoverage = (cl.myClassifier.checked >= cl.myClassifier.getLCS().instances.length) 
 								                       && (cl.myClassifier.covered == 0);
+								
+								if (cl.myClassifier.checked == cl.myClassifier.getLCS().instances.length) 
+									cl.myClassifier.objectiveCoverage = cl.myClassifier.getCoverage();
 								
 								if (zeroCoverage)
 									deleteIndices_thread.add(candidateDeleteIndicesSmp.get(i));
@@ -1363,9 +1373,9 @@ public final void addClassifierSmp(final Macroclassifier macro,
 	
 	
 	
-		public final int letPopulationSubsumeNewSmp(final Macroclassifier macro,
-			  									final boolean thoroughAdd,
-			  									final ParallelTeam ptSubsume) {		
+		public final int letPopulationSubsumeNewSmp (final Macroclassifier macro,
+					  									final boolean thoroughAdd,
+					  									final ParallelTeam ptSubsume) {		
 
 		// Subsume if possible
 		if (thoroughAdd) { // if thoroughAdd = true, before adding the given macro to the population, check it against the whole population for subsumption

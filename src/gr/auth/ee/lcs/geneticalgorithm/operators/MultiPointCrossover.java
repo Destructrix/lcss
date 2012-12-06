@@ -43,9 +43,9 @@ public class MultiPointCrossover implements IBinaryGeneticOperator {
 		child = myLcs.getNewClassifier(performCrossover(classifierA, classifierB, mutationPoint, label, numberOfLabels));
 		
 /*		double newFitness = classifierA.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION)
-						   + classifierB.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);*/
+						   + classifierB.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION);
 		double newFitness = 1;
-		child.setComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, newFitness);
+		child.setComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION, newFitness);*/
 		// TODO: Set specific update data
 		return child;
 	}

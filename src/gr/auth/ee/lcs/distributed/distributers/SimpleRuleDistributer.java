@@ -61,6 +61,27 @@ public class SimpleRuleDistributer extends AbstractRuleDistributer {
 			
 		}
 
+		@Override
+		public double computeFitnessSumNewSmp(ClassifierSet fromPopulation) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void selectSmp(int howManyToSelect,
+				ClassifierSet fromPopulation, ClassifierSet toPopulation,
+				Random prng) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void selectSmp2(int howManyToSelect,
+				ClassifierSet fromPopulation, ClassifierSet toPopulation) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	};
 
 	/**

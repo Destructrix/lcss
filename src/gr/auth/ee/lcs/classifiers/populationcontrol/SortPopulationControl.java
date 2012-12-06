@@ -138,6 +138,12 @@ public class SortPopulationControl implements IPopulationControlStrategy {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public void controlPopulationSmp(ClassifierSet aSet) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

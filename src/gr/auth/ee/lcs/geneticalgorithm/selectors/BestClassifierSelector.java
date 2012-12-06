@@ -21,6 +21,7 @@
  */
 package gr.auth.ee.lcs.geneticalgorithm.selectors;
 
+import edu.rit.util.Random;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.Macroclassifier;
 import gr.auth.ee.lcs.geneticalgorithm.IRuleSelector;
@@ -113,6 +114,59 @@ public final class BestClassifierSelector implements IRuleSelector {
 		toPopulation.addClassifier(
 				new Macroclassifier(fromPopulation.getClassifier(bestIndex),
 						howManyToSelect), true);
+	}
+
+	@Override
+	public void selectWithoutSum(int i, ClassifierSet evolveSet,
+			ClassifierSet parents) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void computeFitnessSum(ClassifierSet evolveSet) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double computeFitnessSumNew(ClassifierSet evolveSet) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void selectWithoutSumNew(int i, ClassifierSet evolveSet,
+			ClassifierSet parents, double fitnessSumLocal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void selectWithoutSumNewSmp(int i, ClassifierSet evolveSet,
+			ClassifierSet parents, double fitnessSum, Random prng) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double computeFitnessSumNewSmp(ClassifierSet fromPopulation) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void selectSmp(int howManyToSelect, ClassifierSet fromPopulation,
+			ClassifierSet toPopulation, Random prng) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void selectSmp2(int howManyToSelect, ClassifierSet fromPopulation,
+			ClassifierSet toPopulation) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

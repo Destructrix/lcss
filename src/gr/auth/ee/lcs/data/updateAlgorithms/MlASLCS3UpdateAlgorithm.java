@@ -37,6 +37,7 @@ import gr.auth.ee.lcs.classifiers.IPopulationControlStrategy;
 import gr.auth.ee.lcs.classifiers.Macroclassifier;
 import gr.auth.ee.lcs.classifiers.statistics.MeanFitnessStatistic;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
+import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS4UpdateAlgorithm.MlASLCSClassifierData;
 import gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy;
 import gr.auth.ee.lcs.geneticalgorithm.algorithms.SteadyStateGeneticAlgorithm;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
@@ -431,6 +432,70 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	}
 
 	
+	
+	
+	private void computeCoreDeletionProbabilities (final Macroclassifier cl, 
+													final MlASLCSClassifierData data,
+													final double meanPopulationFitness) {
+		
+		
+		if (DELETION_MODE == DELETION_MODE_DEFAULT) {
+			data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) && (data.fitness < DELTA * meanPopulationFitness) ? 
+					meanPopulationFitness / data.fitness : 1);	
+		
+		/* mark the formula responsible for deleting this classifier 
+		 * (if exp > theta_del and fitness < delta * <f>) ==> formula = 1, else 0. */
+		
+			cl.myClassifier.formulaForD = ((cl.myClassifier.experience > THETA_DEL) 
+					&& (data.fitness < DELTA * meanPopulationFitness)) ? 1 : 0;
+		}
+		
+		else if (DELETION_MODE == DELETION_MODE_POWER) {
+
+			data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) && (Math.pow(data.fitness,n) < DELTA * meanPopulationFitness) ? 
+						meanPopulationFitness / Math.pow(data.fitness,n) : 1);	
+			
+			/* mark the formula responsible for deleting this classifier 
+			 * (if exp > theta_del and fitness ^ n < delta * <f>) ==> formula = 1, else 0. */
+			
+			cl.myClassifier.formulaForD = ((cl.myClassifier.experience > THETA_DEL) 
+					&& (Math.pow(data.fitness,n) < DELTA * meanPopulationFitness)) ? 1 : 0;
+		}
+		
+		else if (DELETION_MODE == DELETION_MODE_MILTOS) {
+
+			// miltos original
+			data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
+						: Math.exp(-data.ns  + 1)) );
+			
+			cl.myClassifier.formulaForD = (cl.myClassifier.experience < THETA_DEL) ? 1 : 0;
+			
+			
+/*				if (cl.myClassifier.experience > THETA_DEL && (data.fitness < DELTA * meanPopulationFitness)) 
+				data.d = Math.exp(data.ns * meanPopulationFitness / data.fitness);
+			else
+				data.d = Math.exp(data.ns);
+
+			data.d /= Math.exp(100);*/
+			
+/*				double acc = data.tp / data.msa;
+		
+			
+			if (cl.myClassifier.experience < THETA_DEL) 
+				data.d = 0;//1 / (100 * (Double.isNaN(data.fitness) ? 1 : data.fitness)); // protect the new classifiers
+			
+			else if (acc >= ACC_0 * (1 - DELTA)) 
+				data.d = Math.exp(data.ns / data.fitness * DELTA + 1);
+			
+			else 
+				data.d = Math.exp(data.ns / data.fitness + 1);
+				//data.d = Math.pow(data.ns * DELTA, data.ns + 1);
+*/			}
+		
+	}
+	
+	
+	
 	/**
 	 * 
 	 * For every classifier, compute its deletion probability.
@@ -464,59 +529,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			final Macroclassifier cl = aSet.getMacroclassifier(i);
 			final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 
+			computeCoreDeletionProbabilities(cl, data, meanPopulationFitness);
 			
-			if (DELETION_MODE == DELETION_MODE_DEFAULT) {
-				data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) && (data.fitness < DELTA * meanPopulationFitness) ? 
-						meanPopulationFitness / data.fitness : 1);	
-			
-			/* mark the formula responsible for deleting this classifier 
-			 * (if exp > theta_del and fitness < delta * <f>) ==> formula = 1, else 0. */
-			
-				cl.myClassifier.formulaForD = ((cl.myClassifier.experience > THETA_DEL) 
-						&& (data.fitness < DELTA * meanPopulationFitness)) ? 1 : 0;
-			}
-			
-			else if (DELETION_MODE == DELETION_MODE_POWER) {
-
-				data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) && (Math.pow(data.fitness,n) < DELTA * meanPopulationFitness) ? 
-							meanPopulationFitness / Math.pow(data.fitness,n) : 1);	
-				
-				/* mark the formula responsible for deleting this classifier 
-				 * (if exp > theta_del and fitness ^ n < delta * <f>) ==> formula = 1, else 0. */
-				
-				cl.myClassifier.formulaForD = ((cl.myClassifier.experience > THETA_DEL) 
-						&& (Math.pow(data.fitness,n) < DELTA * meanPopulationFitness)) ? 1 : 0;
-			}
-			
-			else if (DELETION_MODE == DELETION_MODE_MILTOS) {
-
-				// miltos original
-				data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
-							: Math.exp(-data.ns  + 1)) );
-				
-				cl.myClassifier.formulaForD = (cl.myClassifier.experience < THETA_DEL) ? 1 : 0;
-				
-				
-/*				if (cl.myClassifier.experience > THETA_DEL && (data.fitness < DELTA * meanPopulationFitness)) 
-					data.d = Math.exp(data.ns * meanPopulationFitness / data.fitness);
-				else
-					data.d = Math.exp(data.ns);
-
-				data.d /= Math.exp(100);*/
-				
-/*				double acc = data.tp / data.msa;
-			
-				
-				if (cl.myClassifier.experience < THETA_DEL) 
-					data.d = 0;//1 / (100 * (Double.isNaN(data.fitness) ? 1 : data.fitness)); // protect the new classifiers
-				
-				else if (acc >= ACC_0 * (1 - DELTA)) 
-					data.d = Math.exp(data.ns / data.fitness * DELTA + 1);
-				
-				else 
-					data.d = Math.exp(data.ns / data.fitness + 1);
-					//data.d = Math.pow(data.ns * DELTA, data.ns + 1);
-*/			}
 		}	
 	}
 	
@@ -608,36 +622,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 								final Macroclassifier cl = aSetSmp.getMacroclassifier(i);
 								final MlASLCSClassifierData data = (MlASLCSClassifierData) cl.myClassifier.getUpdateDataObject();
 
-								
-								if (DELETION_MODE == DELETION_MODE_DEFAULT) {
-									data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) && (data.fitness < DELTA * meanPopulationFitnessSmp) ? 
-											meanPopulationFitnessSmp / data.fitness : 1);	
-								
-								/* mark the formula responsible for deleting this classifier 
-								 * (if exp > theta_del and fitness < delta * <f>) ==> formula = 1, else 0. */
-								
-									cl.myClassifier.formulaForD = ((cl.myClassifier.experience > THETA_DEL) 
-											&& (data.fitness < DELTA * meanPopulationFitnessSmp)) ? 1 : 0;
-								}
-								
-								else if (DELETION_MODE == DELETION_MODE_POWER) {
-
-									data.d = data.ns * ((cl.myClassifier.experience > THETA_DEL) && (Math.pow(data.fitness,n) < DELTA * meanPopulationFitnessSmp) ? 
-												meanPopulationFitnessSmp / Math.pow(data.fitness,n) : 1);	
-									
-									/* mark the formula responsible for deleting this classifier 
-									 * (if exp > theta_del and fitness ^ n < delta * <f>) ==> formula = 1, else 0. */
-									
-									cl.myClassifier.formulaForD = ((cl.myClassifier.experience > THETA_DEL) 
-											&& (Math.pow(data.fitness,n) < DELTA * meanPopulationFitnessSmp)) ? 1 : 0;
-								}
-								
-								else if (DELETION_MODE == DELETION_MODE_MILTOS) {
-
-									// miltos original
-									data.d = 1 / (data.fitness * ((cl.myClassifier.experience < THETA_DEL) ? 100.
-												: Math.exp(-data.ns  + 1)) );
-								}	
+								computeCoreDeletionProbabilities(cl, data, meanPopulationFitnessSmp);
 							}
 						}
 						
@@ -1024,13 +1009,16 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 										 Classifier parentB,
 										 Classifier child) {
 		
-		final MlASLCSClassifierData childData = ((MlASLCSClassifierData) child
-				.getUpdateDataObject());
-		final MlASLCSClassifierData parentAData = ((MlASLCSClassifierData) parentA
+		final MlASLCSClassifierData childData = ((MlASLCSClassifierData) child.getUpdateDataObject());
+		
+/*		final MlASLCSClassifierData parentAData = ((MlASLCSClassifierData) parentA
 				.getUpdateDataObject());
 		final MlASLCSClassifierData parentBData = ((MlASLCSClassifierData) parentB
 				.getUpdateDataObject());
 		childData.ns = (parentAData.ns + parentBData.ns) / 2;
+*/
+		childData.ns = 1;
+		child.setComparisonValue(COMPARISON_MODE_EXPLORATION, 1);
 	}
 	
 	/*
@@ -2202,7 +2190,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			{
 				for ( int i = div * numOfProcessors; i < div * numOfProcessors + mod ; i++ )
 				{
-					SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome = 
+					IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = 
 						ga.evolveSetNewOneLabelSmp(
 												labelCorrectSetsSmp
 												[labelsToEvolveSmp.elementAt(i)], 
@@ -2240,8 +2228,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 								{
 									for ( int i = first; i <= last ; ++i )
 									{
-										prng_thread.skip(2*first*(3+labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)].getClassifier(0).size()));
-										SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome 
+										prng_thread.skip(2 * first * (3 + labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)].getClassifier(0).size()));
+										IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome 
 											= ga.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)], 
 																 populationSmp, 
 																 prng_thread,
@@ -2283,7 +2271,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			{
 				for ( int i = 0; i < labelsToEvolveSmp.size() ; i++ )
 				{
-					SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome = 
+					IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = 
 						ga.evolveSetNewOneLabelSmp(
 													labelCorrectSetsSmp
 													[labelsToEvolveSmp.elementAt(i)], 
