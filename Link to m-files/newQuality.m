@@ -6,4 +6,4 @@ hold on;
 hold on;
 plot (data (:,3),data (:,8),".r;quality of gaed;");
 grid;
-print -color ~/graphs/newQuality.jpg;
+print -color /home/li9i/graphs/newQuality.jpg;

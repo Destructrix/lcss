@@ -16,6 +16,6 @@ plot (data (:,19) , "-r;mean ns;");
 hold on;
 plot (data (:,17), "-k;subsumptions;"); 
 grid;
-print -color ~/graphs/classifiersProgress.jpg;
+print -color /home/li9i/graphs/classifiersProgress.jpg;
 
 

@@ -426,7 +426,6 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		Runtime runtime = Runtime.getRuntime(); 
 		
 		numOfProcessors = runtime.availableProcessors();  
-		System.out.println("numOfProcessors: " + numOfProcessors);
 		
 		lowestCoverageIndices = new ArrayList <Integer>();
 		lowestFitnessIndices = new ArrayList <Integer>();
@@ -497,6 +496,10 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 				data.d = Math.exp(data.ns - 1) / data.fitness;
 				cl.myClassifier.formulaForD = 0;
 			}
+			
+		
+			
+			//data.d = cl.myClassifier.experience > THETA_DEL ? Math.exp((data.ns - 1) / data.fitness) : Math.exp(data.ns - 1) / data.fitness;
 		
 		}
 		
@@ -749,13 +752,19 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 	
 	
 	
-	
-	
-	
+	/**
+	 * Delete classifiers from every match set formed.
+	 * 
+	 */
 	private void controlPopulationInMatchSet (final ClassifierSet population, final ClassifierSet matchSet) {
 		controlPopulationInMatchSet1(population, matchSet);
 	}
 	
+	
+	/**
+	 * Delete classifiers from every correct set formed.
+	 * 
+	 */
 	private void  controlPopulationInCorrectSet (final ClassifierSet population, 
 												  final ClassifierSet matchSet,
 												  final ClassifierSet correctSet) {
@@ -776,9 +785,9 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		double lowestCoverage = Double.MAX_VALUE;
 		int toBeDeleted = -1;
 
-		for (int i = 0; i < matchSet.getNumberOfMacroclassifiers(); i++) {
+		for (int i = 0; i < correctSet.getNumberOfMacroclassifiers(); i++) {
 			
-			final Classifier cl = matchSet.getClassifier(i);
+			final Classifier cl = correctSet.getClassifier(i);
 			if (cl.objectiveCoverage > 0 && cl.objectiveCoverage <= lowestCoverage) { // CL.getcoverage?
 				
 				if (cl.objectiveCoverage < lowestCoverage) {
@@ -796,7 +805,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			for (int i = 0; i < lowestCoverageIndices.size(); i++) {
 				
-				final Macroclassifier macro = matchSet.getMacroclassifier(lowestCoverageIndices.get(i));
+				final Macroclassifier macro = correctSet.getMacroclassifier(lowestCoverageIndices.get(i));
 				final Classifier cl = macro.myClassifier;
 
 				if (cl.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_PURE_FITNESS) <= lowestFitness) {
@@ -808,9 +817,9 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			if (toBeDeleted >= 0) {
 				myLcs.numberOfClassifiersDeletedInMatchSets++;
-				population.deleteClassifier(matchSet.getMacroclassifier(toBeDeleted).myClassifier);
-				correctSet.deleteClassifier(matchSet.getMacroclassifier(toBeDeleted).myClassifier);
-				matchSet.deleteClassifier(toBeDeleted);
+				population.deleteClassifier(correctSet.getMacroclassifier(toBeDeleted).myClassifier);
+				matchSet.deleteClassifier(correctSet.getMacroclassifier(toBeDeleted).myClassifier);
+				correctSet.deleteClassifier(toBeDeleted);
 			}
 		}
 		
@@ -819,6 +828,53 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 				
 	}
 	
+	private void controlPopulationInCorrectSet2 (final ClassifierSet population, 
+													final ClassifierSet matchSet,
+													final ClassifierSet correctSet) {
+
+		for (int i = 0; i < correctSet.getNumberOfMacroclassifiers(); i++) {
+		
+			final Classifier cl = correctSet.getClassifier(i);
+			
+			if (cl.objectiveCoverage > 0 && !distinctCoverage.contains((float) cl.objectiveCoverage)) 
+				distinctCoverage.add((float) cl.objectiveCoverage);	
+		}
+		
+		for (int c = 0; c < distinctCoverage.size(); c++) {
+		
+			double lowestFitness = Double.MAX_VALUE;
+			
+			int toBeDeleted = -1;
+			int howManyInBlock = 0;
+			
+			for (int m = 0; m < correctSet.getNumberOfMacroclassifiers(); m++) {
+				
+				final Classifier cl = correctSet.getClassifier(m);
+				final double fitness = cl.getComparisonValue(COMPARISON_MODE_PURE_FITNESS);
+				
+				if (cl.objectiveCoverage == distinctCoverage.get(c))
+					howManyInBlock++;
+				
+				if (cl.objectiveCoverage == distinctCoverage.get(c) && fitness <= lowestFitness) {
+				
+					lowestFitness = fitness;
+					toBeDeleted = m;
+				}
+			}
+			
+			if (howManyInBlock > 1) {
+				myLcs.numberOfClassifiersDeletedInMatchSets++;
+				population.deleteClassifier(correctSet.getClassifier(toBeDeleted));
+				matchSet.deleteClassifier(correctSet.getClassifier(toBeDeleted));
+				correctSet.deleteClassifier(toBeDeleted);
+			}
+		}
+		
+		distinctCoverage.clear();
+
+
+}
+
 	
 	
 	
@@ -1777,10 +1833,10 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		switch (mode) {
 		case COMPARISON_MODE_EXPLORATION:
-			//return aClassifier.objectiveCoverage < 0 ? Math.pow(data.fitness, 2) : data.fitness;
+			return aClassifier.objectiveCoverage < 0 ? 0 : data.fitness;
 			//return aClassifier.objectiveCoverage < 0 ? 0 : (aClassifier.experience < aClassifier.objectiveCoverage * myLcs.instances.length * 2 ? data.fitness / 10 : data.fitness);
 
-			return aClassifier.experience < 10 ? 0 : data.fitness;
+			//return aClassifier.experience < 10 ? 0 : data.fitness;
 		case COMPARISON_MODE_DELETION:
 			return data.d;
 		
@@ -2473,7 +2529,9 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			labelCorrectSets[i] = generateLabelCorrectSet(matchSet, instanceIndex, i); // periexei tous kanones pou apofasizoun gia to label 9etika.
 			labelIncorrectSets[i] = generateLabelIncorrectSet(matchSet, instanceIndex, i);
 			
-			controlPopulationInCorrectSet(population, matchSet, labelIncorrectSets[i]);
+			
+			controlPopulationInCorrectSet(population, matchSet, labelCorrectSets[i]);
+			//controlPopulationInCorrectSet(population, matchSet, labelIncorrectSets[i]);
 			
 			
 /*			System.out.println("label: " + i);
@@ -2809,7 +2867,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		generateCorrectSetTime += System.currentTimeMillis();
 		
-		controlPopulationInMatchSet(population, matchSet);
+		//controlPopulationInMatchSet(population, matchSet);
 
 		
 		int CorrectSetsPopulation = 0;

@@ -926,7 +926,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			child.inheritParametersFromParents(parentA, parentB);
 			myLcs.getClassifierTransformBridge().fixChromosome(child);
 			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
-			
+			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+
 			child.created = myLcs.totalRepetition;
 			
 			long time1 = -System.currentTimeMillis();

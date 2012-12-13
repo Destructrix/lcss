@@ -1,5 +1,5 @@
 data=load("~/latestMetricFiles/measurements.txt");
-figure;
+figure(1);
 plot (data(:,33),"-b;[M] deletions;");
 grid;
-print -color ~/graphs/matchsetDeletions.jpg;
+print -color /home/li9i/graphs/matchsetDeletions.jpg;

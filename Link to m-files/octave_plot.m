@@ -12,7 +12,7 @@ plot (data (:,14), "-c;number of classifiers;");
 hold on;
 plot (data (:,18), ".m;correct set population;"); 
 grid;
-print -color ~/graphs/main.jpg;
+print -color /home/li9i/graphs/main.jpg;
 
 figure;
 
@@ -26,4 +26,4 @@ plot (data (:,22), "-k;cover;");
 hold on;
 plot (data (:,23), "-c;ga;"); 
 grid;
-print -color ~/graphs/deletions.jpg;
+print -color /home/li9i/graphs/deletions.jpg;

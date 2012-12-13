@@ -115,7 +115,10 @@ public class FoldEvaluator {
 			System.out.println("Execution started @ " + timestampStart + "\n");
 			
 			
-			double[][] results = new double[numOfFoldRepetitions][];
+			double[][]  results 	= new double[numOfFoldRepetitions][];
+			double[] 	pcutResults = new double[12];
+			double[] 	ivalResults = new double[12];
+			double[] 	bestResults = new double[12];
 						
 			for (int repetition = 0; repetition < numOfFoldRepetitions; repetition++) {
 				
@@ -178,19 +181,47 @@ public class FoldEvaluator {
 			
 			
 
-			// Determine better repetition
-			int best = 0;
+			// Determine better repetition among numOfFoldRepetitions (not number of folds, mind you)
+/*			int best = 0;
 			for (int j = 1; j < numOfFoldRepetitions; j++) {
 				if (results[j][metricOptimizationIndex] > results[best][metricOptimizationIndex])
 					best = j;
+			}*/
+			
+			
+			// Determine better repetition among numOfFoldRepetitions (not number of folds, mind you) per evaluation method
+			int best = 0;
+			for (int j = 1; j < numOfFoldRepetitions; j++) {
+				if (results[j][0] > results[best][0]) // accuracy (pcut)
+					best = j;
 			}
 
+			pcutResults = results[best];
+			
+			best = 0;
+			for (int j = 1; j < numOfFoldRepetitions; j++) {
+				if (results[j][4] > results[best][4]) // accuracy (ival)
+					best = j;
+			}
+
+			ivalResults = results[best];
+			
+			best = 0;
+			for (int j = 1; j < numOfFoldRepetitions; j++) {
+				if (results[j][8] > results[best][8]) // accuracy (best)
+					best = j;
+			}
+
+			bestResults = results[best];
+			
+			
 			// Gather to fold stats
-			gatherResults(results[best], i);  // epistrefei pinaka. 
+			//gatherResults(results[best], i);  // epistrefei pinaka. 
 											  // se ka9e 9esi exei to apotelesma gia ti metriki pou xrisimopoioume.
 											  // ka9e 9esi tou kai ena fold.
 
 			
+			gatherResults(pcutResults, ivalResults, bestResults, i);
 
 			// mark end of execution
 			final Calendar cal_2 = Calendar.getInstance();
@@ -376,6 +407,12 @@ public class FoldEvaluator {
 	 * @uml.property  name="evals" multiplicity="(0 -1)" dimension="2"
 	 */
 	private double[][] evals;
+	
+	private double [][] pcutEvals;
+	
+	private double [][] ivalEvals;
+	
+	private double [][] bestEvals;
 
 	/**
 	 * The runs to run.
@@ -451,18 +488,61 @@ public class FoldEvaluator {
 	 *            the results double array
 	 * @return the mean for each row
 	 */
-	public double[] calcMean(double[][] results) {
+/*	public double[] calcMean(double[][] results) {
+		
 		final double[] means = new double[results[0].length];
+		
 		for (int i = 0; i < means.length; i++) {
 			double sum = 0;
+			
 			for (int j = 0; j < results.length; j++) {
 				sum += results[j][i];
 			}
+			
 			means[i] = (sum) / (results.length);
 		}
 		return means;
-	}
+	}*/
 
+	
+	public double[] calcMean(double[][] pcutResults, double[][] ivalResults, double[][] bestResults) {
+		
+		final double[] means = new double[pcutResults[0].length];
+		
+		for (int i = 0; i < 4; i++) {
+			double sum = 0;
+			
+			for (int j = 0; j < pcutResults.length; j++) {
+				sum += pcutResults[j][i];
+			}
+			
+			means[i] = (sum) / (pcutResults.length);
+		}
+		
+		for (int i = 4; i < 8; i++) {
+			double sum = 0;
+			
+			for (int j = 0; j < ivalResults.length; j++) {
+				sum += ivalResults[j][i];
+			}
+			
+			means[i] = (sum) / (ivalResults.length);
+		}
+		
+		for (int i = 8; i < 12; i++) {
+			double sum = 0;
+			
+			for (int j = 0; j < bestResults.length; j++) {
+				sum += bestResults[j][i];
+			}
+			
+			means[i] = (sum) / (bestResults.length);
+		}
+		
+		
+		return means;
+	}
+	
 	/**
 	 * Perform evaluation.
 	 */
@@ -473,7 +553,7 @@ public class FoldEvaluator {
 		final int numOfFoldRepetitions = (int) SettingsLoader.getNumericSetting("numOfFoldRepetitions", 3); // repeat process per fold
 
 		// kalei ti run() {runs} fores
-		for (int currentRun = 0; currentRun < runs; currentRun++) {
+		for (int currentRun = 0; currentRun < runs; currentRun++) { // fold execution resumption
 			Runnable foldEval = new FoldRunnable(metricOptimizationIndex, currentRun, numOfFoldRepetitions);
 			this.threadPool.execute(foldEval);
 		}
@@ -485,7 +565,8 @@ public class FoldEvaluator {
 			System.out.println("Thread Pool Interrupted");
 			e.printStackTrace();
 		}
-		final double[] means = calcMean(this.evals);
+		//final double[] means = calcMean(this.evals);
+		final double[] means = calcMean(this.pcutEvals, this.ivalEvals, this.bestEvals);
 		// print results
 		printEvaluations(means);
 		
@@ -503,7 +584,7 @@ public class FoldEvaluator {
 	 * @return the double containing all evaluations (up to the point being
 	 *         added)
 	 */
-	public synchronized double[][] gatherResults(double[] results, int fold) {
+/*	public synchronized double[][] gatherResults(double[] results, int fold) {
 		if (evals == null) {
 			evals = new double[runs][results.length];
 		}
@@ -512,7 +593,25 @@ public class FoldEvaluator {
 
 		return evals;
 
+	}*/
+	
+	public synchronized void gatherResults(double[] pcutResults, 
+												 double[] ivalResults, 
+												 double[] bestResults, 
+												 int fold) {
+		
+		if (pcutEvals == null) {
+			pcutEvals = new double[runs][pcutResults.length];
+			ivalEvals = new double[runs][ivalResults.length];
+			bestEvals = new double[runs][bestResults.length];
+		}
+
+		pcutEvals[fold] = pcutResults;
+		ivalEvals[fold] = ivalResults;
+		bestEvals[fold] = bestResults;
+		
 	}
+	
 
 	/**
 	 * Print the evaluations.
