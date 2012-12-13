@@ -26,6 +26,7 @@ import gr.auth.ee.lcs.calibration.InternalValidation;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.classifiers.populationcontrol.FixedSizeSetWorstFitnessDeletion;
 import gr.auth.ee.lcs.classifiers.populationcontrol.LowestFitnessRemoval;
+import gr.auth.ee.lcs.classifiers.statistics.MeanCoverageStatistic;
 import gr.auth.ee.lcs.data.AbstractUpdateStrategy;
 import gr.auth.ee.lcs.data.ILCSMetric;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation;
@@ -315,7 +316,9 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 								 "Accuracy(best)", 
 								 "Recall(best)", 
 								 "HammingLoss(best)",
-								 "ExactMatch(best)" };
+								 "ExactMatch(best)",
+								 "Mean Coverage"
+								 };
 		return names;
 	}
 
@@ -323,7 +326,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	public double[] getEvaluations(Instances testSet) {
 		
 
-		final double[] results = new double[12];
+		final double[] results = new double[13];
 		Arrays.fill(results, 0);
 
 		proportionalCutCalibrationTime = -System.currentTimeMillis();
@@ -404,6 +407,10 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		testEvalTime3 = -System.currentTimeMillis();
 		results[11] = testEval.getMetric(this);
 		testEvalTime3 += System.currentTimeMillis();
+		
+		
+		MeanCoverageStatistic meanCoverage = new MeanCoverageStatistic();
+		results[12] = meanCoverage.getMetric(this);
 		
 		String testTimes = this.hookedMetricsFileDirectory + "/testTimes.txt";
 		

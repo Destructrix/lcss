@@ -116,9 +116,9 @@ public class FoldEvaluator {
 			
 			
 			double[][]  results 	= new double[numOfFoldRepetitions][];
-			double[] 	pcutResults = new double[12];
-			double[] 	ivalResults = new double[12];
-			double[] 	bestResults = new double[12];
+			double[] 	pcutResults = new double[13];
+			double[] 	ivalResults = new double[13];
+			double[] 	bestResults = new double[13];
 						
 			for (int repetition = 0; repetition < numOfFoldRepetitions; repetition++) {
 				
@@ -505,7 +505,9 @@ public class FoldEvaluator {
 	}*/
 
 	
-	public double[] calcMean(double[][] pcutResults, double[][] ivalResults, double[][] bestResults) {
+	public double[] calcMean(double[][] pcutResults, 
+							 double[][] ivalResults, 
+							 double[][] bestResults) {
 		
 		final double[] means = new double[pcutResults[0].length];
 		
@@ -539,6 +541,13 @@ public class FoldEvaluator {
 			means[i] = (sum) / (bestResults.length);
 		}
 		
+		// mean coverage statistic based on ival's best folds
+		double sum = 0;
+		for (int j = 0; j < ivalResults.length; j++) {
+			sum += ivalResults[j][12];
+		}
+		
+		means[12] = (sum) / (ivalResults.length);
 		
 		return means;
 	}
