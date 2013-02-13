@@ -50,7 +50,7 @@ public class MeanCoverageStatistic implements ILCSMetric {
 		final int numOfMacroclassifiers = set.getNumberOfMacroclassifiers();
 		for (int i = 0; i < numOfMacroclassifiers; i++)
 			coverageSum += set.getClassifierNumerosity(i)
-					* set.getClassifier(i).getCoverage();
+					* (set.getClassifier(i).objectiveCoverage < 0 ? set.getClassifier(i).getCoverage() : set.getClassifier(i).objectiveCoverage);
 
 		return coverageSum / ((double) set.getTotalNumerosity());
 	}

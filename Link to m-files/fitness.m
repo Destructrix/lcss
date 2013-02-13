@@ -8,6 +8,7 @@ plot (data2 (:,29),"-r;exploration fitness:gaed;");
 hold on;
 grid;
 print -color /home/li9i/graphs/explorationFitness.jpg;
+
 figure;
 plot (data2 (:,30),"-b;pure fitness;");
 hold on;

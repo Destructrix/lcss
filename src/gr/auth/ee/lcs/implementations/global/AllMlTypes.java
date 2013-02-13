@@ -93,7 +93,7 @@ public class AllMlTypes {
 				System.out.println("Population initialized.");
 			}
 
-			lcs.registerMultilabelHooks(lcs.instances, numberOfLabels);
+			lcs.registerMultilabelHooks(lcs.testInstances, numberOfLabels);
 			loader.evaluate(); // edo einai ola ta lefta
 
 		}

@@ -46,9 +46,9 @@ crossoverOperator = 1
 crossoverRate = .8
 mutationRate = .04
 thetaGA = 200
-updateAlgorithmVersion = 3
+updateAlgorithmVersion = 4
 
-AttributeGeneralizationRate = 0
+AttributeGeneralizationRate = 0.333
 LabelGeneralizationRate = 0.1
 #AttributeGeneralizationRate = 0.8
 #LabelGeneralizationRate = 0.01
@@ -99,7 +99,7 @@ DELETION_MODE = 2
 # 0 for adding offsprings and controlling immediately
 # 1 for adding all offsprings to the population and controlling once at the end of the evolution
 
-UPDATE_MODE = 0
+UPDATE_MODE = 1
 
 
 ## check for subsumption against the population ##

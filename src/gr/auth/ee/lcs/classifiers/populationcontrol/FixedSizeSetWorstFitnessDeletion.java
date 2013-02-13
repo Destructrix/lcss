@@ -140,7 +140,7 @@ public class FixedSizeSetWorstFitnessDeletion implements
 						
 			aSet.deleteClassifier(cl);
 			toBeDeleted.deleteClassifier(0);
-			
+
 			time1 += System.currentTimeMillis();
 			
 			deletionTime += time1;

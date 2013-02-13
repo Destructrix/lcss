@@ -222,6 +222,7 @@ public class FoldEvaluator {
 
 			
 			gatherResults(pcutResults, ivalResults, bestResults, i);
+			
 
 			// mark end of execution
 			final Calendar cal_2 = Calendar.getInstance();
@@ -229,6 +230,8 @@ public class FoldEvaluator {
 			String timestampStop = sdf_2.format(cal_2.getTime());
 			System.out.println("\nExecution stopped @ " + timestampStop + "\n");
 			
+			
+
 			
 		}
 
@@ -310,9 +313,9 @@ public class FoldEvaluator {
 				for (int foldNumber = 0; foldNumber < numOfFolds; foldNumber++) {
 					Instances trainInstances = new Instances (instances, 0);
 					Instances testInstances = new Instances (instances, 0);
-	
+
 					int numberOfPartitions = InstancesUtility.testInstances.size() / 2;
-					
+										
 					for (int i = 0; i < numberOfPartitions; i++) {
 						for (int j = 0; j < InstancesUtility.testInstances.elementAt(i)[foldNumber].numInstances(); j++) {
 							testInstances.add(InstancesUtility.testInstances.elementAt(i)[foldNumber].instance(j));
@@ -578,6 +581,7 @@ public class FoldEvaluator {
 		final double[] means = calcMean(this.pcutEvals, this.ivalEvals, this.bestEvals);
 		// print results
 		printEvaluations(means);
+		storeFinalEvaluations(means);
 		
 
 	}
@@ -633,8 +637,33 @@ public class FoldEvaluator {
 
 		for (int i = 0; i < means.length; i++) {
 			System.out.println(names[i] + ": " + means[i]);
-			if ((i + 1) % 4 == 0) System.out.println();
+			if ((i + 1) % 4 == 0) 
+				System.out.println();
 		}  
+	}
+	
+	
+	public void storeFinalEvaluations (double[] means) {
+		final String[] names = prototype.getEvaluationNames();
+
+		for (int i = 0; i < means.length; i++) {
+			
+			//grapse ta telika apotelesmata sto arxeio hookedMetrics/finals.txt
+
+			try {
+				final FileWriter fstream = new FileWriter("hookedMetrics/finals.txt", true);
+				final BufferedWriter buffer = new BufferedWriter(fstream);
+				buffer.write(String.valueOf(names[i] + ": " + means[i]) + "\n");	
+				if ((i + 1) % 4 == 0) 
+					buffer.write(System.getProperty("line.separator"));
+				buffer.flush();
+				buffer.close();
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}	
+		}  
+		
 	}
 
 }

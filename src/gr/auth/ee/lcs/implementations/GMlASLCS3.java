@@ -478,6 +478,8 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		}
 		
 		
+		
+		
 		/*ara en telei exoume: results[] =
 		 * 
 		 * |__________________Pcut________________|__________________Ival________________|__________________Best________________|
@@ -527,8 +529,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		
 		trainSet(iterations, rulePopulation);
 		
-		updatePopulation((int) (iterations * UPDATE_ONLY_ITERATION_PERCENTAGE),
-				rulePopulation);
+		updatePopulation((int) (iterations * UPDATE_ONLY_ITERATION_PERCENTAGE), rulePopulation);
 		
 		timeMeasurementsFile = this.hookedMetricsFileDirectory + "/measurements.txt";
 		systemAccuracyFile = this.hookedMetricsFileDirectory + "/systemProgress.txt";

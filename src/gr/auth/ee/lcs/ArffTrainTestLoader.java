@@ -245,9 +245,11 @@ public class ArffTrainTestLoader {
 
 
 		myLcs.trainSet = trainSet;
-		myLcs.testSet = trainSet;
+		myLcs.testSet = testSet;
 		
-		myLcs.testInstances = myLcs.instances;
+		myLcs.testInstances = InstancesUtility.convertIntancesToDouble(testSet);
+		
+		System.out.println("Label cardinality: " + myLcs.labelCardinality);
 
 	}
 	

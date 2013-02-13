@@ -1017,7 +1017,7 @@ public abstract class AbstractLearningClassifierSystem {
 					//harvestAccuracies(cummulativeCurrentInstanceIndex);
 
 				}
-				harvestAccuracies(totalRepetition);
+				//harvestAccuracies(totalRepetition);
 
 				repetition++;
 				totalRepetition++;

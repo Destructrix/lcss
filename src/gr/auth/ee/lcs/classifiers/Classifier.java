@@ -193,7 +193,7 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 	 * */
 	public double objectiveCoverage = -1;
 	
-	public int formulaForD = 0;
+	public int formulaForD = -1;
 	
 	public int unmatched;
 	

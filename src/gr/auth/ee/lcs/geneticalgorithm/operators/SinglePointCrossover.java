@@ -70,10 +70,10 @@ public class SinglePointCrossover implements IBinaryGeneticOperator {
 		/*
 		 * The point at which the crossover will occur
 		 */
-/*		
+		/*
  		final int chromosomeSize = classifierB.size();
 		final int mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
-		System.out.println("chromosomeSize: " + chromosomeSize);
+		ystem.out.println("chromosomeSize: " + chromosomeSize);
 		System.out.println("mutationPoint: " + mutationPoint);
 		System.out.println("label: " + label);*/
 		child = myLcs.getNewClassifier(performCrossover(classifierA, classifierB, crossoverPoint));

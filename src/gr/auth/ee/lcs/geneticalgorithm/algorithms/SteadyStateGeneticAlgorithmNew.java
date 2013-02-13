@@ -183,6 +183,10 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 	
 	static ClassifierSet evolveSetSmp;
 	
+	public int crossoverOperator = (int) SettingsLoader.getNumericSetting("crossoverOperator", 0);
+	public static final int SINGLEPOINT_CROSSOVER = 0;
+	public static final int MULTIPOINT_CROSSOVER = 1;
+	
 	/**
 	 * Parents' subsumption method.
 	 * @param population
@@ -582,8 +586,11 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 			
 			doCrossover = true;
 			
-			// chromosome size = number of attributes + the label under which the correct set is formed
-			final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+			int chromosomeSize = -1;
+			if (crossoverOperator == MULTIPOINT_CROSSOVER)
+				chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+			else if (crossoverOperator == SINGLEPOINT_CROSSOVER)
+				chromosomeSize = parentA.size(); 
 			
 			//The point at which the crossover will occur
 			mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
@@ -707,8 +714,11 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 			
 			doCrossover = true;
 			
-			// chromosome size = number of attributes + the label under which the correct set is formed
-			final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+			int chromosomeSize = -1;
+			if (crossoverOperator == MULTIPOINT_CROSSOVER)
+				chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+			else if (crossoverOperator == SINGLEPOINT_CROSSOVER)
+				chromosomeSize = parentA.size();
 			
 			//The point at which the crossover will occur
 			mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
@@ -814,8 +824,11 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 			
 			doCrossover = true;
 			
-			// chromosome size = number of attributes + the label under which the correct set is formed
-			final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+			int chromosomeSize = -1;
+			if (crossoverOperator == MULTIPOINT_CROSSOVER)
+				chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+			else if (crossoverOperator == SINGLEPOINT_CROSSOVER)
+				chromosomeSize = parentA.size();
 			/*
 			 * The point at which the crossover will occur
 			 */
@@ -824,6 +837,9 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 		
 		// Reproduce
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
+			
+			boolean proceedMyChild = false;
+			
 			Classifier child;
 			// produce a child
 			if (doCrossover) {
@@ -839,44 +855,60 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 			}
 
 			child = mutationOp.operate(child);
-			child.inheritParametersFromParents(parentA, parentB);
-			myLcs.getClassifierTransformBridge().fixChromosome(child);
-			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
-			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+			
+			
+			
+			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
+			for (int ins = 0; ins < myLcs.instances.length; ins++) {
+				if (child.isMatch(myLcs.instances[ins])) {
+					proceedMyChild = true;
+					break;
+				}
+			}
 
 			
-			child.created = myLcs.totalRepetition;
-			
-			long time1 = -System.currentTimeMillis();
-			
-			int parentIndex = letParentsSubsumeNew(population, parentA, parentB, child);
-						
-			if ( parentIndex >= 0 )
-			{
-				indicesToSubsume.add(parentIndex);
-			}
-			else
-			{
-				int populationIndex = population.letPopulationSubsume(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION);
+			if (proceedMyChild) {
+								
+				child.inheritParametersFromParents(parentA, parentB);
+				myLcs.getClassifierTransformBridge().fixChromosome(child);
+				child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
+				child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+	
 				
-				if ( populationIndex >= 0 )
+				child.created = myLcs.totalRepetition;
+				
+				long time1 = -System.currentTimeMillis();
+				
+				int parentIndex = letParentsSubsumeNew(population, parentA, parentB, child);
+							
+				if ( parentIndex >= 0 )
 				{
-					indicesToSubsume.add(populationIndex);
+					indicesToSubsume.add(parentIndex);
 				}
 				else
 				{
-					newClassifiersSet.addClassifier( new Macroclassifier(child,1), false);
+					int populationIndex = population.letPopulationSubsume(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION);
+					
+					if ( populationIndex >= 0 )
+					{
+						indicesToSubsume.add(populationIndex);
+					}
+					else
+					{
+						newClassifiersSet.addClassifier(new Macroclassifier(child, 1), false);
+					}
+					
 				}
 				
-			}
-			
-			time1 += System.currentTimeMillis();
-			
-			subsumptionTime += time1; 
-			
-		}
+				time1 += System.currentTimeMillis();
 				
-		
+				subsumptionTime += time1; 
+			}
+
+
+				
+		}
+			
 	}
 	
 	
@@ -929,8 +961,11 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 			// produce a child
 			if (prng.nextDouble() < crossoverRate && parentA != parentB) {
 				
-				// chromosome size = number of attributes + the label under which the correct set is formed
-				final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+				int chromosomeSize = -1;
+				if (crossoverOperator == MULTIPOINT_CROSSOVER)
+					chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+				else if (crossoverOperator == SINGLEPOINT_CROSSOVER)
+					chromosomeSize = parentA.size();
 				/*
 				 * The point at which the crossover will occur
 				 */
@@ -1067,8 +1102,11 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 			// produce a child
 			if ( Math.random() < crossoverRate && parentA != parentB) {
 				
-				// chromosome size = number of attributes + the label under which the correct set is formed
-				final int chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+				int chromosomeSize = -1;
+				if (crossoverOperator == MULTIPOINT_CROSSOVER)
+					chromosomeSize = parentA.size() - 2 * (numberOfLabels - 1); 
+				else if (crossoverOperator == SINGLEPOINT_CROSSOVER)
+					chromosomeSize = parentA.size();
 				/*
 				 * The point at which the crossover will occur
 				 */
