@@ -505,7 +505,10 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 /*			MeanNicheSizeStatistic meanNs = new MeanNicheSizeStatistic();
 			double meanPopulationNs = meanNs.getMetric(myLcs);*/
 			
-			//if (cl.myClassifier.objectiveCoverage < 0) {
+/*			if (cl.myClassifier.objectiveCoverage < 0 || cl.myClassifier.experience < 10) {
+				data.d = 0;
+			}
+			else*/
 			if (cl.myClassifier.experience < THETA_DEL) {
 				data.d = /*(data.ns - 1) **/ Math.exp(1 / data.fitness) ;
 				//data.d = 1 / (100 * data.fitness);
@@ -519,8 +522,8 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 /*				if (data.fitness < DELTA * meanFitness) 
 					data.d = Math.exp(data.ns * meanFitness / data.fitness);
 				else {*/
+					//data.d = Math.exp(data.ns) / data.fitness;
 					data.d = Math.exp(data.ns - 1) / data.fitness;
-					//data.d = Math.exp(data.ns - 1) * (Math.pow(2, 1 / data.fitness) - 1);
 					cl.myClassifier.formulaForD = 0;
 				//}
 			}
@@ -999,14 +1002,13 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 					toBeDeleted = lowestCoverageIndices.get(i);
 				}
 			}
-			
+
 			if (toBeDeleted >= 0) {
 				myLcs.numberOfClassifiersDeletedInMatchSets++;
 				population.deleteClassifier(matchSet.getMacroclassifier(toBeDeleted).myClassifier);
 				matchSet.deleteClassifier(toBeDeleted);
 			}
 		}
-		
 		lowestCoverageIndices.clear();
 				
 	}
@@ -1563,9 +1565,9 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 					
 				}
 			}
+			
 			if (lowestFitness < meanFitness) {
-
-				if (toBeDeleted >= 0) {
+				if (toBeDeleted >= 0) { // not necessary here
 					myLcs.numberOfClassifiersDeletedInMatchSets++;
 					population.deleteClassifier(matchSet.getMacroclassifier(toBeDeleted).myClassifier);
 					matchSet.deleteClassifier(toBeDeleted);
@@ -2029,8 +2031,8 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			//return data.d != 0 ? (aClassifier.objectiveCoverage < 0 ? /*Math.pow(data.fitness, 2)*/0 : data.fitness) : (aClassifier.experience < THETA_DEL ? 0 : data.fitness);
 			//return data.d == 0 ? (aClassifier.objectiveCoverage < 0 ? /*Math.pow(data.fitness, 2)*/0 : data.fitness) : (aClassifier.experience < THETA_DEL ? 0 : data.fitness);
 			//return data.d != 0 ? (aClassifier.objectiveCoverage < 0 ? 0 : (aClassifier.experience < 0.5 * THETA_DEL ? 0: data.fitness)) : (aClassifier.experience < THETA_DEL ? 0 : data.fitness);
-			//return aClassifier.experience < THETA_DEL ? 0 : data.fitness;
-			return aClassifier.experience < 10 ? 0 : data.fitness;
+			return aClassifier.experience < THETA_DEL ? 0 : data.fitness;
+			//return aClassifier.experience < 10 ? 0 : data.fitness;
 
 			//return data.d != 0 ? (aClassifier.experience < 0.5 * THETA_DEL ? 0: data.fitness) : (aClassifier.experience < THETA_DEL ? 0 : data.fitness);
 
@@ -2260,8 +2262,8 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		// Create all label correct sets
 		final ClassifierSet[] labelCorrectSets = new ClassifierSet[numberOfLabels];
 		
-/*		System.out.println("matchset: ");
-		System.out.println(matchSet);*/
+		if(commencedDeletions)
+			controlPopulationInMatchSet(population, matchSet);
 		
 		generateCorrectSetTime = -System.currentTimeMillis(); 
 		
@@ -2910,7 +2912,7 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			for ( int i = 0; i < labelsToEvolve.size(); i++ )
 			{
-				ga.evolveSetNew(labelCorrectSets[labelsToEvolve.elementAt(i)],population, labelsToEvolve.get(i));
+				ga.evolveSetNew(labelCorrectSets[labelsToEvolve.elementAt(i)], population, labelsToEvolve.get(i));
 				indicesToSubsume.addAll(ga.getIndicesToSubsume());
 				newClassifiersSet.merge(ga.getNewClassifiersSet());
 				

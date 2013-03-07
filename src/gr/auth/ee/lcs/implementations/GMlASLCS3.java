@@ -119,6 +119,11 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	 * The attribute generalization rate.
 	 */
 	private final double ATTRIBUTE_GENERALIZATION_RATE = SettingsLoader.getNumericSetting("AttributeGeneralizationRate", 0.33);
+	
+	/**
+	 * The attribute generalization rate when clustering
+	 */
+	private final double CLUSTERING_ATTRIBUTE_GENERALIZATION_RATE = SettingsLoader.getNumericSetting("ClusteringAttributeGeneralizationRate", 0);
 
 	/**
 	 * Percentage of only updates (and no exploration).
@@ -129,6 +134,11 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	 * The label generalization rate.
 	 */
 	private final double LABEL_GENERALIZATION_RATE = SettingsLoader.getNumericSetting("LabelGeneralizationRate", 0.33);
+	
+	/**
+	 * The label generalization rate when clustering.
+	 */
+	private final double CLUSTERING_LABEL_GENERALIZATION_RATE = SettingsLoader.getNumericSetting("ClusteringLabelGeneralizationRate", 0);
 	
 	private final int GENETIC_ALGORITHM_SELECTION = (int) SettingsLoader.getNumericSetting("gaSelection", 0);
 	
@@ -247,7 +257,9 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 												  numberOfLabels, 
 												  GenericMultiLabelRepresentation.EXACT_MATCH,
 												  LABEL_GENERALIZATION_RATE, 
-												  ATTRIBUTE_GENERALIZATION_RATE, 
+												  ATTRIBUTE_GENERALIZATION_RATE,
+												  CLUSTERING_LABEL_GENERALIZATION_RATE,
+												  CLUSTERING_ATTRIBUTE_GENERALIZATION_RATE,
 												  this);
 		
 		rep.setClassificationStrategy(rep.new BestFitnessClassificationStrategy());

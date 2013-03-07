@@ -291,6 +291,27 @@ public final class GenericMultiLabelRepresentation extends
 				generatedClassifier.set(positionInChromosome);
 
 		}
+		
+		
+		@Override
+		public final void randomClusteringValue(final float attributeValue,
+				final Classifier generatedClassifier) {
+			if (!active) {
+				generatedClassifier.clear(positionInChromosome);
+				generatedClassifier.clear(positionInChromosome + 1);
+				return;
+			}
+			if (attributeValue == 0)
+				generatedClassifier.clear(positionInChromosome + 1);
+			else
+				generatedClassifier.set(positionInChromosome + 1);
+
+			if (Math.random() < clusteringlabelGeneralizationRate)
+				generatedClassifier.clear(positionInChromosome);
+			else
+				generatedClassifier.set(positionInChromosome);
+
+		}
 
 		/**
 		 * A setter for the active variable.
@@ -518,6 +539,12 @@ public final class GenericMultiLabelRepresentation extends
 	 */
 	private final double labelGeneralizationRate;
 
+	
+	/**
+	 * The label generalization rate.
+	 * @uml.property  name="labelGeneralizationRate"
+	 */
+	private final double clusteringlabelGeneralizationRate;
 	/**
 	 * The exact-match metric.
 	 */
@@ -533,35 +560,7 @@ public final class GenericMultiLabelRepresentation extends
 	 */
 	public static final int HAMMING_LOSS = 2;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param attributes
-	 *            the attributes to use
-	 * @param ruleConsequentsNames
-	 *            the rule consequent names
-	 * @param labels
-	 *            the number of labels to be used
-	 * @param type
-	 *            the type of metric to be used (see static int's)
-	 * @param lblgeneralizationRate
-	 *            the generalization rate to be used for the labels
-	 * @param attributeGeneralizationRate
-	 *            the generalization rate to be used for the attributes
-	 * @param lcs
-	 *            the LCS instance that the representation belongs
-	 */
-	public GenericMultiLabelRepresentation(
-			final AbstractAttribute[] attributes,
-			final String[] ruleConsequentsNames, final int labels,
-			final int type, final double lblgeneralizationRate,
-			final double attributeGeneralizationRate,
-			final AbstractLearningClassifierSystem lcs) {
-		super(attributes, ruleConsequentsNames, labels,
-				attributeGeneralizationRate, lcs);
-		metricType = type;
-		labelGeneralizationRate = lblgeneralizationRate;
-	}
+
 
 	/**
 	 * A constructor from an .arff file.
@@ -575,7 +574,7 @@ public final class GenericMultiLabelRepresentation extends
 	 * @param type
 	 *            the type of metric to be used
 	 * @param lblgeneralizationRate
-	 *            the generalization rate of the labels (P#))
+	 *            the generalization rate of the labels (P#)
 	 * @param attributeGeneralizationRate
 	 *            the attribute generalization rate
 	 * @param lcs
@@ -589,14 +588,17 @@ public final class GenericMultiLabelRepresentation extends
 										   final int type,
 										   final double lblgeneralizationRate,
 										   final double attributeGeneralizationRate,
+										   final double clusteringLblgeneralizationRate,
+										   final double clusteringAttributeGeneralizationRate,
 										   final AbstractLearningClassifierSystem lcs) throws IOException {
 		
-		super(inputArff, precision, labels, attributeGeneralizationRate, lcs); // constructor tis complexRepresentation
+		super(inputArff, precision, labels, attributeGeneralizationRate, clusteringAttributeGeneralizationRate, lcs); // constructor tis complexRepresentation
 		
 		
 		// auta ta duo mono einai diaforetika apo to SingleClassRepresentation. to super apo pano einai idio
 		metricType = type;
 		labelGeneralizationRate = lblgeneralizationRate;
+		clusteringlabelGeneralizationRate = clusteringLblgeneralizationRate;
 		
 		buildRepresentationFromInstance(InstancesUtility.openInstance(inputArff));
 	}

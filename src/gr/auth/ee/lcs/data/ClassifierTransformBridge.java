@@ -92,6 +92,18 @@ public abstract class ClassifierTransformBridge {
 	 */
 	public abstract float classifyAbilityLabel(Classifier aClassifier,
 			int instanceIndex, int label);
+	
+	
+	
+	/**
+	 * Creates a random classifier to cover the visionVector that has been produced by clustering.
+	 * 
+	 * @param visionVector
+	 *            the vision vector to cover
+	 * @return a random covering classifier
+	 */
+	public abstract Classifier createRandomClusteringClassifier(
+			double[] visionVector);
 
 	/**
 	 * Creates a random classifier to cover the visionVector.

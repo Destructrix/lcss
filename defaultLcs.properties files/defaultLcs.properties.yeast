@@ -2,7 +2,7 @@
 filename = /home/li9i/Dropbox/thesis/auth/java_workspace/lcss/datasets/yeast.arff
 
 # Input testFile
-#testFile = /home/li9i/Dropbox/thesis/auth/java_workspace/lcss/datasets/emotions.arff
+#testFile = /home/li9i/Dropbox/thesis/auth/java_workspace/lcss/datasets/yeast.arff
 
 
 
@@ -27,7 +27,7 @@ SSLCSPenaltyPercent = 2
 
 #foldsToRun = 2
 #metricOptimizationIndex = 0
-#numOfFoldRepetitions = 4
+numOfFoldRepetitions = 1
 # To run folds in parallel
 #numOfThreads = 1
 
@@ -37,21 +37,22 @@ callbackRate = 100
 UpdateOnlyPercentage = .1
 
 #Population size (micro)
-populationSize = 70000
+populationSize = 18000
 
 #Exploration options
 gaSelection = 1
 crossoverOperator = 1
 crossoverRate = .8
 mutationRate = .04
-thetaGA = 8000
-updateAlgorithmVersion = 3
+thetaGA = 4000
+updateAlgorithmVersion = 4
 gaPerLabel = false
 
-AttributeGeneralizationRate = 0.98
-LabelGeneralizationRate = 0.02
-#AttributeGeneralizationRate = 0.8
-#LabelGeneralizationRate = 0.01
+AttributeGeneralizationRate = 0.85
+LabelGeneralizationRate = 0.01
+
+ClusteringAttributeGeneralizationRate = 0
+ClusteringLabelGeneralizationRate = 0
 
 precisionBits = 5
 LearningRate = 0.2

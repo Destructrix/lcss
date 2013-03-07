@@ -566,8 +566,10 @@ public class FoldEvaluator {
 
 		// kalei ti run() {runs} fores
 		for (int currentRun = 0; currentRun < runs; currentRun++) { // fold execution resumption
-			Runnable foldEval = new FoldRunnable(metricOptimizationIndex, currentRun, numOfFoldRepetitions);
-			this.threadPool.execute(foldEval);
+			//if (currentRun > 0) {
+				Runnable foldEval = new FoldRunnable(metricOptimizationIndex, currentRun, numOfFoldRepetitions);
+				this.threadPool.execute(foldEval);
+			//}
 		}
 
 		this.threadPool.shutdown();

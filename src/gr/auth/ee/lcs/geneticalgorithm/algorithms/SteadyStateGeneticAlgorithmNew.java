@@ -599,6 +599,9 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 		
 		// Reproduce
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
+			
+			boolean proceedMyChild = false;
+			
 			Classifier child;
 			// produce a child
 			if (doCrossover) {
@@ -623,42 +626,54 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 
 			child = mutationOp.operate(child);
 			
-			child.inheritParametersFromParents(parentA, parentB); // den paizei rolo. 9a upologisoume etsi ki allios to actual ns tou kanona kai meta 9a diagrapsoume
-			
-			myLcs.getClassifierTransformBridge().fixChromosome(child);
-			//System.out.println("child after: " + child);
-			
-			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
-			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
-
-			child.created = myLcs.totalRepetition; //timestamp; // tote dimiourgi9ike apo ga o classifier
-			
-			long time1 = -System.currentTimeMillis();
-			
-			//check subsumption by parents
-			boolean parentsSubsumed = letParentsSubsume(population, parentA, parentB, child);
-			if (!parentsSubsumed) {	
-				// parents couldn't subsume, should i check with the population?
-				population.addClassifier(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION);
-			
-				if (population.subsumed)
-					numberOfSubsumptions++;
-				else
-					numberOfNewClassifiers++;
-				
+			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
+			for (int ins = 0; ins < myLcs.instances.length; ins++) {
+				if (child.isMatch(myLcs.instances[ins])) {
+					proceedMyChild = true;
+					break;
+				}
 			}
-			else
-				numberOfSubsumptions++;
+
 			
-			time1 += System.currentTimeMillis();
+			if (proceedMyChild) {
 			
-			subsumptionTime += time1;
-			
-			deletionTime += population.getPopulationControlStrategy().getDeletionTime();
-			
-			numberOfDeletions += population.getPopulationControlStrategy().getNumberOfDeletionsConducted(); 
+				child.inheritParametersFromParents(parentA, parentB); // den paizei rolo. 9a upologisoume etsi ki allios to actual ns tou kanona kai meta 9a diagrapsoume
+				
+				myLcs.getClassifierTransformBridge().fixChromosome(child);
+				//System.out.println("child after: " + child);
+				
+				child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
+				child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+	
+				child.created = myLcs.totalRepetition; //timestamp; // tote dimiourgi9ike apo ga o classifier
+				
+				long time1 = -System.currentTimeMillis();
+				
+				//check subsumption by parents
+				boolean parentsSubsumed = letParentsSubsume(population, parentA, parentB, child);
+				if (!parentsSubsumed) {	
+					// parents couldn't subsume, should i check with the population?
+					population.addClassifier(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION);
+				
+					if (population.subsumed)
+						numberOfSubsumptions++;
+					else
+						numberOfNewClassifiers++;
+					
+				}
+				else
+					numberOfSubsumptions++;
+				
+				time1 += System.currentTimeMillis();
+				
+				subsumptionTime += time1;
+				
+				deletionTime += population.getPopulationControlStrategy().getDeletionTime();
+				
+				numberOfDeletions += population.getPopulationControlStrategy().getNumberOfDeletionsConducted(); 
 			
 		}
+	}
 		
 		subsumptionTime -= deletionTime;
 		
@@ -855,6 +870,7 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 			}
 
 			child = mutationOp.operate(child);
+			
 			
 			
 			

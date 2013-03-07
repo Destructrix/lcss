@@ -126,7 +126,9 @@ public class ArffTrainTestLoader {
 		// before the population is printed in the console, it is sorted by (total) fitness
 /*		final SortPopulationControl srt = new SortPopulationControl(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION);
 		srt.controlPopulation(myLcs.rulePopulation);*/
-		myLcs.rulePopulation.print();
+		
+		
+		//myLcs.rulePopulation.print();
 
 
 		final String classificationFile = SettingsLoader.getStringSetting("testClassificationFile", "");

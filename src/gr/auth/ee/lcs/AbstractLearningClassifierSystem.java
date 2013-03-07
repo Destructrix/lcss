@@ -403,7 +403,7 @@ public abstract class AbstractLearningClassifierSystem {
 					+ System.getProperty("line.separator")
 					+ "Mean ns: " + meanNs
 					+ System.getProperty("line.separator")
-					+ rulePopulation
+					//+ rulePopulation
 					+ System.getProperty("line.separator"));
 			buffer.flush();
 			buffer.close();
@@ -657,7 +657,7 @@ public abstract class AbstractLearningClassifierSystem {
 				
 				for (int centroidInstances = 0; centroidInstances < centroids.numInstances(); centroidInstances++) {
 					for (int labels = 0; labels < numberOfLabels; labels++) {
-						centroids.instance(centroidInstances).setValue(labels, partitionsWithCLasses[i].instance(0).value(labels));
+						centroids.instance(centroidInstances).setValue(numOfCentroidAttributes + labels, partitionsWithCLasses[i].instance(0).value(labels));
 					}
 				}
 
@@ -665,7 +665,7 @@ public abstract class AbstractLearningClassifierSystem {
 
 				for (int j = 0; j < centroidsArray.length; j++) {
 					//System.out.printf("Instance %d => Cluster %d ", k, assignments[j]);
-					final Classifier coveringClassifier = this.getClassifierTransformBridge().createRandomCoveringClassifier(centroidsArray[j]);
+					final Classifier coveringClassifier = this.getClassifierTransformBridge().createRandomClusteringClassifier(centroidsArray[j]);
 					coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_INIT); 
 					initialClassifiers.addClassifier(new Macroclassifier(coveringClassifier, 1), false);	
 				}
@@ -673,7 +673,7 @@ public abstract class AbstractLearningClassifierSystem {
 				e.printStackTrace();
 			}
 		}
-		//System.out.println(initialClassifiers);
+		System.out.println(initialClassifiers);
 		return initialClassifiers;
 	}
 	
@@ -802,7 +802,7 @@ public abstract class AbstractLearningClassifierSystem {
 				
 				for (int centroidInstances = 0; centroidInstances < centroids.numInstances(); centroidInstances++) {
 					for (int labels = 0; labels < numberOfLabels; labels++) {
-						centroids.instance(centroidInstances).setValue(labels, partitionsWithCLasses[i].instance(0).value(labels));
+						centroids.instance(centroidInstances).setValue(numOfCentroidAttributes + labels, partitionsWithCLasses[i].instance(0).value(labels));
 					}
 				}
 

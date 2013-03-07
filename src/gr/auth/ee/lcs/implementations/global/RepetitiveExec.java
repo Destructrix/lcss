@@ -1,7 +1,6 @@
 package gr.auth.ee.lcs.implementations.global;
 
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
-import gr.auth.ee.lcs.implementations.MlASLCS;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 
 import java.io.IOException;

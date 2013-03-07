@@ -49,8 +49,8 @@ updateAlgorithmVersion = 4
 
 AttributeGeneralizationRate = 0.8
 LabelGeneralizationRate = 0.01
-#AttributeGeneralizationRate = 0.8
-#LabelGeneralizationRate = 0.01
+ClusteringAttributeGeneralizationRate = 0
+ClusteringLabelGeneralizationRate = 0
 
 precisionBits = 5
 LearningRate = 0.2

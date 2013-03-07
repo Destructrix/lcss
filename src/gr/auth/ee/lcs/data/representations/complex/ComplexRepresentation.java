@@ -69,6 +69,14 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 		 * The generalization rate used when covering.
 		 */
 		protected double generalizationRate;
+		
+		
+		/**
+		 * The generalization rate used when covering when clustering.
+		 */
+		protected double clusteringGeneralizationRate;
+		
+		
 
 		/**
 		 * The default constructor.
@@ -150,6 +158,18 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 		 * @return true when attribute is specific
 		 */
 		public abstract boolean isSpecific(final ExtendedBitSet testedChromosome);
+		
+		
+		/**
+		 * Create a random gene for the vision attribute.
+		 * 
+		 * @param attributeValue
+		 *            the attribute value to cover
+		 * @param generatedClassifier
+		 *            the classifier where the chromosome will be generated
+		 */
+		public abstract void randomClusteringValue(float attributeValue,
+				Classifier generatedClassifier);
 
 		/**
 		 * Create a random gene for the vision attribute.
@@ -314,7 +334,24 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 				generatedClassifier.set(positionInChromosome);
 
 		}
+		
+		@Override
+		public final void randomClusteringValue(final float attributeValue,
+				final Classifier generatedClassifier) {
+			if (attributeValue == 0)
+				generatedClassifier.clear(positionInChromosome + 1);
+			else
+				generatedClassifier.set(positionInChromosome + 1);
 
+			if (Math.random() < clusteringGeneralizationRate)
+				generatedClassifier.clear(positionInChromosome);
+			else
+				generatedClassifier.set(positionInChromosome);
+			
+		}
+
+		
+		
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -555,6 +592,34 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 					+ precisionBits, precisionBits, newMaxBound);
 		}
 
+		@Override
+		public final void randomClusteringValue(final float attributeValue,
+				final Classifier generatedClassifier) {
+			// First find a random value that is smaller than the attribute
+			// value & convert it to fraction
+			final int newLowBound = (int) Math
+					.floor((((attributeValue - minValue) * Math.random()) / (maxValue - minValue))
+							* totalParts);
+			final int newMaxBound = (int) Math
+					.ceil((((maxValue - minValue - ((maxValue - attributeValue) * Math
+							.random())) / (maxValue - minValue)) * totalParts));
+
+			// Then set at chromosome
+			if (Math.random() < (1 - clusteringGeneralizationRate))
+				generatedClassifier.set(positionInChromosome);
+			else
+				generatedClassifier.clear(positionInChromosome);
+
+			generatedClassifier.setIntAt(positionInChromosome + 1,
+					precisionBits, newLowBound);
+			generatedClassifier.setIntAt(positionInChromosome + 1
+					+ precisionBits, precisionBits, newMaxBound);
+		}
+		
+		
+		
+		
+		
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -757,6 +822,32 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 			myChromosome.set(positionInChromosome + 1 + (int) attributeValue);
 
 		}
+		
+		@Override
+		public final void randomClusteringValue(final float attributeValue, // visionVector[i]
+				final Classifier myChromosome) {
+			// Clear everything
+			myChromosome.clear(positionInChromosome, this.lengthInBits);
+			if (Math.random() < (1 - clusteringGeneralizationRate))
+				myChromosome.set(positionInChromosome);
+			else
+				myChromosome.clear(positionInChromosome);
+
+			// Randomize all bits of gene
+			for (int i = 1; i < lengthInBits; i++) {
+				if (Math.random() < (.5))
+					myChromosome.set(positionInChromosome + i);
+				else
+					myChromosome.clear(positionInChromosome + i);
+			}
+
+			// and set as "1" the nominal values that we are trying to match
+			myChromosome.set(positionInChromosome + 1 + (int) attributeValue);
+
+		}
+		
+		
+		
 
 		/*
 		 * (non-Javadoc)
@@ -791,6 +882,12 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 	 * @uml.property  name="attributeGeneralizationRate"
 	 */
 	private final double attributeGeneralizationRate;
+	
+	/**
+	 * The attribute generalization rate when clustering.
+	 * @uml.property  name="attributeGeneralizationRate"
+	 */
+	private final double clusteringAttributeGeneralizationRate;
 
 	/**
 	 * The size of the chromosomes of the representation.
@@ -830,31 +927,6 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 	 */
 	protected final AbstractLearningClassifierSystem myLcs;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param attributes
-	 *            the attribute objects of the representation
-	 * @param ruleConsequentsNames
-	 *            the rule consequents
-	 * @param labels
-	 *            the number of labels
-	 * @param generalizationRate
-	 *            the attribute generalization rate
-	 * @param lcs
-	 *            the LCS instance
-	 */
-	protected ComplexRepresentation(final AbstractAttribute[] attributes,
-			final String[] ruleConsequentsNames, final int labels,
-			final double generalizationRate,
-			final AbstractLearningClassifierSystem lcs) {
-		super(); // redundant
-		this.attributeList = attributes;
-		this.numberOfLabels = labels;
-		this.ruleConsequents = ruleConsequentsNames;
-		this.attributeGeneralizationRate = generalizationRate;
-		this.myLcs = lcs;
-	}
 
 	/**
 	 * Arff Loader.
@@ -876,6 +948,7 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 								    final int precisionBits, 
 								    final int labels,
 								    final double generalizationRate,
+								    final double clusteringAttributeGeneralizationRate,
 								    final AbstractLearningClassifierSystem lcs) throws IOException {
 
 		this.myLcs = lcs;
@@ -887,6 +960,7 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 		this.numberOfLabels = labels;
 		attributeList = new AbstractAttribute[instances.numAttributes()];
 		this.attributeGeneralizationRate = generalizationRate;
+		this.clusteringAttributeGeneralizationRate = clusteringAttributeGeneralizationRate;
 		this.precision = precisionBits;
 	}
 
@@ -1036,6 +1110,20 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 	 *            the Weka instances
 	 */
 	protected abstract void createClassRepresentation(Instances instances);
+	
+	
+	
+	
+	public final Classifier createRandomClusteringClassifier(final double[] visionVector) {
+		
+		final Classifier generatedClassifier = myLcs.getNewClassifier(); 
+		
+		for (int i = 0; i < attributeList.length; i++) {
+			attributeList[i].randomClusteringValue((float) visionVector[i], generatedClassifier);
+		}
+
+		return generatedClassifier;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -1055,6 +1143,9 @@ public abstract class ComplexRepresentation extends ClassifierTransformBridge {
 
 		return generatedClassifier;
 	}
+
+	
+	
 
 	/*
 	 * (non-Javadoc)
