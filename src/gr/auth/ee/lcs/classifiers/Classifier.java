@@ -498,9 +498,15 @@ public final class Classifier extends ExtendedBitSet implements Serializable {
 	
 	
 	public boolean isMatchUnCached (final int instanceIndex) {
+		
 		this.matchInstances[instanceIndex] = (byte) ((transformBridge.isMatch(myLcs.instances[instanceIndex], this)) ? 1 : 0);
 		this.checked++;
 		this.covered += this.matchInstances[instanceIndex];
+		
+		if (this.checked == this.getLCS().instances.length) 
+			this.objectiveCoverage = this.getCoverage();
+		
+		
 		return this.matchInstances[instanceIndex] == 1;
 	}
 	
