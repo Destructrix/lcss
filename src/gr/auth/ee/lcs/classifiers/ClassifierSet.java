@@ -1103,6 +1103,17 @@ public final void addClassifierSmp(final Macroclassifier macro,
 	
 	
 	
+	public final ClassifierSet generateMatchSetCached (final int dataInstanceIndex) {
+		final ClassifierSet matchSet = new ClassifierSet(null);
+		final int populationSize = this.getNumberOfMacroclassifiers();
+		for (int i= 0; i < populationSize; i++) {
+			if (this.getClassifier(i).isMatchCached(dataInstanceIndex)) {
+				matchSet.addClassifier(this.getMacroclassifier(i), false);
+			}
+		}
+		
+		return matchSet;
+	}
 	
 	
 	

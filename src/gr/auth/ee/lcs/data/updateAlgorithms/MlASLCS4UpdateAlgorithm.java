@@ -1598,6 +1598,13 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		final Classifier coveringClassifier = myLcs.getClassifierTransformBridge()
 											  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+		
+		coveringClassifier.buildMatchesForNewClassifier();
+		
+		for (int ins = 0; ins < myLcs.instances.length; ins++) {
+			coveringClassifier.isMatchUnCached(ins);
+		}
+		
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
@@ -1626,6 +1633,13 @@ public class MlASLCS4UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		final Classifier coveringClassifier = myLcs.getClassifierTransformBridge()
 		  									  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+		
+		coveringClassifier.buildMatchesForNewClassifier();
+		
+		for (int ins = 0; ins < myLcs.instances.length; ins++) {
+			coveringClassifier.isMatchUnCached(ins);
+		}
+		
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();

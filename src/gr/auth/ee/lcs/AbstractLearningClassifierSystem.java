@@ -1083,13 +1083,13 @@ public abstract class AbstractLearningClassifierSystem {
 		else
 		{
 			time1 = -System.currentTimeMillis();
-			final ClassifierSet matchSet = population.generateMatchSetNew(dataInstanceIndex);
+			final ClassifierSet matchSet = population.generateMatchSetCached(dataInstanceIndex);
 			time1 += System.currentTimeMillis();
 			
 			timeMeasurements[index][0] = population.getTotalNumerosity();
 			timeMeasurements[index][1] = population.getNumberOfMacroclassifiers();
-			timeMeasurements[index][2] = population.sumOfUnmatched;
-			timeMeasurements[index][3] = population.deleteIndices.size();
+			//timeMeasurements[index][2] = population.sumOfUnmatched;
+			//timeMeasurements[index][3] = population.deleteIndices.size();
 			timeMeasurements[index][4] = matchSet.getNumberOfMacroclassifiers();
 			
 			
@@ -1222,7 +1222,7 @@ public abstract class AbstractLearningClassifierSystem {
 		
 		timeMeasurements[index][10] = (int) numberOfMacroclassifiersCovered;
 		timeMeasurements[index][11] = (int) numberOfMacroclassifiersGaed;
-		timeMeasurements[index][12] = (int) ClassifierSet.firstTimeSetSmp.getNumberOfMacroclassifiers();
+		//timeMeasurements[index][12] = (int) ClassifierSet.firstTimeSetSmp.getNumberOfMacroclassifiers();
 		timeMeasurements[index][13] = (int) population.getTotalNumerosity();
 		timeMeasurements[index][14] = (int) population.firstDeletionFormula;
 		timeMeasurements[index][15] = (int) population.secondDeletionFormula;

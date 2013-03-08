@@ -625,12 +625,11 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 
 
 			child = mutationOp.operate(child);
-			
+			child.buildMatchesForNewClassifier();
 			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
 			for (int ins = 0; ins < myLcs.instances.length; ins++) {
-				if (child.isMatch(myLcs.instances[ins])) {
+				if (child.isMatchUnCached(ins)) {
 					proceedMyChild = true;
-					break;
 				}
 			}
 
@@ -871,14 +870,11 @@ public class SteadyStateGeneticAlgorithmNew implements IGeneticAlgorithmStrategy
 
 			child = mutationOp.operate(child);
 			
-			
-			
-			
+			child.buildMatchesForNewClassifier();
 			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
 			for (int ins = 0; ins < myLcs.instances.length; ins++) {
-				if (child.isMatch(myLcs.instances[ins])) {
+				if (child.isMatchUnCached(ins)) {
 					proceedMyChild = true;
-					break;
 				}
 			}
 
