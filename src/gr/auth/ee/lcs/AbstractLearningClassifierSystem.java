@@ -666,6 +666,13 @@ public abstract class AbstractLearningClassifierSystem {
 				for (int j = 0; j < centroidsArray.length; j++) {
 					//System.out.printf("Instance %d => Cluster %d ", k, assignments[j]);
 					final Classifier coveringClassifier = this.getClassifierTransformBridge().createRandomClusteringClassifier(centroidsArray[j]);
+					
+					coveringClassifier.buildMatchesForNewClassifier();
+					
+					for (int ins = 0; ins < this.instances.length; ins++) {
+						coveringClassifier.isMatchUnCached(ins);
+					}
+					
 					coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_INIT); 
 					initialClassifiers.addClassifier(new Macroclassifier(coveringClassifier, 1), false);	
 				}
@@ -812,6 +819,13 @@ public abstract class AbstractLearningClassifierSystem {
 				for (int j = 0; j < centroidsArray.length; j++) {
 					//System.out.printf("Instance %d => Cluster %d ", k, assignments[j]);
 					final Classifier coveringClassifier = this.getClassifierTransformBridge().createRandomCoveringClassifier(centroidsArray[j]);
+					
+					coveringClassifier.buildMatchesForNewClassifier();
+					
+					for (int ins = 0; ins < this.instances.length; ins++) {
+						coveringClassifier.isMatchUnCached(ins);
+					}
+					
 					coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_INIT); 
 					initialClassifiers.addClassifier(new Macroclassifier(coveringClassifier, 1), false);	
 				}
