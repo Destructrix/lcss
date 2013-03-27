@@ -261,4 +261,10 @@ public class TournamentSelector implements IRuleSelector {
 		
 	}
 
+	@Override
+	public void computeFitnessSumSmp(ClassifierSet evolveSet) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

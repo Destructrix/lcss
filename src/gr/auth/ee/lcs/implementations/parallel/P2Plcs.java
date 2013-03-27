@@ -152,4 +152,10 @@ public class P2Plcs extends AbstractLearningClassifierSystem {
 
 	}
 
+	@Override
+	public void trainFold() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

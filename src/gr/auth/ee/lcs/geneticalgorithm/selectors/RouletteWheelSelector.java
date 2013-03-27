@@ -108,6 +108,61 @@ public class RouletteWheelSelector implements IRuleSelector {
 	}
 	
 	@Override
+	public final void computeFitnessSumSmp(final ClassifierSet fromPopulation)
+	{
+fromPopulationSmp = fromPopulation;
+		
+		try {
+			ptComputeFitnessSum.execute(new ParallelRegion(){
+				public void start()
+				{
+					fitnessSumSmp = 0;
+				}
+				public void run() throws Exception
+				{
+					execute(0,fromPopulationSmp.getNumberOfMacroclassifiers()-1,new IntegerForLoop(){
+						
+						double fitnessSum_thread;
+						
+						//padding variables
+						long p0,p1,p2,p3,p4,p5,p6,p7;
+						long p8,p9,pa,pb,pc,pd,pe,pf;
+						
+						
+						public void start()
+						{
+							fitnessSum_thread = 0;
+						}
+						public void run(int first,int last)
+						{
+							for ( int i = first; i <= last ; ++i )
+							{
+								fitnessSum_thread += fromPopulationSmp.getClassifierNumerosity(i)
+												*fromPopulationSmp.getClassifier(i).getComparisonValue(mode);
+							}
+						}
+						public void finish() throws Exception
+						{
+							region().critical( new ParallelSection() {
+								public void run()
+								{
+									fitnessSumSmp += fitnessSum_thread;
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		fitnessSum = fitnessSumSmp;
+	}
+	
+	@Override
 	public final double computeFitnessSumNew(final ClassifierSet fromPopulation)
 	{
 		final int numberOfMacroclassifiers = fromPopulation.getNumberOfMacroclassifiers();

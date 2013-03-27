@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/li9i/Dropbox/thesis/auth/LCSFrameworkDependencies/cglib-nodep-2.2.2.jar"/>
-	<classpathentry kind="lib" path="/home/li9i/Dropbox/thesis/auth/LCSFrameworkDependencies/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/li9i/Dropbox/thesis/auth/LCSFrameworkDependencies/easymock-3.0.jar"/>
-	<classpathentry kind="lib" path="/home/li9i/Dropbox/thesis/auth/LCSFrameworkDependencies/easymock-3.0-javadoc.jar"/>
-	<classpathentry kind="lib" path="/home/li9i/Dropbox/thesis/auth/LCSFrameworkDependencies/objenesis-1.2.jar"/>
-	<classpathentry kind="lib" path="/home/li9i/Dropbox/thesis/auth/LCSFrameworkDependencies/pj20120620.jar"/>
-	<classpathentry kind="lib" path="/home/li9i/Dropbox/thesis/auth/LCSFrameworkDependencies/weka.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vag/Desktop/diplwmatiki/kwdikas/LCSFrameworkDependencies/pj20120620.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vag/Desktop/diplwmatiki/kwdikas/LCSFrameworkDependencies/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vag/Desktop/diplwmatiki/kwdikas/LCSFrameworkDependencies/cglib-nodep-2.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vag/Desktop/diplwmatiki/kwdikas/LCSFrameworkDependencies/weka.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vag/Desktop/diplwmatiki/kwdikas/LCSFrameworkDependencies/easymock-3.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vag/Desktop/diplwmatiki/kwdikas/LCSFrameworkDependencies/easymock-3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vag/Desktop/diplwmatiki/kwdikas/LCSFrameworkDependencies/objenesis-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

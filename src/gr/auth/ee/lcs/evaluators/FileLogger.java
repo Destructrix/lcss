@@ -178,6 +178,99 @@ public class FileLogger implements ILCSMetric {
 		
 	}
 	
+	public FileLogger(final AbstractLearningClassifierSystem lcs, String storeDirectory) {
+		
+		file = null;
+		actualEvaluator = null;
+		
+		// make directory hookedMetrics/{simpleDateFormat}
+		File dir = new File(storeDirectory); 
+		
+		if (!dir.exists()) {
+		  dir.mkdirs();
+		}
+		
+		dir = new File(storeDirectory + "/evals"); 
+		if (!dir.exists()) {
+		  dir.mkdirs();
+		}
+		
+		// set the name of the directory in which the metrics will be stored
+		if (lcs.hookedMetricsFileDirectory == null) 
+			lcs.setHookedMetricsFileDirectory(storeDirectory); 
+		
+		try {
+			// keep a copy of thedefaultLcs.properties configuration 
+			File getConfigurationFile = new File(storeDirectory, "defaultLcs.properties");
+			
+			if (!getConfigurationFile.exists()) {
+				FileInputStream in = new FileInputStream("defaultLcs.properties");
+				FileOutputStream out = new FileOutputStream(storeDirectory + "/defaultLcs.properties");
+				byte[] buf = new byte[1024];
+				int len;
+				while ((len = in.read(buf)) > 0) {
+				   out.write(buf, 0, len);
+				}
+				in.close();
+				out.close();
+			}
+
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		
+		// copy the /src directory into storeDirectory
+		String sourceDir = "src";
+		File srcDir = new File(sourceDir);
+		String destinationDir = storeDirectory + "/src";
+		File destDir = new File(destinationDir);
+		if (!destDir.exists()) destDir.mkdir();
+		
+		try {
+			FileUtils.copyDirectory(srcDir, destDir);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			// record fitness mode, deletion mode and whether # participate in the correct sets in the file essentialSettings.txt
+			final FileWriter fstream = new FileWriter(storeDirectory + "/essentialSettings.txt", true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			
+			int fitness_mode = (int) SettingsLoader.getNumericSetting("FITNESS_MODE", 0);
+			int deletion_mode = (int) SettingsLoader.getNumericSetting("DELETION_MODE", 0);
+			boolean wildCardsParticipateInCorrectSets = String.valueOf(SettingsLoader.getStringSetting("wildCardsParticipateInCorrectSets", "true")).equals("true");
+			boolean initializePopulation = String.valueOf(SettingsLoader.getStringSetting("initializePopulation", "true")).equals("true");
+
+			buffer.write(					
+					  "fitness mode: " + fitness_mode
+					+ System.getProperty("line.separator")
+					+ "deletion mode:  " + deletion_mode
+					+ System.getProperty("line.separator")
+					+ "# in correct sets :" + wildCardsParticipateInCorrectSets 
+					+ System.getProperty("line.separator")
+					+ (wildCardsParticipateInCorrectSets ? 
+					 "balance correct sets: " + String.valueOf(SettingsLoader.getStringSetting("balanceCorrectSets", "true").equals("true"))
+					+ (String.valueOf(SettingsLoader.getStringSetting("balanceCorrectSets", "true").equals("true") 
+							? ", with ratio: " +  SettingsLoader.getNumericSetting("wildCardParticipationRatio", 0)
+							: "")) : ""
+					+ System.getProperty("line.separator")
+					+ (initializePopulation ? "population initialized via clustering: " + initializePopulation : "")
+					+ System.getProperty("line.separator"))
+			);
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		
+	}
+	
 
 	/**
 	 * FileLogger constructor.
@@ -207,6 +300,29 @@ public class FileLogger implements ILCSMetric {
 		}
 
 	}
+	
+	public FileLogger(
+			   final String storeDirectory,
+			   final String filename, 
+			   final ILCSMetric evaluator) {
+		
+		file = storeDirectory + "/" + filename + ".txt";
+		
+		actualEvaluator = evaluator;
+		
+		try {
+			final FileWriter fstream = new FileWriter(file, false);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			buffer.write("");
+			buffer.flush();
+			buffer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
 
 	@Override
 	public final double getMetric(final AbstractLearningClassifierSystem lcs) {

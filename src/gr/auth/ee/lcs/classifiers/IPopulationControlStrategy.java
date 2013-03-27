@@ -40,14 +40,9 @@ public interface IPopulationControlStrategy {
 	
 	void controlPopulationSmp(ClassifierSet aSet);
 	
-	/**
-	 * 
-	 * Compute the probability of each classifier to be deleted.
-	 * 
-	 * @param aSet
-	 *            the set of classifiers we will compute the probabilities of 
-	 * */
 	int getNumberOfDeletionsConducted();
 	
 	long getDeletionTime();
+	long getUpdateDeletionParametersTime();
+	long getSelectForDeletionTime();
 }

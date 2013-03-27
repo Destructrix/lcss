@@ -163,6 +163,7 @@ public abstract class AbstractLearningClassifierSystem {
 	 * Matrix used to store the time measurements for different phases of the train procedure.
 	 */
 	public double[][] timeMeasurements;
+	public int[][] SeqSmpMeasurements;
 	
 	public double[][] systemAccuracy;
 	
@@ -926,6 +927,59 @@ public abstract class AbstractLearningClassifierSystem {
 		
 	}
 	
+	public void registerMultilabelHooks(double[][] instances, int numberOfLabels, String storeDirectory) {
+		
+		new FileLogger(this,storeDirectory);
+				
+		this.registerHook(new FileLogger(storeDirectory,"accuracy",
+				new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_ACCURACY)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"recall",
+				new AccuracyRecallEvaluator(instances, false, this, AccuracyRecallEvaluator.TYPE_RECALL)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"exactMatch", 
+				new ExactMatchEvalutor(instances, false, this)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"hamming", 
+				new HammingLossEvaluator(instances, false, numberOfLabels, this)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"meanFitness",
+				new MeanFitnessStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"meanCoverage",
+				new MeanCoverageStatistic()));
+		
+		this.registerHook(new FileLogger(storeDirectory,"weightedMeanCoverage",
+				new WeightedMeanCoverageStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"meanAttributeSpecificity",
+				new MeanAttributeSpecificityStatistic()));
+		
+		this.registerHook(new FileLogger(storeDirectory,"weightedMeanAttributeSpecificity",
+				new WeightedMeanAttributeSpecificityStatistic(AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"meanLabelSpecificity",
+				new MeanLabelSpecificity(numberOfLabels)));
+		
+		this.registerHook(new FileLogger(storeDirectory,"weightedMeanLabelSpecificity",
+				new WeightedMeanLabelSpecificity(numberOfLabels, AbstractUpdateStrategy.COMPARISON_MODE_EXPLOITATION)));
+		
+		
+		if (SettingsLoader.getStringSetting("filename", "").indexOf("position") != -1) {
+
+			this.registerHook(new FileLogger(storeDirectory,"BAM", new PositionBAMEvaluator
+															((int) SettingsLoader.getNumericSetting("numberOfLabels", 1), 
+																	PositionBAMEvaluator.GENERIC_REPRESENTATION, this))); 
+		}
+		
+		if (SettingsLoader.getStringSetting("filename", "").indexOf("identity") != -1) {
+			this.registerHook(new FileLogger(storeDirectory,"BAM", new IdentityBAMEvaluator
+															((int) SettingsLoader.getNumericSetting("numberOfLabels", 1), 
+																	IdentityBAMEvaluator.GENERIC_REPRESENTATION, this)));
+		}
+		
+	}
+	
 	
 	
 	/**
@@ -1045,7 +1099,8 @@ public abstract class AbstractLearningClassifierSystem {
 
 			if (hookCallbackRate < iterations) {
 				System.out.print("] ");
-				System.out.print("(" + repetition + "/" + iterations + ")");	
+				System.out.print("(" + repetition + "/" + iterations + ")");
+				System.out.println();
 			}
 			executeCallbacks(population, repetition); 
 			trainsBeforeHook = 0;
@@ -1069,94 +1124,67 @@ public abstract class AbstractLearningClassifierSystem {
 
 		getUpdateStrategy().updateSet(population, matchSet, dataInstanceIndex, evolve);*/
 		
-		long time1,time2;
+		long matchSetTime;
 		
 		int index = totalRepetition * instances.length + dataInstanceIndex;
 		//System.out.println(index);
 		
 		if(smp)
 		{
-			time1 = -System.currentTimeMillis();
-			final ClassifierSet matchSetSmp = population.generateMatchSetNewSmp(dataInstanceIndex,pt);
-			time1 += System.currentTimeMillis();
-			
-			timeMeasurements[index][0] = population.getTotalNumerosity();
-			timeMeasurements[index][1] = population.getNumberOfMacroclassifiers();
-			timeMeasurements[index][2] = ClassifierSet.firstTimeSetSmp.getNumberOfMacroclassifiers();
-			timeMeasurements[index][3] = ClassifierSet.deleteIndicesSmp2.size();
-			timeMeasurements[index][4] = matchSetSmp.getNumberOfMacroclassifiers();
+			matchSetTime = -System.currentTimeMillis();
+			final ClassifierSet matchSetSmp = population.generateMatchSetCachedSmp(dataInstanceIndex,pt);
+			matchSetTime += System.currentTimeMillis();
 			
 			if (UPDATE_MODE == UPDATE_MODE_IMMEDIATE) 
 				getUpdateStrategy().updateSetSmp(population, matchSetSmp, dataInstanceIndex, evolve);
 			else if (UPDATE_MODE == UPDATE_MODE_HOLD) 
 				getUpdateStrategy().updateSetNewSmp(population, matchSetSmp, dataInstanceIndex, evolve);				
 
+			SeqSmpMeasurements[index][0] = population.getNumberOfMacroclassifiers();
+			SeqSmpMeasurements[index][1] = (int)matchSetTime;
+			SeqSmpMeasurements[index][2] = matchSetSmp.getNumberOfMacroclassifiers();
+			
 			recordInTimeMeasurements(population, index);
 
 		}
 		else
 		{
-			time1 = -System.currentTimeMillis();
+			matchSetTime = -System.currentTimeMillis();
 			final ClassifierSet matchSet = population.generateMatchSetCached(dataInstanceIndex);
-			time1 += System.currentTimeMillis();
-			
-			timeMeasurements[index][0] = population.getTotalNumerosity();
-			timeMeasurements[index][1] = population.getNumberOfMacroclassifiers();
-			//timeMeasurements[index][2] = population.sumOfUnmatched;
-			//timeMeasurements[index][3] = population.deleteIndices.size();
-			timeMeasurements[index][4] = matchSet.getNumberOfMacroclassifiers();
-			
+			matchSetTime += System.currentTimeMillis();
 			
 			if (UPDATE_MODE == UPDATE_MODE_IMMEDIATE) 
 				getUpdateStrategy().updateSet(population, matchSet, dataInstanceIndex, evolve);
 			else if (UPDATE_MODE == UPDATE_MODE_HOLD) 
 				getUpdateStrategy().updateSetNew(population, matchSet, dataInstanceIndex, evolve);
 			
+			SeqSmpMeasurements[index][0] = population.getNumberOfMacroclassifiers();
+			SeqSmpMeasurements[index][1] = (int)matchSetTime;
+			SeqSmpMeasurements[index][2] = matchSet.getNumberOfMacroclassifiers();
 			
 			recordInTimeMeasurements(population, index);
 
 		}
 		
-		if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 3) {
-			timeMeasurements[index][33] = (int) ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).generateCorrectSetTime;
-			timeMeasurements[index][34] = (int) ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).updateParametersTime;
-			timeMeasurements[index][35] = (int) time1;
-			timeMeasurements[index][36] = (int) ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).selectionTime;
-		}
-		else if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 4) {
-			timeMeasurements[index][33] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).generateCorrectSetTime;
-			timeMeasurements[index][34] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).updateParametersTime;
-			timeMeasurements[index][35] = (int) time1;
-			timeMeasurements[index][36] = (int) ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).selectionTime;
-		}
-
+		SeqSmpMeasurements[index][3] = (int)((getUpdateStrategy())).generateCorrectSetTime;
+		SeqSmpMeasurements[index][4] = (int)((getUpdateStrategy())).updateParametersTime;
+		SeqSmpMeasurements[index][5] = (int)((getUpdateStrategy())).numberOfEvolutionsConducted;
+		SeqSmpMeasurements[index][6] = (int)((getUpdateStrategy())).evolutionTime;		
+		SeqSmpMeasurements[index][10] = (int)((getUpdateStrategy())).numberOfDeletionsConducted;
+		SeqSmpMeasurements[index][11] = (int)((getUpdateStrategy())).deletionTime;
+		SeqSmpMeasurements[index][12] = (int)((getUpdateStrategy())).updateDeletionParametersTime;
+		SeqSmpMeasurements[index][13] = (int)((getUpdateStrategy())).selectForDeletionTime;
 		
+		if (UPDATE_MODE == UPDATE_MODE_IMMEDIATE)
+		{
+			SeqSmpMeasurements[index][7] = (int)((getUpdateStrategy())).subsumptionTime;
+			SeqSmpMeasurements[index][9] = (int)((getUpdateStrategy())).sumTime;
+			SeqSmpMeasurements[index][14] = (int)((getUpdateStrategy())).matchingTimeTotal;
+		}
 	}
 
 	
 	private void recordInTimeMeasurements(ClassifierSet population, int index) {
-		
-		if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 3) {
-		
-			timeMeasurements[index][5] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
-			timeMeasurements[index][6] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
-			timeMeasurements[index][7] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
-			timeMeasurements[index][8] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
-			timeMeasurements[index][9] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
-			timeMeasurements[index][19] = ((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
-			timeMeasurements[index][20] = (int)((MlASLCS3UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
-		}
-		
-		else if ((int) SettingsLoader.getNumericSetting("updateAlgorithmVersion", 3) == 4) {
-			timeMeasurements[index][5] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfEvolutionsConducted;
-			timeMeasurements[index][6] = (int)((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).evolutionTime;
-			timeMeasurements[index][7] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfSubsumptionsConducted;
-			timeMeasurements[index][8] = (int)((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).subsumptionTime;
-			timeMeasurements[index][9] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfNewClassifiers;
-			timeMeasurements[index][19] = ((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).numberOfDeletionsConducted;
-			timeMeasurements[index][20] = (int)((MlASLCS4UpdateAlgorithm)(getUpdateStrategy())).deletionTime;
-		}
-		
 		
 		int numberOfMacroclassifiersCovered = 0;
 		int numberOfClassifiersCovered = 0;
@@ -1287,6 +1315,55 @@ public abstract class AbstractLearningClassifierSystem {
 		
 		trainSet(iterations, population, false); // evolve = false
 	}
+	
+	public final void trainSetFold(final int iterations,
+									final ClassifierSet population)
+	{
+		trainSetFold(iterations,population,true);
+	}
+	
+	public final void updatePopulationFold(final int iterations,
+											final ClassifierSet population)
+	{
+		trainSetFold(iterations,population,false);
+	}
+	
+	public abstract void trainFold();
+	
+	public final void trainSetFold(final int iterations,
+							     final ClassifierSet population, 
+							     final boolean evolve)
+	{
+		final int numInstances = instances.length;
+
+		repetition = 0;
+		
+		int trainsBeforeHook = 0;
+		while (repetition < iterations) { 		
+
+			while ((trainsBeforeHook < hookCallbackRate) && (repetition < iterations)) {
+				
+				for (int i = 0; i < numInstances; i++) {
+					cummulativeCurrentInstanceIndex = totalRepetition * instances.length + i;
+					trainWithInstance(population, i, evolve);
+					
+				}
+
+				repetition++;
+				totalRepetition++;
+				trainsBeforeHook++;
+
+				// check for duplicities on every repetition
+				if (!thoroughlyCheckWIthPopulation) {
+					assimilateDuplicateClassifiers(rulePopulation, evolve);
+				}
+			}
+			executeCallbacks(population, repetition); 
+			trainsBeforeHook = 0;
+		}
+	}	
+
+	
 	
 	
 

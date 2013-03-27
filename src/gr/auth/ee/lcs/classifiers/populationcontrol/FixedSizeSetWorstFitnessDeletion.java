@@ -59,6 +59,10 @@ public class FixedSizeSetWorstFitnessDeletion implements
 	private int numberOfDeletions;
 	
 	private long deletionTime;
+	
+	private long updateDeletionParametersTime;
+	
+	private long selectForDeletionTime;
 
 	/**
 	 * Removes all zero coverage rules
@@ -111,6 +115,8 @@ public class FixedSizeSetWorstFitnessDeletion implements
 
 		numberOfDeletions = 0;
 		deletionTime = 0;
+		updateDeletionParametersTime = 0;
+		selectForDeletionTime = 0;
 		
 		while (aSet.getTotalNumerosity() > populationSize) {
 			long time1 = - System.currentTimeMillis();
@@ -119,9 +125,15 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			// se auto to simeio upologizei maxPopulation + 1 pi9anotites, ka9os gia na kli9ei i controlPopulation, prepei na exei uperbei to ano orio tou pli9usmou
 			
 			//if (numberOfDeletions == 1) 
+			long time2 = -System.currentTimeMillis();
 			updateStrategy.computeDeletionProbabilities(aSet);
+			time2 += System.currentTimeMillis();
 			
-			mySelector.select(1, aSet, toBeDeleted); // me rouleta
+			long time3 = -System.currentTimeMillis(); 
+			mySelector.computeFitnessSum(aSet); // me rouleta
+			time3 += System.currentTimeMillis();
+			
+			mySelector.selectWithoutSum(1, aSet, toBeDeleted);
 			Classifier cl = toBeDeleted.getClassifier(0);
 
 			
@@ -144,6 +156,8 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			time1 += System.currentTimeMillis();
 			
 			deletionTime += time1;
+			updateDeletionParametersTime += time2;
+			selectForDeletionTime += time3;
 		}
 		
 	}
@@ -155,13 +169,11 @@ public class FixedSizeSetWorstFitnessDeletion implements
 
 		final ClassifierSet toBeDeleted = new ClassifierSet(null);
 		
-//		not necessary anymore. deletion of zero coverage rules occurs right after the formation of the match set
- 
-/*		if (aSet.getTotalNumerosity() > populationSize) 
-			zeroCoverageRemoval.controlPopulation(aSet);*/
 
 		numberOfDeletions = 0;
 		deletionTime = 0;
+		updateDeletionParametersTime = 0;
+		selectForDeletionTime = 0;
 		
 		while (aSet.getTotalNumerosity() > populationSize) {
 			long time1 = - System.currentTimeMillis();
@@ -170,10 +182,15 @@ public class FixedSizeSetWorstFitnessDeletion implements
 			// se auto to simeio upologizei maxPopulation + 1 pi9anotites, ka9os gia na kli9ei i controlPopulation, prepei na exei uperbei to ano orio tou pli9usmou
 			
 			//if (numberOfDeletions == 1) 
+			long time2 = -System.currentTimeMillis();
 			updateStrategy.computeDeletionProbabilitiesSmp(aSet);
+			time2 += System.currentTimeMillis();
 			
-			mySelector.selectSmp2(1, aSet, toBeDeleted); // me rouleta			
+			long time3 = -System.currentTimeMillis(); 
+			mySelector.computeFitnessSumSmp(aSet); // me rouleta
+			time3 += System.currentTimeMillis();
 			
+			mySelector.selectWithoutSum(1, aSet, toBeDeleted);
 			Classifier cl = toBeDeleted.getClassifier(0);
 
 			
@@ -192,11 +209,12 @@ public class FixedSizeSetWorstFitnessDeletion implements
 						
 			aSet.deleteClassifier(cl);
 			toBeDeleted.deleteClassifier(0);
-			
+
 			time1 += System.currentTimeMillis();
 			
 			deletionTime += time1;
-
+			updateDeletionParametersTime += time2;
+			selectForDeletionTime += time3;
 		}
 	}
 	
@@ -210,7 +228,14 @@ public class FixedSizeSetWorstFitnessDeletion implements
 	public final long getDeletionTime(){
 		return deletionTime;
 	}
-
+	
+	public final long getUpdateDeletionParametersTime(){
+		return updateDeletionParametersTime;
+	}
+	
+	public final long getSelectForDeletionTime() {
+		return selectForDeletionTime;
+	}
 	
 	
 	/**

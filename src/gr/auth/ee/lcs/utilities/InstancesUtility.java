@@ -241,9 +241,11 @@ public final class InstancesUtility {
 
 		// Open .arff
 		final Instances set = trainSet;
+		
 		if (set.classIndex() < 0) {
 			set.setClassIndex(set.numAttributes() - 1);
 		}
+		
 		//set.randomize(new Random());
 		int numberOfLabels = (int) SettingsLoader.getNumericSetting("numberOfLabels", 1);
 		

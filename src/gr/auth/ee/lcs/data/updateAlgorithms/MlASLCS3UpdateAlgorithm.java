@@ -54,19 +54,6 @@ import java.util.Vector;
  */
 public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	
-	public class EvolutionTimeMeasurements {
-		public long timeA;
-		public long timeB;
-		public long timeC;
-		public long timeD;
-	}
-	
-	public static Vector<EvolutionTimeMeasurements> measurements0 = 
-		new Vector<EvolutionTimeMeasurements>();
-	
-	public static Vector<EvolutionTimeMeasurements> measurements1 = 
-		new Vector<EvolutionTimeMeasurements>();
-
 	/**
 	 * A data object for the MlASLCS3 update algorithms.
 	 * 
@@ -255,94 +242,39 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 	 */
 	private final double n;
 	
-	
-	public int numberOfEvolutionsConducted;
-	
-	public int numberOfDeletionsConducted;
-	
-	public int numberOfSubsumptionsConducted;
-	
-	public int numberOfNewClassifiers;
-	
-	public long evolutionTime;
-	
-	public long subsumptionTime;
-	
-	public long deletionTime;
-	
-	public long generateCorrectSetTime;
-	
-	public long updateParametersTime;
-	
-	public long selectionTime;
-	
-	static Vector<Integer> indicesToSubsumeSmp;
-	
-	static ClassifierSet newClassifiersSetSmp;
-	
-	static Vector<Integer> labelsToEvolveSmp;
+	ParallelTeam ptGenerateCorrectSet;
+	ParallelTeam ptUpdateParameters;
+	ParallelTeam ptDouble;
+	ParallelTeam ptEvolve;
+		
+	ParallelTeam ptComputeDeletionParameters;
+	ParallelTeam ptComputeFitnessSum;	
 	
 	static ClassifierSet[] labelCorrectSetsSmp;
-	
+	static ClassifierSet matchSetSmp;
+	static ClassifierSet aSetSmp;
 	static ClassifierSet populationSmp;
 	
-	static long seedSmp1;
-	
-	static long seedSmp2;
-	
-	ParallelTeam ptEvolve;
-	
-	static IGeneticAlgorithmStrategy gaSmp;
-	
-	static long subsumptionTimeSmp;
-	
-	static long subsumptionTimeMax;
-	
-	static int numOfProcessors;
-	
-	static int div;
-	
-	static int mod;
-	
-	private ParallelTeam ptGenerateCorrectSet;
-	
-	private ParallelTeam ptGenerateCorrectSetNew;
-	
-	private ParallelTeam ptUpdateParameters;
-	
-	private ParallelTeam ptComputeDeletionParameters;
-	
-	private ParallelTeam ptComputeFitnessSum;
-	
-	static ClassifierSet matchSetSmp;
-	
-	static ClassifierSet matchSetNewSmp;
-	
-	static ClassifierSet correctSetNewSmp;
-	static ClassifierSet correctSetOnlyWildcardsNewSmp;
-	static ClassifierSet correctSetWithoutWildcardsNewSmp;
-	
 	static int instanceIndexSmp;
-	
-	static int instanceIndexNewSmp;
-	
-	static int labelIndexNewSmp;
-	
 	static int numberOfLabelsSmp;
 	
-	static Vector<Integer> firstToGenerate;
-	static Vector<Integer> lastToGenerate;
-	
-	static double meanPopulationFitnessSmp;
 	static double fitnessSumSmp;
-	static ClassifierSet aSetSmp;
+	static double meanPopulationFitnessSmp;
 	
-	static boolean wildCardsParticipateInCorrectSetsSmp = SettingsLoader.getStringSetting("wildCardsParticipateInCorrectSets", "false").equals("true");
+	static Vector<Integer> labelsToEvolveSmp;
+	static Vector<Integer> indicesToSubsumeSmp;
+	static ClassifierSet newClassifiersSetSmp;
 	
-	static boolean balanceCorrectSetsSmp = SettingsLoader.getStringSetting("balanceCorrectSets", "false").equals("true");
+	static long seedSmp1;
+	static int mod;
+	static int div;
 	
-	static double wildCardParticipationRatioSmp = SettingsLoader.getNumericSetting("wildCardParticipationRatio", 1);
+	int numOfProcessors;
 	
+	static Classifier coveringClassifierSmp;
+	static double[][] instancesSmp;
+	static byte[] matchInstancesSmp;
+	ParallelTeam ptMatching;
 	
 	/**
 	 * Constructor.
@@ -382,12 +314,9 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		ptComputeDeletionParameters = new ParallelTeam();
 		
-		ptGenerateCorrectSetNew = new ParallelTeam();
-		
 		ptComputeFitnessSum = new ParallelTeam();
 		
-		firstToGenerate = new Vector<Integer>();
-		lastToGenerate = new Vector<Integer>();
+		ptMatching = new ParallelTeam();
 		
 		Runtime runtime = Runtime.getRuntime(); 
 		
@@ -658,6 +587,17 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 											  .getClassifierTransformBridge()
 											  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
 		
+		long matchingTime = -System.currentTimeMillis();
+		
+		coveringClassifier.buildMatchesForNewClassifier();
+		
+		for (int ins = 0; ins < myLcs.instances.length; ins++) {
+			coveringClassifier.isMatchUnCached(ins);
+		}
+		
+		matchingTime += System.currentTimeMillis();
+		matchingTimeTotal += matchingTime;
+		
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 		
@@ -675,6 +615,71 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		final Classifier coveringClassifier = myLcs
 											  .getClassifierTransformBridge()
 											  .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+		
+		coveringClassifier.buildMatchesForNewClassifier();
+		
+		long matchingTime = -System.currentTimeMillis();
+		coveringClassifierSmp = coveringClassifier;
+		instancesSmp = myLcs.instances;
+					
+		try{
+				ptMatching.execute(new ParallelRegion(){
+				public void start()
+				{
+					matchInstancesSmp = new byte[instancesSmp.length];
+				}					
+				public void run() throws Exception
+				{
+					execute(0,instancesSmp.length-1,new IntegerForLoop()
+					{
+						
+						int first_thread;
+						byte[] matchInstances_thread;
+																
+						//padding variables
+						 long p0,p1,p2,p3,p4,p5,p6,p7;
+						 long p8,p9,pa,pb,pc,pd,pe,pf;
+						
+						public void run(int first,int last)
+						{
+							matchInstances_thread = new byte[last-first+1];
+							first_thread = first;
+							int count = 0;
+							for ( int ins = first; ins <= last; ins++)
+							{
+								matchInstances_thread[count] = (byte)(coveringClassifierSmp.isMatch(instancesSmp[ins]) ? 1 : 0);
+								
+								count++;
+								
+							}
+						}
+						public void finish() throws Exception
+						{
+							region().critical(new ParallelSection()
+							{
+								public void run()
+								{
+									for ( int ins = 0 ; ins < matchInstances_thread.length; ins++)
+									{
+										matchInstancesSmp[first_thread + ins] = matchInstances_thread[ins];											
+									}
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		coveringClassifier.setMatchInstances(matchInstancesSmp);
+		
+		matchingTime += System.currentTimeMillis();
+		matchingTimeTotal += matchingTime;
+		
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
 		myLcs.numberOfCoversOccured ++ ;
@@ -687,6 +692,93 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 											   .getClassifierTransformBridge()
 											   .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
 		
+		long matchingTime = -System.currentTimeMillis();
+		
+		coveringClassifier.buildMatchesForNewClassifier();
+		
+		for (int ins = 0; ins < myLcs.instances.length; ins++) {
+			coveringClassifier.isMatchUnCached(ins);
+		}
+		
+		matchingTime += System.currentTimeMillis();
+		matchingTimeTotal += matchingTime;
+		
+		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
+		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+
+		coveringClassifier.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_COVER); // o classifier proekupse apo cover
+		myLcs.numberOfCoversOccured ++ ;
+		return new Macroclassifier(coveringClassifier, 1);
+	}
+	
+	private Macroclassifier coverNewSmp(int instanceIndex) 
+	{
+		final Classifier coveringClassifier = myLcs
+		   .getClassifierTransformBridge()
+		   .createRandomCoveringClassifier(myLcs.instances[instanceIndex]);
+
+		coveringClassifier.buildMatchesForNewClassifier();
+		
+		long matchingTime = -System.currentTimeMillis();
+		coveringClassifierSmp = coveringClassifier;
+		instancesSmp = myLcs.instances;
+					
+		try{
+				ptMatching.execute(new ParallelRegion(){
+				public void start()
+				{
+					matchInstancesSmp = new byte[instancesSmp.length];
+				}					
+				public void run() throws Exception
+				{
+					execute(0,instancesSmp.length-1,new IntegerForLoop()
+					{
+						
+						int first_thread;
+						byte[] matchInstances_thread;
+											
+						//padding variables
+						 long p0,p1,p2,p3,p4,p5,p6,p7;
+						 long p8,p9,pa,pb,pc,pd,pe,pf;
+						
+						public void run(int first,int last)
+						{
+							matchInstances_thread = new byte[last-first+1];
+							first_thread = first;
+							int count = 0;
+							for ( int ins = first; ins <= last; ins++)
+							{
+								matchInstances_thread[count] = (byte)(coveringClassifierSmp.isMatch(instancesSmp[ins]) ? 1 : 0);
+								
+								count++;
+							}
+						}
+						public void finish() throws Exception
+						{
+							region().critical(new ParallelSection()
+							{
+								public void run()
+								{
+									for ( int ins = 0 ; ins < matchInstances_thread.length; ins++)
+									{
+										matchInstancesSmp[first_thread + ins] = matchInstances_thread[ins];											
+									}
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		coveringClassifier.setMatchInstances(matchInstancesSmp);
+		matchingTime += System.currentTimeMillis();
+		//matchingTimeSmp += matchingTime;
+
 		coveringClassifier.created = myLcs.totalRepetition;//ga.getTimestamp();
 		coveringClassifier.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
 
@@ -783,155 +875,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		else return correctSet;
 	}
-	
-	private ClassifierSet generateLabelCorrectSetSmp(final ClassifierSet matchSet,
-			   final int instanceIndex, 
-			   final int labelIndex,
-			   final int threadId) {
-		
-		final ClassifierSet correctSet = new ClassifierSet(null);
-		final ClassifierSet correctSetOnlyWildcards = new ClassifierSet(null);
-		final ClassifierSet correctSetWithoutWildcards = new ClassifierSet(null);
-
-		final int matchSetSize = matchSet.getNumberOfMacroclassifiers();
-		
-		if ( threadId == 0)
-		{	
-			for (int i = 0; i < matchSetSize; i++) {
-				
-				final Macroclassifier cl = matchSet.getMacroclassifier(i);
-				
-				if (wildCardsParticipateInCorrectSetsSmp) {
-
-					if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) >= 0) // change: (=) means # => [C]
-							correctSet.addClassifier(cl, false);
-
-					if (balanceCorrectSetsSmp) {
-						
-						if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) == 0) 
-							correctSetOnlyWildcards.addClassifier(cl, false);
-						
-						if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-							correctSetWithoutWildcards.addClassifier(cl, false);
-					}
-				}
-				else 
-					if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-					correctSet.addClassifier(cl, false);
-
-			}
-		}
-		else
-		{
-			for (int i = 0; i < matchSetSize; i++) {
-				
-				final Macroclassifier cl = matchSet.getMacroclassifier(i);
-				
-				if (wildCardsParticipateInCorrectSetsSmp) {
-
-					if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) >= 0) // change: (=) means # => [C]
-							correctSet.addClassifier(cl, false);
-
-					if (balanceCorrectSetsSmp) {
-						
-						if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) == 0) 
-							correctSetOnlyWildcards.addClassifier(cl, false);
-						
-						if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-							correctSetWithoutWildcards.addClassifier(cl, false);
-					}
-				}
-				else 
-					if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-					correctSet.addClassifier(cl, false);
-
-			}
-		}
-		
-		if (wildCardsParticipateInCorrectSetsSmp && balanceCorrectSetsSmp) {
-			int correctSetWithoutWildcardsNumerosity = correctSetWithoutWildcards.getNumberOfMacroclassifiers();
-			int correctSetOnlyWildcardsNumerosity = correctSetOnlyWildcards.getNumberOfMacroclassifiers();
-	
-			if (correctSetOnlyWildcardsNumerosity <= wildCardParticipationRatioSmp * correctSetWithoutWildcardsNumerosity)
-				return correctSet;
-			else	
-				return correctSetWithoutWildcards;
-		}
-		
-		else return correctSet;
-		
-	}
-	
-	
-	private ClassifierSet generateLabelCorrectSetNewSmp(final ClassifierSet matchSet,
-			   											final int instanceIndex, 
-			   											final int labelIndex) {
-		
-		matchSetNewSmp = matchSet;
-		instanceIndexNewSmp = instanceIndex;
-		labelIndexNewSmp = labelIndex;
-		
-		correctSetNewSmp = new ClassifierSet(null);
-		correctSetOnlyWildcardsNewSmp = new ClassifierSet(null);
-		correctSetWithoutWildcardsNewSmp = new ClassifierSet(null);
-		
-		try{
-			ptGenerateCorrectSetNew.execute( new ParallelRegion() {
-			
-				public void run() throws Exception
-				{
-					execute(0,matchSetSmp.getNumberOfMacroclassifiers()-1, new IntegerForLoop() {
-						
-						public void run( int first, int last )
-						{
-							for ( int i = first; i <= last ; ++i )
-							{
-								final Macroclassifier cl = matchSet.getMacroclassifier(i);
-								
-								if (wildCardsParticipateInCorrectSets) {
-									
-									if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) >= 0) // change: (=) means # => [C]
-										correctSetNewSmp.addClassifier(cl, false);
-									
-									if (balanceCorrectSets) {
-										
-										if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) == 0) 
-											correctSetOnlyWildcardsNewSmp.addClassifier(cl, false);
-										
-										if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-											correctSetWithoutWildcardsNewSmp.addClassifier(cl, false);
-									}
-								}
-								else 
-									if (cl.myClassifier.classifyLabelCorrectly(instanceIndex, labelIndex) > 0)
-									correctSetNewSmp.addClassifier(cl, false);
-							}
-						}
-						
-					});
-				}
-			
-			});
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		if (wildCardsParticipateInCorrectSets && balanceCorrectSets) {
-			int correctSetWithoutWildcardsNumerosity = correctSetWithoutWildcardsNewSmp.getNumberOfMacroclassifiers();
-			int correctSetOnlyWildcardsNumerosity = correctSetOnlyWildcardsNewSmp.getNumberOfMacroclassifiers();
-	
-			if (correctSetOnlyWildcardsNumerosity <= wildCardParticipationRatio * correctSetWithoutWildcardsNumerosity)
-				return correctSetNewSmp;
-			else	
-				return correctSetWithoutWildcardsNewSmp;
-		}
-		
-		else return correctSetNewSmp;
-		
-	}
-	
-	
 
 	/*
 	 * (non-Javadoc)
@@ -1341,7 +1284,11 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		numberOfDeletionsConducted = 0;
 		numberOfNewClassifiers = 0;
 		subsumptionTime = 0;
+		sumTime = 0;
 		deletionTime = 0;
+		updateDeletionParametersTime = 0;
+		selectForDeletionTime = 0;
+		matchingTimeTotal = 0;
 			
 		if (evolve) {
 			evolutionTime = -System.currentTimeMillis();
@@ -1355,8 +1302,12 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 					numberOfEvolutionsConducted += ga.evolutionConducted();
 					numberOfSubsumptionsConducted += ga.getNumberOfSubsumptionsConducted();
 					numberOfNewClassifiers += ga.getNumberOfNewClassifiers();
+					matchingTimeTotal += ga.getMatchingTime();
 					subsumptionTime += ga.getSubsumptionTime();
+					sumTime += ga.getSumTime();
 					deletionTime += ga.getDeletionTime();
+					updateDeletionParametersTime += ga.getUpdateDeletionParametersTime();
+					selectForDeletionTime += ga.getSelectForDeletionTime();
 					numberOfDeletionsConducted += ga.getNumberOfDeletionsConducted();
 				} else {
 					
@@ -1399,21 +1350,17 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 						long p0,p1,p2,p3,p4,p5,p6,p7;
 						long p8,p9,pa,pb,pc,pd,pe,pf;
 						
+						public void start()
+						{
+							labelCorrectSetsIndices = new Vector<Integer>(); 
+						}						
 						public void run(int first, int last)
 						{
 							labelCorrectSets_thread = new ClassifierSet[last-first+1];
-							labelCorrectSetsIndices = new Vector<Integer>(); 
+							
 							for ( int i = first; i <= last ; i++ )
 							{
-								final ClassifierSet correctSet = new ClassifierSet(null);
-								final int matchSetSize = matchSetSmp.getNumberOfMacroclassifiers();
-								for (int j = 0; j < matchSetSize; j++) 
-								{
-									final Macroclassifier cl = matchSetSmp.getMacroclassifier(j);
-									if (cl.myClassifier.classifyLabelCorrectly(instanceIndexSmp, i) > 0)
-										correctSet.addClassifier(cl, false);
-								}
-								labelCorrectSets_thread[i-first] = correctSet;
+								labelCorrectSets_thread[i-first] = generateLabelCorrectSet(matchSetSmp,instanceIndexSmp,i);
 								labelCorrectSetsIndices.add(i); 
 							}							
 						}
@@ -1592,6 +1539,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		updateParametersTime += System.currentTimeMillis();
 		
+		
+		
 		evolutionTime = 0;
 		
 		numberOfEvolutionsConducted = 0;
@@ -1599,20 +1548,28 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		numberOfDeletionsConducted = 0;
 		numberOfNewClassifiers = 0;
 		subsumptionTime = 0;
+		sumTime = 0;
 		deletionTime = 0;
+		updateDeletionParametersTime = 0;
+		selectForDeletionTime = 0;
+		matchingTimeTotal = 0;
 			
 		if (evolve) {
 			evolutionTime = -System.currentTimeMillis();
 			for (int l = 0; l < numberOfLabels; l++) {
 				if (labelCorrectSets[l].getNumberOfMacroclassifiers() > 0) {
-					ga.evolveSetSmp(labelCorrectSets[l], population, l);
+					ga.evolveSetSmp(labelCorrectSets[l], population,l);
 					population.totalGAInvocations = ga.getTimestamp();
 					
 					numberOfEvolutionsConducted += ga.evolutionConducted();
 					numberOfSubsumptionsConducted += ga.getNumberOfSubsumptionsConducted();
 					numberOfNewClassifiers += ga.getNumberOfNewClassifiers();
 					subsumptionTime += ga.getSubsumptionTime();
+					sumTime += ga.getSumTime();
 					deletionTime += ga.getDeletionTime();
+					matchingTimeTotal += ga.getMatchingTime();
+					updateDeletionParametersTime += ga.getUpdateDeletionParametersTime();
+					selectForDeletionTime += ga.getSelectForDeletionTime();
 					numberOfDeletionsConducted += ga.getNumberOfDeletionsConducted();
 				} else {
 					this.coverSmp(population, instanceIndex);
@@ -1623,9 +1580,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				}
 			}
 			evolutionTime += System.currentTimeMillis();
-		}
-		
-		
+		}		
 	}
 	
 	
@@ -1870,60 +1825,9 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 							   int instanceIndex, 
 							   boolean evolve) {
 		
-		/*
-		 * patenta gia moirasmo sta threads xwris IntegerForLoop
-		 * 
-		 * */
-		
-		
-//		try{
-//			ptGenerateCorrectSet.execute( new ParallelRegion() {
-//				
-////				//public ClassifierSet[] labelCorrectSets_thread = new ClassifierSet[numberOfLabelsSmp];
-//				public void run() throws Exception
-//				{
-//					final int first = firstToGenerate.elementAt(getThreadIndex());
-//					final int last = lastToGenerate.elementAt(getThreadIndex());
-//					ClassifierSet[] labelCorrectSets_thread = new ClassifierSet[last-first+1];
-//					
-//					long p0,p1,p2,p3,p4,p5,p6,p7;
-//					long p8,p9,pa,pb,pc,pd,pe,pf;
-//					
-//					for ( int i = first ; i <= last; ++i )
-//					{
-////								labelCorrectSets_thread[i-first] = generateLabelCorrectSet(matchSetSmp,instanceIndexSmp,i);
-//						final ClassifierSet correctSet = new ClassifierSet(null);
-//						final int matchSetSize = matchSetSmp.getNumberOfMacroclassifiers();
-//						for (int j = 0; j < matchSetSize; j++) 
-//						{
-//							final Macroclassifier cl = matchSetSmp.getMacroclassifier(j);
-//							if (cl.myClassifier.classifyLabelCorrectly(instanceIndexSmp, i) > 0)
-//								correctSet.addClassifier(cl, false);
-//						}
-//						labelCorrectSets_thread[i-first] = correctSet;					
-//					}
-//					
-//					final ClassifierSet[] labelCorrectSets_thread_final = labelCorrectSets_thread;
-//							
-//					region().critical(new ParallelSection() {
-//						public void run()
-//						{
-//							for ( int i = first ; i <= last ; i++ )
-//							{
-//								labelCorrectSetsSmp[i] = labelCorrectSets_thread_final[i-first];
-//							}
-//						}
-//					});
-//				}			
-//			});
-//		}
-//		catch( Exception e )
-//		{
-//			e.printStackTrace();
-//		}
+		final ClassifierSet[] labelCorrectSets;
 		
 		labelCorrectSetsSmp = new ClassifierSet[numberOfLabels];
-		
 		matchSetSmp = matchSet;
 		instanceIndexSmp = instanceIndex;
 		numberOfLabelsSmp = numberOfLabels;
@@ -1943,14 +1847,17 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 						long p0,p1,p2,p3,p4,p5,p6,p7;
 						long p8,p9,pa,pb,pc,pd,pe,pf;
 						
+						public void start()
+						{
+							labelCorrectSetsIndices = new Vector<Integer>(); 
+						}						
 						public void run(int first, int last)
 						{
-							int threadId = getThreadIndex();
 							labelCorrectSets_thread = new ClassifierSet[last-first+1];
-							labelCorrectSetsIndices = new Vector<Integer>(); 
+							
 							for ( int i = first; i <= last ; i++ )
 							{
-								labelCorrectSets_thread[i-first] = generateLabelCorrectSetSmp(matchSetSmp,instanceIndexSmp,i, threadId);
+								labelCorrectSets_thread[i-first] = generateLabelCorrectSet(matchSetSmp,instanceIndexSmp,i);
 								labelCorrectSetsIndices.add(i); 
 							}							
 						}
@@ -1980,12 +1887,14 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		
 		generateCorrectSetTime += System.currentTimeMillis();
 		
+		labelCorrectSets = labelCorrectSetsSmp;
+
+		
 		int CorrectSetsPopulation = 0;
 		for (int i = 0; i < numberOfLabels; i++) {
-			CorrectSetsPopulation += labelCorrectSetsSmp[i].getNumberOfMacroclassifiers() ;
+			CorrectSetsPopulation += labelCorrectSets[i].getNumberOfMacroclassifiers() ;
 		}
 		myLcs.meanCorrectSetNumerosity = CorrectSetsPopulation / numberOfLabels;
-		
 
 		updateParametersTime = -System.currentTimeMillis();
 		
@@ -2071,7 +1980,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		else if (FITNESS_MODE == FITNESS_MODE_SHARING) {
 			
 			for (int l = 0; l < numberOfLabels; l++) {
-				shareFitness(matchSet, labelCorrectSetsSmp[l], l, instanceIndex);
+				shareFitness(matchSet, labelCorrectSets[l], l, instanceIndex);
 			}
 			
 			try {
@@ -2126,17 +2035,14 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 		}
 		
 		updateParametersTime += System.currentTimeMillis();
-
 		
 		numberOfEvolutionsConducted = 0;
 		numberOfSubsumptionsConducted = 0;
 		numberOfDeletionsConducted = 0;
 		numberOfNewClassifiers = 0;
 		evolutionTime = 0;
-		subsumptionTime = 0;
-		selectionTime = 0;
 		deletionTime = 0;
-			
+					
 		if (evolve) {
 			
 			evolutionTime = -System.currentTimeMillis();
@@ -2167,7 +2073,7 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			population.totalGAInvocations = ga.getTimestamp();
 			
 			labelsToEvolveSmp = labelsToEvolve;
-			seedSmp1 = (long)(100*myLcs.instances.length*myLcs.iterations*Math.random());
+			seedSmp1 = (long)(myLcs.instances.length*myLcs.iterations*Math.random());
 						
 			div = labelsToEvolveSmp.size() / numOfProcessors;
 			mod = labelsToEvolveSmp.size() % numOfProcessors;
@@ -2175,12 +2081,8 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			indicesToSubsumeSmp = new Vector<Integer>();
 			newClassifiersSetSmp = new ClassifierSet(null);
 			subsumptionTimeSmp = 0;
-			subsumptionTimeMax = 0;
+			matchingTimeSmp = 0;
 			populationSmp = population;	
-			
-			
-			if ( labelParallelMode == 1 )
-			{
 			
 			/*
 			 * YLOPOIHSH DIAMOIRASMOU gia GENIKI PERIPTWSI N LABELS
@@ -2188,9 +2090,9 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			
 			if ( mod > 0 )
 			{
-				for ( int i = div * numOfProcessors; i < div * numOfProcessors + mod ; i++ )
+				for ( int i = div*numOfProcessors; i < div*numOfProcessors + mod ; i++ )
 				{
-					IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = 
+					SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome = 
 						ga.evolveSetNewOneLabelSmp(
 												labelCorrectSetsSmp
 												[labelsToEvolveSmp.elementAt(i)], 
@@ -2198,7 +2100,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 												labelsToEvolveSmp.elementAt(i));
 					indicesToSubsumeSmp.addAll(evolutionOutcome.indicesToSubsume);
 					newClassifiersSetSmp.merge(evolutionOutcome.newClassifierSet);
-					subsumptionTimeSmp += evolutionOutcome.subsumptionTime;
 				}
 			}				
 			if ( div > 0 )
@@ -2208,18 +2109,19 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				
 						public void run() throws Exception
 						{
-							execute(0,div*numOfProcessors-1, new IntegerForLoop() {
+							execute(0,labelsToEvolveSmp.size()-1, new IntegerForLoop() {
 							
 								Vector<Integer> indicesToSubsume_thread;
 								ClassifierSet newClassifiersSet_thread;
-								long subsumptionTime_thread;
 								Random prng_thread;
+								
+								long p0,p1,p2,p3,p4,p5,p6,p7;
+								long p8,p9,pa,pb,pc,pd,pe,pf;
 						
 								public void start()
 								{
 									indicesToSubsume_thread = new Vector<Integer>();
 									newClassifiersSet_thread = new ClassifierSet(null);
-									subsumptionTime_thread = 0;
 									prng_thread = Random.getInstance(seedSmp1);
 									prng_thread.setSeed(seedSmp1);
 								}
@@ -2228,15 +2130,14 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 								{
 									for ( int i = first; i <= last ; ++i )
 									{
-										prng_thread.skip(2 * first * (3 + labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)].getClassifier(0).size()));
-										IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome 
+										prng_thread.skip(2*first*(3+labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)].getClassifier(0).size()));
+										SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome 
 											= ga.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)], 
 																 populationSmp, 
 																 prng_thread,
 																 labelsToEvolveSmp.elementAt(i));
 										indicesToSubsume_thread.addAll(evolutionOutcome.indicesToSubsume);
 										newClassifiersSet_thread.merge(evolutionOutcome.newClassifierSet);
-										subsumptionTime_thread += evolutionOutcome.subsumptionTime;
 									}
 								}
 							
@@ -2246,10 +2147,6 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 										{
 											indicesToSubsumeSmp.addAll(indicesToSubsume_thread);
 											newClassifiersSetSmp.merge(newClassifiersSet_thread);
-											if (subsumptionTime_thread > subsumptionTimeMax)
-											{
-												subsumptionTimeMax = subsumptionTime_thread;
-											}
 										}
 									});
 								}
@@ -2263,29 +2160,11 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 				{
 					e.printStackTrace();
 				}
-				subsumptionTimeSmp += subsumptionTimeMax;
-			}
-			
-			}			
-			else if (labelParallelMode == 0)
-			{
-				for ( int i = 0; i < labelsToEvolveSmp.size() ; i++ )
-				{
-					IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = 
-						ga.evolveSetNewOneLabelSmp(
-													labelCorrectSetsSmp
-													[labelsToEvolveSmp.elementAt(i)], 
-													population,
-													labelsToEvolveSmp.elementAt(i));
-					indicesToSubsumeSmp.addAll(evolutionOutcome.indicesToSubsume);
-					newClassifiersSetSmp.merge(evolutionOutcome.newClassifierSet);
-					subsumptionTimeSmp += evolutionOutcome.subsumptionTime;
-				}
 			}
 			
 			for (int i = 0 ; i < labelsToCover.size(); i++)
 			{
-				newClassifiersSetSmp.addClassifier(this.coverNew(instanceIndex), false);
+				newClassifiersSetSmp.addClassifier(this.coverNewSmp(instanceIndex), false);
 			}
 			
 			subsumptionTime = subsumptionTimeSmp;
@@ -2309,181 +2188,9 @@ public class MlASLCS3UpdateAlgorithm extends AbstractUpdateStrategy {
 			numberOfDeletionsConducted = theControlStrategy.getNumberOfDeletionsConducted();
 			
 			evolutionTime += System.currentTimeMillis();
-		}
-			
-			/*
-			 * OTI AKOLOUTHEI EINAI YLOPOIHSH GIA XWRISMO OTAN EXOUME 2 LABELS MONO
-			 * otan kanoume evolve se 2 labels, xwrismo twn labels se thread
-			 */
-			
-//			if (labelsToEvolveSmp.size() == 2)
-//			{
-//				try{
-//				ptEvolve.execute( new ParallelRegion() {
-//			
-//					public void run() throws Exception
-//					{
-//						
-//						Vector<Integer> indicesToSubsume_thread;
-//						ClassifierSet newClassifiersSet_thread;
-//						long subsumptionTime_thread = 0;
-//						Random prng_thread;
-//						
-//						indicesToSubsume_thread = new Vector<Integer>();
-//						newClassifiersSet_thread = new ClassifierSet(null);
-//						prng_thread = Random.getInstance(seedSmp1);
-//						prng_thread.setSeed(seedSmp1);
-//						
-//						SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome;
-//						
-//						
-//						if ( getThreadIndex() == 0 )
-//						{
-////							evolutionOutcome 
-////							= gaSmp.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(0)], 
-////												 populationSmp, 
-////												 prng_thread);
-////							
-////							EvolutionTimeMeasurements etm = new EvolutionTimeMeasurements();
-////							etm.timeA = evolutionOutcome.timeA;
-////							etm.timeB = evolutionOutcome.timeB;
-////							etm.timeC = evolutionOutcome.timeC;
-////							etm.timeD = evolutionOutcome.timeD;
-////							
-////							measurements0.add(etm);
-//							
-//							evolutionOutcome
-//							= ga.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(0)], 
-//							 populationSmp, 
-//							 prng_thread);
-//						}
-//						else
-//						{
-//							prng_thread.skip(2*(3+labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(1)].getClassifier(0).size()));
-//							evolutionOutcome 
-//							= ga.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(1)], 
-//												 populationSmp, 
-//												 prng_thread);
-//							
-////							EvolutionTimeMeasurements etm = new EvolutionTimeMeasurements();
-////							etm.timeA = evolutionOutcome.timeA;
-////							etm.timeB = evolutionOutcome.timeB;
-////							etm.timeC = evolutionOutcome.timeC;
-////							etm.timeD = evolutionOutcome.timeD;
-////							
-////							measurements1.add(etm);
-//			
-//						}
-////						
-////						indicesToSubsume_thread.addAll(evolutionOutcome.indicesToSubsume);
-////						newClassifiersSet_thread.merge(evolutionOutcome.newClassifierSet);
-////						subsumptionTime_thread += evolutionOutcome.subsumptionTime;
-////						
-////						final Vector<Integer> indicesToSubsume_final = indicesToSubsume_thread;
-////						final ClassifierSet newClassifiersSet_final = newClassifiersSet_thread;
-////						final long subsumptionTime_final = subsumptionTime_thread;
-////						
-////						
-////						region().critical( new ParallelSection() {
-////							public void run()
-////							{
-////								indicesToSubsumeSmp.addAll(indicesToSubsume_final);
-////								newClassifiersSetSmp.merge(newClassifiersSet_final);
-////								subsumptionTimeSmp += subsumptionTime_final;
-////							}
-////						});
-//						
-//						
-////						execute(0,labelsToEvolveSmp.size()-1, new IntegerForLoop() {
-////						
-////							Vector<Integer> indicesToSubsume_thread;
-////							ClassifierSet newClassifiersSet_thread;
-////							long subsumptionTime_thread = 0;
-////							Random prng_thread;
-////					
-////							public void start()
-////							{
-////								indicesToSubsume_thread = new Vector<Integer>();
-////								newClassifiersSet_thread = new ClassifierSet(null);
-////								prng_thread = Random.getInstance(seedSmp1);
-////								prng_thread.setSeed(seedSmp1);
-////							}
-////					
-////							public void run(int first, int last)
-////							{
-////								int threadId = getThreadIndex();
-////								for ( int i = first; i <= last ; ++i )
-////								{
-////									SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome;
-////									prng_thread.skip(2*first*(3+labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)].getClassifier(0).size()));
-////									if ( threadId == 0 )
-////									{
-////										evolutionOutcome 
-////										= ga.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)], 
-////															 populationSmp, 
-////															 prng_thread);
-////									}
-////									else
-////									{
-////										evolutionOutcome 
-////										= ga2.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)], 
-////															 populationSmp, 
-////															 prng_thread);
-////									}								
-//////									SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome 
-//////										= gaSmp.evolveSetNewSmp(labelCorrectSetsSmp[labelsToEvolveSmp.elementAt(i)], 
-//////															 populationSmp, 
-//////															 prng_thread);
-////									indicesToSubsume_thread.addAll(evolutionOutcome.indicesToSubsume);
-////									newClassifiersSet_thread.merge(evolutionOutcome.newClassifierSet);
-////									subsumptionTime_thread += evolutionOutcome.subsumptionTime;
-////								}
-////							}
-////						
-////							public void finish() throws Exception {
-////								region().critical( new ParallelSection() {
-////									public void run()
-////									{
-////										indicesToSubsumeSmp.addAll(indicesToSubsume_thread);
-////										newClassifiersSetSmp.merge(newClassifiersSet_thread);
-////										subsumptionTimeSmp += subsumptionTime_thread;
-////									}
-////								});
-////							}
-////					
-////						});
-//			
-//					}
-//				
-//				});
-//			}
-//			catch( Exception e)
-//			{
-//				e.printStackTrace();
-//			}
-//			}
-//			else {	
-			
-				/*
-				 * an den kanoume evolve se 2 labels evolve me OneLabel gia ola 
-				 */
-				
-//				for ( int i = 0; i < labelsToEvolveSmp.size() ; i++ )
-//				{
-//					SteadyStateGeneticAlgorithm.EvolutionOutcome evolutionOutcome = 
-//						ga.evolveSetNewOneLabelSmp(
-//													labelCorrectSetsSmp
-//													[labelsToEvolveSmp.elementAt(i)], 
-//													population);
-//					indicesToSubsumeSmp.addAll(evolutionOutcome.indicesToSubsume);
-//					newClassifiersSetSmp.merge(evolutionOutcome.newClassifierSet);
-//					subsumptionTimeSmp += evolutionOutcome.subsumptionTime;
-//				}
-//				
-//			}	
-	
-
 		
+			
+		}		
 	}
 
 

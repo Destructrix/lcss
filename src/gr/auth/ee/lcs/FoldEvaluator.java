@@ -562,7 +562,7 @@ public class FoldEvaluator {
 		
 		
 		final int metricOptimizationIndex = (int) SettingsLoader.getNumericSetting("metricOptimizationIndex", 0);
-		final int numOfFoldRepetitions = (int) SettingsLoader.getNumericSetting("numOfFoldRepetitions", 3); // repeat process per fold
+		final int numOfFoldRepetitions = (int) SettingsLoader.getNumericSetting("numOfFoldRepetitions", 2); // repeat process per fold
 
 		// kalei ti run() {runs} fores
 		for (int currentRun = 0; currentRun < runs; currentRun++) { // fold execution resumption

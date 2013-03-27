@@ -51,18 +51,7 @@ import edu.rit.pj.ParallelRegion;
  */
 public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
-	public class EvolutionOutcome {
-		
-		public Vector<Integer> indicesToSubsume;
-		public ClassifierSet newClassifierSet;
-		public long subsumptionTime;
-		public long selectionTime;
-		
-		public long timeA;
-		public long timeB;
-		public long timeC;
-		public long timeD;
-	}
+
 
 	/**
 	 * The selector used for the next generation selection.
@@ -126,7 +115,9 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	private long subsumptionTime;
 	
-	private long selectionTime;
+	private long sumTime;
+	
+	private long matchingTimeTotal;
 	
 	private int evolutionConducted;
 	
@@ -138,7 +129,19 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	private long deletionTime; 
 	
+	private long updateDeletionParametersTime;
 	
+	private long selectForDeletionTime;
+	
+	ParallelTeam ptSubsume;
+	
+	ParallelTeam ptMatching; 
+	
+	static Classifier childSmp;
+	static double[][] instancesSmp;
+	static byte[] matchInstancesSmp;	
+	static boolean proceedMyChildSmp;
+		
 	private final boolean THOROUGHLY_CHECK_WITH_POPULATION = SettingsLoader.getStringSetting("THOROUGHLY_CHECK_WITH_POPULATION", "true").equals("true");
 	
 	static final boolean THOROUGHLY_CHECK_WITH_POPULATION_SMP = SettingsLoader.getStringSetting("THOROUGHLY_CHECK_WITH_POPULATION", "true").equals("true");;
@@ -149,39 +152,6 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 	private final int iterations = (int) SettingsLoader.getNumericSetting("trainIterations",1000);
 	
-	ParallelTeam ptEvolveOneLabel;
-	
-	ParallelTeam ptSubsume;
-	
-	ParallelTeam ptSelect;
-	
-	static long seedSmp;
-	
-	static Classifier parentASmp;
-	
-	static Classifier parentBSmp;
-	
-	static ClassifierSet populationSmp;
-	
-	static Vector<Integer> indicesToSubsumeSmp;
-	
-	static ClassifierSet newClassifiersSetSmp;
-	
-	static IRuleSelector gaSelectorSmp;
-	
-	static IBinaryGeneticOperator crossoverOpSmp;
-	
-	static IUnaryGeneticOperator mutationOpSmp;
-	
-	static float crossoverRateSmp;
-	
-	static AbstractLearningClassifierSystem myLcsSmp;	
-	
-	static long subsumptionTimeSmp;
-	
-	static double fitnessSumSmp;
-	
-	static ClassifierSet evolveSetSmp;
 	
 	public int crossoverOperator = (int) SettingsLoader.getNumericSetting("crossoverOperator", 0);;
 	public static final int SINGLEPOINT_CROSSOVER = 0;
@@ -385,6 +355,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		}
 		
 		return false;
+		
+
 	}
 	
 	
@@ -507,23 +479,11 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		this.mutationOp = mutationOperator;
 		this.gaActivationAge = gaActivationAge;
 		this.crossoverRate = crossoverRate;
-		this.myLcs = lcs;
+		this.myLcs = lcs;	
 		
-		
-		crossoverRateSmp = crossoverRate;
-		
-		gaSelectorSmp = this.gaSelector;
-		
-		crossoverOpSmp = crossoverOperator;
-		mutationOpSmp = mutationOperator;
-		myLcsSmp = lcs;
-		
-		ptEvolveOneLabel = new ParallelTeam();
+		ptMatching = new ParallelTeam();
 		
 		ptSubsume = new ParallelTeam();
-		
-		ptSelect = new ParallelTeam();
-		
 		
 	}
 
@@ -551,6 +511,9 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		numberOfNewClassifiers = 0;
 		numberOfDeletions = 0;
 		deletionTime = 0;
+		updateDeletionParametersTime = 0;
+		selectForDeletionTime = 0;
+		matchingTimeTotal = 0;
 
 		
 		final int meanAge = getMeanAge(evolveSet); // i mesi ilikia tou sunolou ton macroclassifiers tou classifierSet
@@ -569,16 +532,18 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 		final ClassifierSet parents = new ClassifierSet(null);
 
-		// Select parents
-		gaSelector.select(1, evolveSet, parents); // dialegei enan ikano apogono kai ton topo9etei sto sunolo parents
+		sumTime = -System.currentTimeMillis();
+		gaSelector.computeFitnessSum(evolveSet);
+		sumTime += System.currentTimeMillis();
+		
+		gaSelector.selectWithoutSum(1, evolveSet, parents); // dialegei enan ikano apogono kai ton topo9etei sto sunolo parents
 		final Classifier parentA = parents.getClassifier(0);
 		parents.deleteClassifier(0);
 		
-		gaSelector.select(1, evolveSet, parents);
+		gaSelector.selectWithoutSum(1, evolveSet, parents);
 		final Classifier parentB = parents.getClassifier(0);
 		parents.deleteClassifier(0);
 		
-
 		// Reproduce
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
 			
@@ -623,6 +588,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 			child = mutationOp.operate(child);
 			
+			long matchingTime = -System.currentTimeMillis();
 			child.buildMatchesForNewClassifier();
 			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
 			for (int ins = 0; ins < myLcs.instances.length; ins++) {
@@ -630,7 +596,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 					proceedMyChild = true;
 				}
 			}
-			
+			matchingTime += System.currentTimeMillis();
+			matchingTimeTotal += matchingTime;
 			
 			if (proceedMyChild) {
 			
@@ -664,16 +631,13 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				time1 += System.currentTimeMillis();
 				
 				subsumptionTime += time1;
-				
 				deletionTime += population.getPopulationControlStrategy().getDeletionTime();
-				
+				updateDeletionParametersTime += population.getPopulationControlStrategy().getUpdateDeletionParametersTime();
+				selectForDeletionTime += population.getPopulationControlStrategy().getSelectForDeletionTime();
 				numberOfDeletions += population.getPopulationControlStrategy().getNumberOfDeletionsConducted(); 
-				
-		
-			
-			subsumptionTime -= deletionTime;
 			}
 		}
+		subsumptionTime -= deletionTime;
 	}
 	
 	
@@ -689,6 +653,10 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		numberOfNewClassifiers = 0;
 		numberOfDeletions = 0;
 		deletionTime = 0;
+		sumTime = 0;
+		updateDeletionParametersTime = 0;
+		selectForDeletionTime = 0;
+		matchingTimeTotal = 0;
 
 		
 		final int meanAge = getMeanAge(evolveSet); // i mesi ilikia tou sunolou ton macroclassifiers tou classifierSet
@@ -707,8 +675,10 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 		final ClassifierSet parents = new ClassifierSet(null);
 
+		sumTime = -System.currentTimeMillis();
 		// Select parents
 		gaSelector.computeFitnessSum(evolveSet);
+		sumTime += System.currentTimeMillis();
 		
 		gaSelector.selectWithoutSum(1, evolveSet, parents); // dialegei enan ikano apogono kai ton topo9etei sto sunolo parents
 		final Classifier parentA = parents.getClassifier(0);
@@ -717,13 +687,13 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		gaSelector.selectWithoutSum(1, evolveSet, parents);
 		final Classifier parentB = parents.getClassifier(0);
 		parents.deleteClassifier(0);
-		
 
 		// Reproduce
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
 			Classifier child;
 			// produce a child
 			if (Math.random() < crossoverRate && /*parentA != parentB*/ !parentA.equals(parentB)) {
+
 				
 				int chromosomeSize = -1;
 				if (crossoverOperator == MULTIPOINT_CROSSOVER)
@@ -735,10 +705,10 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				 */
 				int mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
 				
-				child = crossoverOp.operate((i == 0) ? parentB : parentA, (i == 0) ? parentA : parentB, label, mutationPoint);
 				
-			} 
-			else {
+				child = crossoverOp.operate((i == 0) ? parentB : parentA,
+						(i == 0) ? parentA : parentB,label, mutationPoint);
+			} else {
 				child = (Classifier) ((i == 0) ? parentA : parentB).clone();
 				child.setComparisonValue(
 						AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION,
@@ -755,40 +725,114 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 			child = mutationOp.operate(child);
 			
-			child.inheritParametersFromParents(parentA, parentB);
+			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
+			long matchingTimeSmp = -System.currentTimeMillis();
 			
-			myLcs.getClassifierTransformBridge().fixChromosome(child);
-			//System.out.println("child after: " + child);
+			child.buildMatchesForNewClassifier();
 			
-			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
-			
-			child.created = myLcs.totalRepetition; //timestamp; // tote dimiourgi9ike apo ga o classifier
-			
-			long time1 = -System.currentTimeMillis();
-			
-			//check subsumption by parents
-			boolean parentsSubsumed = letParentsSubsumeSmp(population, parentA, parentB, child);
-			if (!parentsSubsumed) {	
-				// parents couldn't subsume, should i check with the population?
-				population.addClassifierSmp(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION, ptSubsume);
-			
-				if (population.subsumed)
-					numberOfSubsumptions++;
-				else
-					numberOfNewClassifiers++;
-				
+			childSmp = child;
+			instancesSmp = myLcs.instances;
+						
+			try{
+					ptMatching.execute(new ParallelRegion(){
+					public void start()
+					{
+						matchInstancesSmp = new byte[instancesSmp.length]; 
+						proceedMyChildSmp = false;
+					}					
+					public void run() throws Exception
+					{
+						execute(0,instancesSmp.length-1,new IntegerForLoop()
+						{
+							
+							int first_thread;
+							byte[] matchInstances_thread;
+							boolean proceedMyChild_thread;
+														
+							//padding variables
+							 long p0,p1,p2,p3,p4,p5,p6,p7;
+							 long p8,p9,pa,pb,pc,pd,pe,pf;
+							
+							public void run(int first,int last)
+							{
+								proceedMyChild_thread = false;
+								matchInstances_thread = new byte[last-first+1];
+								first_thread = first;
+								int count = 0;
+								for ( int ins = first; ins <= last; ins++)
+								{
+									matchInstances_thread[count] = (byte)(childSmp.isMatch(instancesSmp[ins]) ? 1 : 0);
+									if ( matchInstances_thread[count] == 1 )
+									{
+										proceedMyChild_thread = true;
+									}
+									count++;
+								}
+							}
+							public void finish() throws Exception
+							{
+								region().critical(new ParallelSection()
+								{
+									public void run()
+									{
+										for ( int ins = 0 ; ins < matchInstances_thread.length; ins++)
+										{
+											matchInstancesSmp[first_thread + ins] = matchInstances_thread[ins];											
+										}
+										if (proceedMyChild_thread == true)
+										{
+											proceedMyChildSmp = true;
+										}
+									}
+								});
+							}
+						});
+					}
+				});
 			}
-			else
-				numberOfSubsumptions++;
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		
+			child.setMatchInstances(matchInstancesSmp);
 			
-			time1 += System.currentTimeMillis();
+			matchingTimeSmp += System.currentTimeMillis();
+			matchingTimeTotal += matchingTimeSmp;
 			
-			subsumptionTime += time1;
+			if(proceedMyChildSmp)
+			{	
+				child.inheritParametersFromParents(parentA, parentB);			
+				myLcs.getClassifierTransformBridge().fixChromosome(child);
+				//System.out.println("child after: " + child);
+				child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
+				child.created = myLcs.totalRepetition; //timestamp; // tote dimiourgi9ike apo ga o classifier
 			
-			deletionTime += population.getPopulationControlStrategy().getDeletionTime();
+				long time1 = -System.currentTimeMillis();
 			
-			numberOfDeletions += population.getPopulationControlStrategy().getNumberOfDeletionsConducted(); 
+				//check subsumption by parents
+				boolean parentsSubsumed = letParentsSubsumeSmp(population, parentA, parentB, child);
+				if (!parentsSubsumed) {	
+					// parents couldn't subsume, should i check with the population?
+					population.addClassifierSmp(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION, ptSubsume);
 			
+					if (population.subsumed)
+						numberOfSubsumptions++;
+					else
+						numberOfNewClassifiers++;
+				
+				}
+				else
+					numberOfSubsumptions++;
+			
+				time1 += System.currentTimeMillis();
+			
+				subsumptionTime += time1;			
+				deletionTime += population.getPopulationControlStrategy().getDeletionTime();
+				updateDeletionParametersTime += population.getPopulationControlStrategy().getUpdateDeletionParametersTime();
+				selectForDeletionTime += population.getPopulationControlStrategy().getSelectForDeletionTime();
+				numberOfDeletions += population.getPopulationControlStrategy().getNumberOfDeletionsConducted(); 
+			}
 		}
 		
 		subsumptionTime -= deletionTime;
@@ -803,6 +847,7 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 								  		int label) {
 	
 		subsumptionTime = 0;
+		matchingTimeTotal = 0;
 		
 		final ClassifierSet parents = new ClassifierSet(null);
 		
@@ -852,14 +897,19 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 
 			child = mutationOp.operate(child);
 			
-			child.buildMatchesForNewClassifier();
 			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
+			long matchingTime = -System.currentTimeMillis();
+			
+			child.buildMatchesForNewClassifier();
+			
 			for (int ins = 0; ins < myLcs.instances.length; ins++) {
-				if (child.isMatchUnCached(ins)) {
+				if (child.isMatchUnCached(ins) )
+				{
 					proceedMyChild = true;
 				}
 			}
-
+			matchingTime += System.currentTimeMillis();
+			matchingTimeTotal += matchingTime;
 			
 			if (proceedMyChild) {
 			
@@ -897,7 +947,6 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				time1 += System.currentTimeMillis();
 				
 				subsumptionTime += time1; 
-				
 			}
 		}		
 		
@@ -905,31 +954,19 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	
 	@Override
-	public final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolveSetNewSmp (final ClassifierSet evolveSet,
+	public final EvolutionOutcome evolveSetNewSmp (final ClassifierSet evolveSet,
 													  final ClassifierSet population,
 													  final Random prng, 
 													  final int label) {
 		
-		//long timeA = System.currentTimeMillis();
-	
 		final ClassifierSet parents = new ClassifierSet(null);
 		
-		final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = new gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome(); 
+		final EvolutionOutcome evolutionOutcome = new EvolutionOutcome(); 
 		
 		Vector<Integer> indicesToSubsumeLocal  = new Vector<Integer>();
 		ClassifierSet newClassifiersSetLocal = new ClassifierSet(null);
 		
 		// Select parents
-//		double fitnessSum = gaSelectorSmp.computeFitnessSumNewSmp(evolveSet);
-//		
-//		gaSelectorSmp.selectWithoutSumNewSmp(1, evolveSet, parents, fitnessSum, prng); // dialegei enan ikano apogono kai ton topo9etei sto sunolo parents
-//		final Classifier parentA = parents.getClassifier(0);
-//		parents.deleteClassifier(0);
-//		
-//		gaSelectorSmp.selectWithoutSumNewSmp(1, evolveSet, parents, fitnessSum, prng);
-//		final Classifier parentB = parents.getClassifier(0);
-//		parents.deleteClassifier(0);
-		
 		double fitnessSum = gaSelector.computeFitnessSumNew(evolveSet);
 		
 		gaSelector.selectWithoutSumNewSmp(1, evolveSet, parents, fitnessSum, prng); // dialegei enan ikano apogono kai ton topo9etei sto sunolo parents
@@ -940,18 +977,15 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		final Classifier parentB = parents.getClassifier(0);
 		parents.deleteClassifier(0);
 		
-		long subsumptionTimeLocal = 0;
-		
-		//evolutionOutcome.timeA = timeA;
-		
 		// Reproduce
+		// ka9e paidi exei diki tou pi9anotita na prokupsei apo crossover
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
 			
-			//long timeBC = System.currentTimeMillis();
+			boolean proceedMyChild = false;
 			
 			Classifier child;
 			// produce a child
-			if (prng.nextDouble() < crossoverRate && parentA != parentB) {
+			if (prng.nextDouble() < crossoverRate && !parentA.equals(parentB)) {
 				
 				int chromosomeSize = -1;
 				if (crossoverOperator == MULTIPOINT_CROSSOVER)
@@ -962,10 +996,8 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				 * The point at which the crossover will occur
 				 */
 				int mutationPoint = (int) Math.round(prng.nextDouble() * chromosomeSize - 1);
-				
 				child = crossoverOp.operate((i == 0) ? parentB : parentA, (i == 0) ? parentA : parentB, label, mutationPoint);
 			} 
-			
 			else {
 				
 				child = (Classifier) ((i == 0) ? parentA : parentB).clone();
@@ -975,54 +1007,53 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 								.getComparisonValue(AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION));
 			}
 
-			child = mutationOp.operateSmp(child, prng);
-			child.inheritParametersFromParents(parentA, parentB);
-			myLcs.getClassifierTransformBridge().fixChromosome(child);
-			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
-			child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
-
-			child.created = myLcs.totalRepetition;
+			child = mutationOp.operateSmp(child,prng);
 			
-			long time1 = -System.currentTimeMillis();
-			
-			int parentIndex = letParentsSubsumeNew(population, parentA, parentB, child);
+			child.buildMatchesForNewClassifier();
 						
-			if ( parentIndex >= 0 )
-			{
-				indicesToSubsumeLocal.add(parentIndex);
+			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
+			for (int ins = 0; ins < myLcs.instances.length; ins++) {
+				if (child.isMatchUnCached(ins)) {
+					proceedMyChild = true;
+				}
 			}
-			else
-			{
-				int populationIndex = population.letPopulationSubsume(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION_SMP);
+			
+			if (proceedMyChild) {
+			
+				child.inheritParametersFromParents(parentA, parentB);
+				myLcs.getClassifierTransformBridge().fixChromosome(child);
+				child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
+				child.cummulativeInstanceCreated = myLcs.getCummulativeCurrentInstanceIndex();
+	
 				
-				if ( populationIndex >= 0 )
+				child.created = myLcs.totalRepetition;
+				
+				int parentIndex = letParentsSubsumeNew(population, parentA, parentB, child);
+							
+				if ( parentIndex >= 0 )
 				{
-					indicesToSubsumeLocal.add(populationIndex);
+					indicesToSubsumeLocal.add(parentIndex);
 				}
 				else
 				{
-					newClassifiersSetLocal.addClassifier( new Macroclassifier(child,1), false);
-				}
-				
+					int populationIndex = population.letPopulationSubsume(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION);
+					
+					if ( populationIndex >= 0 )
+					{
+						indicesToSubsumeLocal.add(populationIndex);
+					}
+					else
+					{
+						newClassifiersSetLocal.addClassifier( new Macroclassifier(child,1), false);
+					}
+					
+				}				
 			}
-			
-			time1 += System.currentTimeMillis();
-			
-			subsumptionTimeLocal += time1; 
-//			
-//			if (i == 0)
-//				evolutionOutcome.timeB = timeBC;
-//			else	
-//				evolutionOutcome.timeC = timeBC;
 		}
-		
-//		evolutionOutcome.timeD = System.currentTimeMillis();
 		
 		evolutionOutcome.indicesToSubsume = indicesToSubsumeLocal;
 		
 		evolutionOutcome.newClassifierSet = newClassifiersSetLocal;
-		
-		evolutionOutcome.subsumptionTime = subsumptionTimeLocal;
 				
 		return evolutionOutcome;
 		
@@ -1030,52 +1061,17 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	
 	@Override
-	public final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolveSetNewOneLabelSmp (final ClassifierSet evolveSet,
+	public final EvolutionOutcome evolveSetNewOneLabelSmp (final ClassifierSet evolveSet,
 										   					final ClassifierSet population, 
 										   					int label) {
 		
 		final ClassifierSet parents = new ClassifierSet(null);
 		
-		final gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome evolutionOutcome = new gr.auth.ee.lcs.geneticalgorithm.IGeneticAlgorithmStrategy.EvolutionOutcome(); 
+		final EvolutionOutcome evolutionOutcome = new EvolutionOutcome(); 
 		
 		Vector<Integer> indicesToSubsumeLocal  = new Vector<Integer>();
 		ClassifierSet newClassifiersSetLocal = new ClassifierSet(null);
 		
-		
-		// Select parents
-
-		/*
-		 * Parallel selection of parents
-		 */
-		
-//		evolveSetSmp = evolveSet;
-//		
-//		long selectionTimeLocal = -System.currentTimeMillis();
-//		fitnessSumSmp = gaSelector.computeFitnessSumNew(evolveSet);
-//				
-//		
-//		try{
-//			ptSelect.execute( new ParallelRegion() {
-//			
-//				public void run()
-//				{
-//					final ClassifierSet parentsLocal = new ClassifierSet(null);
-//					gaSelectorSmp.selectWithoutSumNew(1, evolveSetSmp, parentsLocal, fitnessSumSmp);
-//					if (getThreadIndex()==0)
-//						parentASmp = parentsLocal.getClassifier(0);
-//					else
-//						parentBSmp = parentsLocal.getClassifier(0);
-//				}
-//			
-//			});
-//		}
-//		catch ( Exception e )
-//		{
-//			e.printStackTrace();
-//		}
-//		
-//		final Classifier parentA = parentASmp;
-//		final Classifier parentB = parentBSmp;
 		
 		gaSelector.computeFitnessSum(evolveSet);
 		
@@ -1086,8 +1082,6 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		gaSelector.selectWithoutSum(1, evolveSet, parents);
 		final Classifier parentB = parents.getClassifier(0);
 		parents.deleteClassifier(0);
-		
-		long subsumptionTimeLocal = 0;
 		
 		// Reproduce
 		for (int i = 0; i < CHILDREN_PER_GENERATION; i++) {
@@ -1104,10 +1098,10 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 				 * The point at which the crossover will occur
 				 */
 				int mutationPoint = (int) Math.round(Math.random() * chromosomeSize - 1);
+				
 				child = crossoverOp.operate((i == 0) ? parentB : parentA, (i == 0) ? parentA : parentB, label, mutationPoint);
-			} 
 			
-			else {
+			} else {
 				child = (Classifier) ((i == 0) ? parentA : parentB).clone();
 				child.setComparisonValue(
 						AbstractUpdateStrategy.COMPARISON_MODE_EXPLORATION,
@@ -1116,44 +1110,112 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 			}
 
 			child = mutationOp.operate(child);
-			child.inheritParametersFromParents(parentA, parentB);
-			myLcs.getClassifierTransformBridge().fixChromosome(child);
-			child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
 			
-			child.created = myLcs.totalRepetition;
+			// 0-coverage prevention. every child introduced in the population will be non 0-coverage.
+					
+			child.buildMatchesForNewClassifier();
 			
-			long time1 = -System.currentTimeMillis();
-			
-			int parentIndex = letParentsSubsumeNew(population, parentA, parentB, child);
+			childSmp = child;
+			instancesSmp = myLcs.instances;
 						
-			if ( parentIndex >= 0 )
-			{
-				indicesToSubsumeLocal.add(parentIndex);
+			try{
+					ptMatching.execute(new ParallelRegion(){
+					public void start()
+					{
+						matchInstancesSmp = new byte[instancesSmp.length]; 
+						proceedMyChildSmp = false;
+					}					
+					public void run() throws Exception
+					{
+						execute(0,instancesSmp.length-1,new IntegerForLoop()
+						{
+							
+							int first_thread;
+							byte[] matchInstances_thread;
+							boolean proceedMyChild_thread;
+														
+							//padding variables
+							 long p0,p1,p2,p3,p4,p5,p6,p7;
+							 long p8,p9,pa,pb,pc,pd,pe,pf;
+							
+							public void run(int first,int last)
+							{
+								proceedMyChild_thread = false;
+								matchInstances_thread = new byte[last-first+1];
+								first_thread = first;
+								int count = 0;
+								for ( int ins = first; ins <= last; ins++)
+								{
+									matchInstances_thread[count] = (byte)(childSmp.isMatch(instancesSmp[ins]) ? 1 : 0);
+									if ( matchInstances_thread[count] == 1 )
+									{
+										proceedMyChild_thread = true;
+									}
+									count++;
+								}
+							}
+							public void finish() throws Exception
+							{
+								region().critical(new ParallelSection()
+								{
+									public void run()
+									{
+										for ( int ins = 0 ; ins < matchInstances_thread.length; ins++)
+										{
+											matchInstancesSmp[first_thread + ins] = matchInstances_thread[ins];											
+										}
+										if (proceedMyChild_thread == true)
+										{
+											proceedMyChildSmp = true;
+										}
+									}
+								});
+							}
+						});
+					}
+				});
 			}
-			else
+			catch(Exception e)
 			{
-				int populationIndex = population.letPopulationSubsumeNewSmp(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION, ptSubsume);
+				e.printStackTrace();
+			}
+		
+			child.setMatchInstances(matchInstancesSmp);
+			
+			if (proceedMyChildSmp)
+			{
+				child.inheritParametersFromParents(parentA, parentB);
+				myLcs.getClassifierTransformBridge().fixChromosome(child);
+				child.setClassifierOrigin(Classifier.CLASSIFIER_ORIGIN_GA);
 				
-				if ( populationIndex >= 0 )
+				child.created = myLcs.totalRepetition;
+				
+				int parentIndex = letParentsSubsumeNew(population, parentA, parentB, child);
+							
+				if ( parentIndex >= 0 )
 				{
-					indicesToSubsumeLocal.add(populationIndex);
+					indicesToSubsumeLocal.add(parentIndex);
 				}
 				else
 				{
-					newClassifiersSetLocal.addClassifier( new Macroclassifier(child,1), false);
+					int populationIndex = population.letPopulationSubsumeNewSmp(new Macroclassifier(child, 1), THOROUGHLY_CHECK_WITH_POPULATION, ptSubsume);
+					
+					if ( populationIndex >= 0 )
+					{
+						indicesToSubsumeLocal.add(populationIndex);
+					}
+					else
+					{
+						newClassifiersSetLocal.addClassifier( new Macroclassifier(child,1), false);
+					}
+					
 				}
-				
 			}
-			
-			time1 += System.currentTimeMillis();
-			
-			subsumptionTimeLocal += time1; 
 			
 		}
 		
 		evolutionOutcome.indicesToSubsume = indicesToSubsumeLocal;
 		evolutionOutcome.newClassifierSet = newClassifiersSetLocal;
-		evolutionOutcome.subsumptionTime = subsumptionTimeLocal;
 				
 		return evolutionOutcome;	
 		
@@ -1225,10 +1287,6 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 		return subsumptionTime;
 	}
 	
-	public long getSelectionTime() {
-		return selectionTime;
-	}
-	
 	public int evolutionConducted() {
 		return evolutionConducted;
 	}
@@ -1247,6 +1305,30 @@ public class SteadyStateGeneticAlgorithm implements IGeneticAlgorithmStrategy {
 	
 	public long getDeletionTime() {
 		return deletionTime;
+	}
+
+	@Override
+	public long getMatchingTime() {
+		
+		return matchingTimeTotal;
+	}
+
+	@Override
+	public long getSumTime() {
+		
+		return sumTime;
+	}
+
+	@Override
+	public long getUpdateDeletionParametersTime() {
+
+		return updateDeletionParametersTime;
+	}
+
+	@Override
+	public long getSelectForDeletionTime() {
+		
+		return selectForDeletionTime;
 	}
 
 

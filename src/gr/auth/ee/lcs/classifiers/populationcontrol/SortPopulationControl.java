@@ -144,6 +144,18 @@ public class SortPopulationControl implements IPopulationControlStrategy {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public long getUpdateDeletionParametersTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public long getSelectForDeletionTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 }

@@ -159,4 +159,10 @@ public final class WorstClassifierSelector implements IRuleSelector {
 		
 	}
 
+	@Override
+	public void computeFitnessSumSmp(ClassifierSet evolveSet) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -32,7 +32,6 @@ import gr.auth.ee.lcs.data.ILCSMetric;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation;
 import gr.auth.ee.lcs.data.representations.complex.GenericMultiLabelRepresentation.VotingClassificationStrategy;
 import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm;
-import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS3UpdateAlgorithm.EvolutionTimeMeasurements;
 import gr.auth.ee.lcs.data.updateAlgorithms.MlASLCS4UpdateAlgorithm;
 import gr.auth.ee.lcs.evaluators.AccuracyRecallEvaluator;
 import gr.auth.ee.lcs.evaluators.ExactMatchEvalutor;
@@ -167,6 +166,8 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 	 */
 	private String timeMeasurementsFile;
 	
+	private String SeqSmpMeasurementsFile;
+	
 	private String systemAccuracyFile;
 	
 	private String deletionsFile;
@@ -213,17 +214,6 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		Runtime runtime = Runtime.getRuntime();
 		int numOfProcessors = runtime.availableProcessors();
 		
-		
-		/*
-		 * dhmiourgia array gia pollapla antikeimena operators
-		 */
-		
-		
-
-
-		
-
-			
 	final IGeneticAlgorithmStrategy ga = 
 		
 		GENETIC_ALGORITHM_SELECTION == 0 ? 
@@ -424,70 +414,70 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		MeanCoverageStatistic meanCoverage = new MeanCoverageStatistic();
 		results[12] = meanCoverage.getMetric(this);
 		
-		String testTimes = this.hookedMetricsFileDirectory + "/testTimes.txt";
-		
-		
-		try {
-			final FileWriter fstream = new FileWriter(testTimes, false);
-			final BufferedWriter buffer = new BufferedWriter(fstream);
-			buffer.write("");
-			buffer.flush();
-			buffer.close();
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		
-		try {
-			final FileWriter fstream = new FileWriter(testTimes, true);
-			final BufferedWriter buffer = new BufferedWriter(fstream);
-			
-			buffer.write(String.valueOf(proportionalCutCalibrationTime));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(getConfidenceArrayTime));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(calibrateTime));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(accEvalTime1));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(recEvalTime1));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(hamEvalTime1));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(testEvalTime1));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(System.getProperty("line.separator"));
-			
-			buffer.write(String.valueOf(internalValidationCalibrationTime));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(accEvalTime2));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(recEvalTime2));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(hamEvalTime2));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(testEvalTime2));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(System.getProperty("line.separator"));
-			
-			buffer.write(String.valueOf(bestClassificationModeTime));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(accEvalTime3));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(recEvalTime3));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(hamEvalTime3));
-			buffer.write(System.getProperty("line.separator"));
-			buffer.write(String.valueOf(testEvalTime3));
-			buffer.write(System.getProperty("line.separator"));
-			
-			buffer.flush();
-			buffer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		String testTimes = this.hookedMetricsFileDirectory + "/testTimes.txt";
+//		
+//		
+//		try {
+//			final FileWriter fstream = new FileWriter(testTimes, false);
+//			final BufferedWriter buffer = new BufferedWriter(fstream);
+//			buffer.write("");
+//			buffer.flush();
+//			buffer.close();
+//		} 
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		
+//		try {
+//			final FileWriter fstream = new FileWriter(testTimes, true);
+//			final BufferedWriter buffer = new BufferedWriter(fstream);
+//			
+//			buffer.write(String.valueOf(proportionalCutCalibrationTime));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(getConfidenceArrayTime));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(calibrateTime));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(accEvalTime1));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(recEvalTime1));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(hamEvalTime1));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(testEvalTime1));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(System.getProperty("line.separator"));
+//			
+//			buffer.write(String.valueOf(internalValidationCalibrationTime));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(accEvalTime2));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(recEvalTime2));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(hamEvalTime2));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(testEvalTime2));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(System.getProperty("line.separator"));
+//			
+//			buffer.write(String.valueOf(bestClassificationModeTime));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(accEvalTime3));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(recEvalTime3));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(hamEvalTime3));
+//			buffer.write(System.getProperty("line.separator"));
+//			buffer.write(String.valueOf(testEvalTime3));
+//			buffer.write(System.getProperty("line.separator"));
+//			
+//			buffer.flush();
+//			buffer.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		
 		
@@ -539,11 +529,14 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		
 		timeMeasurements =  new double[(iterations + (int)(iterations * UPDATE_ONLY_ITERATION_PERCENTAGE)) * instances.length][45];
 		
+		SeqSmpMeasurements = new int[(iterations + (int)(iterations * UPDATE_ONLY_ITERATION_PERCENTAGE)) * instances.length][15];
+		
 		trainSet(iterations, rulePopulation);
 		
 		updatePopulation((int) (iterations * UPDATE_ONLY_ITERATION_PERCENTAGE), rulePopulation);
 		
 		timeMeasurementsFile = this.hookedMetricsFileDirectory + "/measurements.txt";
+		SeqSmpMeasurementsFile = this.hookedMetricsFileDirectory + "/SeqSmpMeasurements.txt";
 		systemAccuracyFile = this.hookedMetricsFileDirectory + "/systemProgress.txt";
 		deletionsFile = this.hookedMetricsFileDirectory + "/deletions.txt";
 		zeroCoverageFile = this.hookedMetricsFileDirectory + "/zeroCoverage.txt";
@@ -552,12 +545,9 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		String etm0 = this.hookedMetricsFileDirectory + "/etm0.txt";
 		String etm1 = this.hookedMetricsFileDirectory + "/etm1.txt";
 				
-		Vector<EvolutionTimeMeasurements> measurements0 = MlASLCS3UpdateAlgorithm.measurements0;
-		Vector<EvolutionTimeMeasurements> measurements1 = MlASLCS3UpdateAlgorithm.measurements1;
-		
-		
 		try {
 			final FileWriter fstream = new FileWriter(timeMeasurementsFile, false);
+			final FileWriter fstream1 = new FileWriter(SeqSmpMeasurementsFile,false);
 			final FileWriter fstream2 = new FileWriter(systemAccuracyFile, false);
 			final FileWriter fstream3 = new FileWriter(deletionsFile, false);
 			final FileWriter fstream4 = new FileWriter(zeroCoverageFile, false);
@@ -566,6 +556,7 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 
 			
 			final BufferedWriter buffer = new BufferedWriter(fstream);
+			final BufferedWriter buffer1 = new BufferedWriter(fstream1);
 			final BufferedWriter buffer2 = new BufferedWriter(fstream2);
 			final BufferedWriter buffer3 = new BufferedWriter(fstream3);
 			final BufferedWriter buffer4 = new BufferedWriter(fstream4);
@@ -575,6 +566,10 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 			buffer.write("");
 			buffer.flush();
 			buffer.close();
+			
+			buffer1.write("");
+			buffer1.flush();
+			buffer1.close();
 			
 			buffer2.write("");
 			buffer2.flush();
@@ -598,6 +593,21 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 			for (int i = 0 ; i < timeMeasurements.length; i++ ){
 				for ( int j = 0 ; j < timeMeasurements[i].length ; j ++){
 					buffer.write( String.valueOf(timeMeasurements[i][j]) + "   ");
+				}
+				buffer.write(System.getProperty("line.separator"));
+			}
+			buffer.flush();
+			buffer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			final FileWriter fstream = new FileWriter(SeqSmpMeasurementsFile, true);
+			final BufferedWriter buffer = new BufferedWriter(fstream);
+			for (int i = 0 ; i < SeqSmpMeasurements.length; i++ ){
+				for ( int j = 0 ; j < SeqSmpMeasurements[i].length ; j ++){
+					buffer.write( String.valueOf(SeqSmpMeasurements[i][j]) + "   ");
 				}
 				buffer.write(System.getProperty("line.separator"));
 			}
@@ -678,65 +688,15 @@ public class GMlASLCS3 extends AbstractLearningClassifierSystem {
 		
 		catch (Exception e) {
 			e.printStackTrace();
-		}
-		
-		
-				
-		try {
-			final FileWriter fstream = new FileWriter(etm0, false);
-			final BufferedWriter buffer = new BufferedWriter(fstream);
-			buffer.write("");
-			buffer.flush();
-			buffer.close();
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			final FileWriter fstream = new FileWriter(etm0, true);
-			final BufferedWriter buffer = new BufferedWriter(fstream);
-			for (int i = 0 ; i < measurements0.size(); i++ ){
-				buffer.write( String.valueOf(measurements0.elementAt(i).timeA) + "   ");
-				buffer.write( String.valueOf(measurements0.elementAt(i).timeB) + "   ");
-				buffer.write( String.valueOf(measurements0.elementAt(i).timeC) + "   ");
-				buffer.write( String.valueOf(measurements0.elementAt(i).timeD) + "   ");
-				buffer.write(System.getProperty("line.separator"));
-			}
-			buffer.flush();
-			buffer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			final FileWriter fstream = new FileWriter(etm1, false);
-			final BufferedWriter buffer = new BufferedWriter(fstream);
-			buffer.write("");
-			buffer.flush();
-			buffer.close();
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			final FileWriter fstream = new FileWriter(etm1, true);
-			final BufferedWriter buffer = new BufferedWriter(fstream);
-			for (int i = 0 ; i < measurements0.size(); i++ ){
-				buffer.write( String.valueOf(measurements1.elementAt(i).timeA) + "   ");
-				buffer.write( String.valueOf(measurements1.elementAt(i).timeB) + "   ");
-				buffer.write( String.valueOf(measurements1.elementAt(i).timeC) + "   ");
-				buffer.write( String.valueOf(measurements1.elementAt(i).timeD) + "   ");
-				buffer.write(System.getProperty("line.separator"));
-			}
-			buffer.flush();
-			buffer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		}		
 
+	}
+	
+	public void trainFold()
+	{
+		trainSetFold(iterations, rulePopulation);
+		
+		updatePopulationFold((int) (iterations * UPDATE_ONLY_ITERATION_PERCENTAGE), rulePopulation);
 	}
 	
 	

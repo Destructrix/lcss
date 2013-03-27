@@ -48,6 +48,8 @@ public interface IRuleSelector {
 	void selectWithoutSum(int i, ClassifierSet evolveSet, ClassifierSet parents);
 
 	void computeFitnessSum(ClassifierSet evolveSet);
+	
+	void computeFitnessSumSmp(ClassifierSet evolveSet);
 
 	double computeFitnessSumNew(ClassifierSet evolveSet);
 

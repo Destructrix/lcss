@@ -25,6 +25,7 @@ import gr.auth.ee.lcs.classifiers.Classifier;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 /**
  * An interface for representing different update strategies, depending on the
@@ -38,7 +39,7 @@ import java.io.Serializable;
  * @author Miltos Allamanis
  */
 public abstract class AbstractUpdateStrategy {
-
+	
 	/**
 	 * Comparison mode used for LCS exploitation.
 	 */
@@ -59,6 +60,26 @@ public abstract class AbstractUpdateStrategy {
 	public static final int COMPARISON_MODE_ACCURACY = 4;
 	
 	public static final int COMPARISON_MODE_PURE_ACCURACY = 5;
+	
+	
+	public long generateCorrectSetTime;
+	public long updateParametersTime;
+	public long evolutionTime;
+	public long deletionTime;
+	public long updateDeletionParametersTime;
+	public long selectForDeletionTime;
+	public long subsumptionTime;
+	public long sumTime;
+	public long matchingTimeTotal;
+	public long correctupdateTime;
+	public static long subsumptionTimeSmp;
+	public static long matchingTimeSmp;
+	
+	public int numberOfEvolutionsConducted;
+	public int numberOfSubsumptionsConducted;
+	public int numberOfDeletionsConducted;
+	public int numberOfNewClassifiers;
+	public int numberOfDeletions;
 
 
 

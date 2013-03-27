@@ -132,4 +132,16 @@ public class PostProcessPopulationControl implements IPopulationControlStrategy 
 		
 	}
 
+	@Override
+	public long getUpdateDeletionParametersTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public long getSelectForDeletionTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

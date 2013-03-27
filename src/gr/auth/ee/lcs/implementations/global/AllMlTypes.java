@@ -27,6 +27,7 @@ package gr.auth.ee.lcs.implementations.global;
 import gr.auth.ee.lcs.AbstractLearningClassifierSystem;
 import gr.auth.ee.lcs.ArffTrainTestLoader;
 import gr.auth.ee.lcs.FoldEvaluator;
+import gr.auth.ee.lcs.FoldEvaluatorSmp;
 import gr.auth.ee.lcs.classifiers.ClassifierSet;
 import gr.auth.ee.lcs.utilities.SettingsLoader;
 

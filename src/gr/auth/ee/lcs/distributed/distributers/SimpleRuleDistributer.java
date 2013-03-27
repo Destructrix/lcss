@@ -82,6 +82,12 @@ public class SimpleRuleDistributer extends AbstractRuleDistributer {
 			
 		}
 
+		@Override
+		public void computeFitnessSumSmp(ClassifierSet evolveSet) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	};
 
 	/**
